@@ -66,9 +66,28 @@ export default function Dashboard() {
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-primary-700">Thrive PCOS</h1>
-              <p className="text-sm text-gray-600">Welcome back, {user.firstName}!</p>
+            <div className="flex items-center space-x-6">
+              <div>
+                <h1 className="text-2xl font-bold text-primary-700">Thrive PCOS</h1>
+                <p className="text-sm text-gray-600">Welcome back, {user.firstName}!</p>
+              </div>
+              <nav className="flex space-x-4">
+                <button className="text-pink-600 font-semibold">
+                  Dashboard
+                </button>
+                <button
+                  onClick={() => router.push('/symptoms')}
+                  className="text-gray-600 hover:text-pink-600 transition"
+                >
+                  Symptoms
+                </button>
+                <button
+                  onClick={() => router.push('/profile')}
+                  className="text-gray-600 hover:text-pink-600 transition"
+                >
+                  Profile
+                </button>
+              </nav>
             </div>
             <button
               onClick={handleLogout}
