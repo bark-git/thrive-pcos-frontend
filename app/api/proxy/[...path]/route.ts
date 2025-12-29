@@ -28,7 +28,8 @@ async function proxyRequest(request: NextRequest, method: string) {
     const url = new URL(request.url);
     const path = url.pathname.replace('/api/proxy', '');
     const searchParams = url.searchParams.toString();
-    const backendUrl = `${BACKEND_URL}${path}${searchParams ? `?${searchParams}` : ''}`;
+    // Add /api prefix for backend
+    const backendUrl = `${BACKEND_URL}/api${path}${searchParams ? `?${searchParams}` : ''}`;
 
     // Get headers
     const headers: Record<string, string> = {};

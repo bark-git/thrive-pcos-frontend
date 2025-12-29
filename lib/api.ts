@@ -53,12 +53,12 @@ export interface MoodStats {
 // Auth
 export const auth = {
   register: async (data: { email: string; password: string; firstName: string; lastName?: string }) => {
-    const res = await api.post('/api/auth/register', data);
+    const res = await api.post('/auth/register', data);
     return res.data;
   },
   
   login: async (email: string, password: string) => {
-    const res = await api.post('/api/auth/login', { email, password });
+    const res = await api.post('/auth/login', { email, password });
     if (res.data.session?.access_token) {
       localStorage.setItem('token', res.data.session.access_token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
@@ -81,17 +81,17 @@ export const auth = {
 // Mood
 export const mood = {
   create: async (data: Omit<MoodEntry, 'id'>) => {
-    const res = await api.post('/api/mood', data);
+    const res = await api.post('/mood', data);
     return res.data.moodEntry as MoodEntry;
   },
   
   getAll: async (params?: { startDate?: string; endDate?: string; limit?: number }) => {
-    const res = await api.get('/api/mood', { params });
+    const res = await api.get('/mood', { params });
     return res.data.moodEntries as MoodEntry[];
   },
   
   getStats: async (period: number = 7) => {
-    const res = await api.get('/api/mood/stats', { params: { period } });
+    const res = await api.get('/mood/stats', { params: { period } });
     return res.data.stats as MoodStats;
   }
 };
