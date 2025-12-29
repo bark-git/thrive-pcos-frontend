@@ -3,10 +3,12 @@
 import { type MoodStats } from '@/lib/api';
 
 interface StatsCardsProps {
-  stats: MoodStats;
+  stats: MoodStats | null;
 }
 
 export default function StatsCards({ stats }: StatsCardsProps) {
+  if (!stats) return null;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       {/* Average Mood */}
@@ -14,7 +16,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-gray-600 mb-1">Average Mood</p>
-            <p className="text-3xl font-bold text-gray-900">{stats.averageMood.toFixed(1)}</p>
+            <p className="text-3xl font-bold text-gray-900">{stats.averageMood?.toFixed(1) || '0.0'}</p>
             <p className="text-xs text-gray-500 mt-1">out of 5.0</p>
           </div>
           <div className="text-4xl">
@@ -28,8 +30,8 @@ export default function StatsCards({ stats }: StatsCardsProps) {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-gray-600 mb-1">Trend (7 days)</p>
-            <p className="text-lg font-bold text-gray-900 capitalize">{stats.moodTrend}</p>
-            <p className="text-xs text-gray-500 mt-1">{stats.totalEntries} entries</p>
+            <p className="text-lg font-bold text-gray-900 capitalize">{stats.moodTrend || 'N/A'}</p>
+            <p className="text-xs text-gray-500 mt-1">{stats.totalEntries || 0} entries</p>
           </div>
           <div className="text-4xl">
             {stats.moodTrend === 'improving' ? '📈' : 
