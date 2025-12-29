@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://your-deployment-url.vercel.app',
+    BACKEND_URL: process.env.BACKEND_URL || 'https://thrive-pcos-backend.vercel.app',
   },
 }
 
