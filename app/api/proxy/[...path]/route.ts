@@ -31,6 +31,8 @@ async function proxyRequest(request: NextRequest, method: string) {
     // Add /api prefix for backend
     const backendUrl = `${BACKEND_URL}/api${path}${searchParams ? `?${searchParams}` : ''}`;
 
+    console.log('Proxy request:', { method, backendUrl });
+
     // Get headers
     const headers: Record<string, string> = {};
     request.headers.forEach((value, key) => {
@@ -43,6 +45,7 @@ async function proxyRequest(request: NextRequest, method: string) {
     let body: string | undefined;
     if (method !== 'GET' && method !== 'DELETE') {
       body = await request.text();
+      console.log('Request body:', body);
     }
 
     // Make request to backend
@@ -52,8 +55,11 @@ async function proxyRequest(request: NextRequest, method: string) {
       body,
     });
 
+    console.log('Backend response:', { status: response.status, statusText: response.statusText });
+
     // Get response data
     const data = await response.text();
+    console.log('Backend response data:', data);
     
     // Return response
     return new NextResponse(data, {
@@ -64,8 +70,9 @@ async function proxyRequest(request: NextRequest, method: string) {
     });
   } catch (error: any) {
     console.error('Proxy error:', error);
+    console.error('Error stack:', error.stack);
     return NextResponse.json(
-      { error: 'Proxy request failed', details: error.message },
+      { error: 'Proxy request failed', details: error.message, stack: error.stack },
       { status: 500 }
     );
   }
