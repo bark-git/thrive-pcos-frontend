@@ -17,6 +17,18 @@ export default function Home() {
     lastName: '',
   });
 
+  const handleDemo = () => {
+    // Set fake user for demo
+    localStorage.setItem('user', JSON.stringify({
+      id: 'demo',
+      email: 'demo@example.com',
+      firstName: 'Demo',
+      lastName: 'User',
+      subscriptionTier: 'FREE'
+    }));
+    router.push('/dashboard');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -48,6 +60,23 @@ export default function Home() {
 
         {/* Auth Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
+          {/* Demo Button */}
+          <button
+            onClick={handleDemo}
+            className="w-full mb-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition shadow-lg"
+          >
+            🎨 View Demo (No Login Required)
+          </button>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Or login with your account</span>
+            </div>
+          </div>
+
           <div className="flex gap-2 mb-6">
             <button
               onClick={() => setIsLogin(true)}
