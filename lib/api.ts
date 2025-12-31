@@ -204,6 +204,16 @@ export const exportData = {
   allCSV: async () => {
     const res = await api.get('/export/all/csv', { responseType: 'blob' });
     return res.data;
+  },
+  
+  moodPDF: async () => {
+    const res = await api.get('/export/mood/pdf', { responseType: 'blob' });
+    return res.data;
+  },
+  
+  symptomsPDF: async () => {
+    const res = await api.get('/export/symptoms/pdf', { responseType: 'blob' });
+    return res.data;
   }
 };
 
