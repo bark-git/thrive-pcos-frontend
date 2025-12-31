@@ -41,6 +41,11 @@ async function proxyRequest(request: NextRequest, method: string) {
       }
     });
 
+    console.log('Proxy headers:', { 
+      hasAuth: !!headers['authorization'],
+      authPreview: headers['authorization']?.substring(0, 20) + '...'
+    });
+
     // Get body if present
     let body: string | undefined;
     if (method !== 'GET' && method !== 'DELETE') {
