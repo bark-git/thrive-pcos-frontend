@@ -189,4 +189,22 @@ export const user = {
   }
 };
 
+// Data Export
+export const exportData = {
+  moodCSV: async () => {
+    const res = await api.get('/export/mood/csv', { responseType: 'blob' });
+    return res.data;
+  },
+  
+  symptomsCSV: async () => {
+    const res = await api.get('/export/symptoms/csv', { responseType: 'blob' });
+    return res.data;
+  },
+  
+  allCSV: async () => {
+    const res = await api.get('/export/all/csv', { responseType: 'blob' });
+    return res.data;
+  }
+};
+
 export default api;

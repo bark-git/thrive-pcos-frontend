@@ -6,6 +6,7 @@ import { auth, mood, type MoodEntry, type MoodStats } from '@/lib/api';
 import MoodForm from '@/components/MoodForm';
 import MoodChart from '@/components/MoodChart';
 import StatsCards from '@/components/StatsCards';
+import DataExport from '@/components/DataExport';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -170,6 +171,11 @@ export default function Dashboard() {
               ))}
             </div>
           )}
+        </div>
+
+        {/* Data Export Section */}
+        <div className="mt-6">
+          <DataExport />
         </div>
       </main>
 
