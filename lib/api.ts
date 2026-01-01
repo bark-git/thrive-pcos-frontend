@@ -191,28 +191,33 @@ export const user = {
 
 // Data Export
 export const exportData = {
-  moodCSV: async () => {
-    const res = await api.get('/export/mood/csv', { responseType: 'blob' });
+  moodCSV: async (range: string = 'all') => {
+    const res = await api.get(`/export/mood/csv?range=${range}`, { responseType: 'blob' });
     return res.data;
   },
   
-  symptomsCSV: async () => {
-    const res = await api.get('/export/symptoms/csv', { responseType: 'blob' });
+  symptomsCSV: async (range: string = 'all') => {
+    const res = await api.get(`/export/symptoms/csv?range=${range}`, { responseType: 'blob' });
     return res.data;
   },
   
-  allCSV: async () => {
-    const res = await api.get('/export/all/csv', { responseType: 'blob' });
+  allCSV: async (range: string = 'all') => {
+    const res = await api.get(`/export/all/csv?range=${range}`, { responseType: 'blob' });
     return res.data;
   },
   
-  moodPDF: async () => {
-    const res = await api.get('/export/mood/pdf', { responseType: 'blob' });
+  moodPDF: async (range: string = 'all') => {
+    const res = await api.get(`/export/mood/pdf?range=${range}`, { responseType: 'blob' });
     return res.data;
   },
   
-  symptomsPDF: async () => {
-    const res = await api.get('/export/symptoms/pdf', { responseType: 'blob' });
+  symptomsPDF: async (range: string = 'all') => {
+    const res = await api.get(`/export/symptoms/pdf?range=${range}`, { responseType: 'blob' });
+    return res.data;
+  },
+  
+  allPDF: async (range: string = 'all') => {
+    const res = await api.get(`/export/all/pdf?range=${range}`, { responseType: 'blob' });
     return res.data;
   }
 };
