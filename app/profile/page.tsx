@@ -20,7 +20,7 @@ export default function ProfilePage() {
       return;
     }
     setLoading(false);
-  }, []);
+  }, [router]);
 
   const handleLogout = () => {
     auth.logout();
