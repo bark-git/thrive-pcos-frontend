@@ -61,6 +61,12 @@ export default function ProfilePage() {
                 >
                   Symptoms
                 </button>
+                <button
+                  onClick(() => router.push('/cycles')}
+                  className="text-gray-600 hover:text-pink-600 transition"
+                >
+                  Cycles
+                </button>
                 <button className="text-pink-600 font-semibold">
                   Profile
                 </button>

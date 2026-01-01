@@ -83,6 +83,12 @@ export default function Dashboard() {
                   Symptoms
                 </button>
                 <button
+                  onClick={() => router.push('/cycles')}
+                  className="text-gray-600 hover:text-pink-600 transition"
+                >
+                  Cycles
+                </button>
+                <button
                   onClick={() => router.push('/profile')}
                   className="text-gray-600 hover:text-pink-600 transition"
                 >

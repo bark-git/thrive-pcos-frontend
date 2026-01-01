@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import CycleForm from '@/components/CycleForm';
 
 interface Cycle {
   id: string;
@@ -188,20 +189,15 @@ export default function CyclesPage() {
         </div>
       </div>
 
-      {/* Simple Form Modal - We'll build CycleForm component next */}
+      {/* Cycle Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full">
-            <h3 className="text-xl font-semibold mb-4">Log Period (Coming Soon)</h3>
-            <p className="text-gray-600 mb-4">Cycle form component will be added next!</p>
-            <button
-              onClick={() => setShowForm(false)}
-              className="w-full px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <CycleForm
+          onClose={() => setShowForm(false)}
+          onSuccess={() => {
+            fetchCycles();
+            fetchStats();
+          }}
+        />
       )}
     </div>
   );
