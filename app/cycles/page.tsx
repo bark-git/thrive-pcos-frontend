@@ -25,6 +25,9 @@ interface CycleStats {
   averagePeriodLength?: number | null;
   regularityPercentage?: number;
   predictedNextPeriod?: string;
+  predictedOvulation?: string;
+  fertileWindowStart?: string;
+  fertileWindowEnd?: string;
   message?: string;
   averageSymptoms?: {
     cramps: string | null;
@@ -183,6 +186,9 @@ export default function CyclesPage() {
           <CycleCalendar 
             cycles={cycles} 
             predictedNextPeriod={stats?.predictedNextPeriod}
+            predictedOvulation={stats?.predictedOvulation}
+            fertileWindowStart={stats?.fertileWindowStart}
+            fertileWindowEnd={stats?.fertileWindowEnd}
           />
         </div>
 

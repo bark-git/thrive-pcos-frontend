@@ -12,10 +12,20 @@ interface Cycle {
 interface CycleCalendarProps {
   cycles: Cycle[];
   predictedNextPeriod?: string;
+  predictedOvulation?: string;
+  fertileWindowStart?: string;
+  fertileWindowEnd?: string;
   onDateClick?: (date: Date) => void;
 }
 
-export default function CycleCalendar({ cycles, predictedNextPeriod, onDateClick }: CycleCalendarProps) {
+export default function CycleCalendar({ 
+  cycles, 
+  predictedNextPeriod, 
+  predictedOvulation,
+  fertileWindowStart,
+  fertileWindowEnd,
+  onDateClick 
+}: CycleCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const getDaysInMonth = (date: Date) => {
@@ -26,35 +36,51 @@ export default function CycleCalendar({ cycles, predictedNextPeriod, onDateClick
     return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
   };
 
+  const normalizeDate = (date: Date | string): Date => {
+    const d = new Date(date);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  };
+
   const isPeriodDay = (date: Date): { isPeriod: boolean; flowIntensity?: string } => {
-    const dateStr = date.toISOString().split('T')[0];
+    const checkDate = normalizeDate(date);
     
     for (const cycle of cycles) {
-      const startDate = new Date(cycle.periodStartDate);
-      const endDate = cycle.periodEndDate ? new Date(cycle.periodEndDate) : startDate;
+      const startDate = normalizeDate(cycle.periodStartDate);
+      const endDate = cycle.periodEndDate ? normalizeDate(cycle.periodEndDate) : startDate;
       
-      // Normalize dates to compare just the date part
-      const checkDate = new Date(dateStr);
-      const start = new Date(startDate.toISOString().split('T')[0]);
-      const end = new Date(endDate.toISOString().split('T')[0]);
-      
-      if (checkDate >= start && checkDate <= end) {
+      if (checkDate >= startDate && checkDate <= endDate) {
         return { isPeriod: true, flowIntensity: cycle.flowIntensity || undefined };
       }
     }
     return { isPeriod: false };
   };
 
-  const isPredictedDay = (date: Date): boolean => {
+  const isPredictedPeriodDay = (date: Date): boolean => {
     if (!predictedNextPeriod) return false;
     
-    const predictedStart = new Date(predictedNextPeriod);
+    const checkDate = normalizeDate(date);
+    const predictedStart = normalizeDate(predictedNextPeriod);
     const predictedEnd = new Date(predictedStart);
     predictedEnd.setDate(predictedEnd.getDate() + 5); // Assume 5-day period
     
-    const checkDate = new Date(date.toISOString().split('T')[0]);
-    const start = new Date(predictedStart.toISOString().split('T')[0]);
-    const end = new Date(predictedEnd.toISOString().split('T')[0]);
+    return checkDate >= predictedStart && checkDate <= predictedEnd;
+  };
+
+  const isOvulationDay = (date: Date): boolean => {
+    if (!predictedOvulation) return false;
+    
+    const checkDate = normalizeDate(date);
+    const ovulationDate = normalizeDate(predictedOvulation);
+    
+    return checkDate.getTime() === ovulationDate.getTime();
+  };
+
+  const isFertileDay = (date: Date): boolean => {
+    if (!fertileWindowStart || !fertileWindowEnd) return false;
+    
+    const checkDate = normalizeDate(date);
+    const start = normalizeDate(fertileWindowStart);
+    const end = normalizeDate(fertileWindowEnd);
     
     return checkDate >= start && checkDate <= end;
   };
@@ -92,13 +118,16 @@ export default function CycleCalendar({ cycles, predictedNextPeriod, onDateClick
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
       const { isPeriod, flowIntensity } = isPeriodDay(date);
-      const isPredicted = isPredictedDay(date);
+      const isPredictedPeriod = isPredictedPeriodDay(date);
+      const isOvulation = isOvulationDay(date);
+      const isFertile = isFertileDay(date);
       const todayClass = isToday(date);
 
       let bgColor = 'bg-white hover:bg-gray-50';
       let textColor = 'text-gray-900';
       let borderClass = '';
 
+      // Priority: Period > Ovulation > Fertile Window > Predicted Period
       if (isPeriod) {
         // Different shades of pink based on flow intensity
         switch (flowIntensity) {
@@ -122,14 +151,23 @@ export default function CycleCalendar({ cycles, predictedNextPeriod, onDateClick
             bgColor = 'bg-pink-400';
             textColor = 'text-white';
         }
-      } else if (isPredicted) {
+      } else if (isOvulation) {
+        // Ovulation day - bright teal/cyan
+        bgColor = 'bg-teal-500';
+        textColor = 'text-white';
+        borderClass = 'ring-2 ring-teal-300 ring-offset-1';
+      } else if (isFertile) {
+        // Fertile window - light teal
+        bgColor = 'bg-teal-100';
+        textColor = 'text-teal-800';
+      } else if (isPredictedPeriod) {
         bgColor = 'bg-purple-100';
         borderClass = 'border-2 border-dashed border-purple-400';
         textColor = 'text-purple-700';
       }
 
-      if (todayClass && !isPeriod) {
-        borderClass = 'ring-2 ring-pink-500 ring-offset-2';
+      if (todayClass && !isPeriod && !isOvulation) {
+        borderClass = borderClass || 'ring-2 ring-pink-500 ring-offset-2';
       }
 
       days.push(
@@ -206,11 +244,19 @@ export default function CycleCalendar({ cycles, predictedNextPeriod, onDateClick
         <div className="flex flex-wrap gap-4 text-xs">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded bg-pink-400"></div>
-            <span className="text-gray-600">Period days</span>
+            <span className="text-gray-600">Period</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-teal-500"></div>
+            <span className="text-gray-600">Ovulation</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-teal-100"></div>
+            <span className="text-gray-600">Fertile window</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded bg-purple-100 border-2 border-dashed border-purple-400"></div>
-            <span className="text-gray-600">Predicted</span>
+            <span className="text-gray-600">Predicted period</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded bg-white ring-2 ring-pink-500"></div>
