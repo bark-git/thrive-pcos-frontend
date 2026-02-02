@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import { auth } from '@/lib/api';
+import api, { auth } from '@/lib/api';
 import CycleForm from '@/components/CycleForm';
 import CycleCalendar from '@/components/CycleCalendar';
 
@@ -54,7 +53,7 @@ export default function CyclesPage() {
 
   const fetchCycles = async () => {
     try {
-      const res = await axios.get('/api/proxy/cycles');
+      const res = await api.get('/cycles');
       setCycles(res.data.cycles);
     } catch (error) {
       console.error('Error loading cycles:', error);
@@ -65,7 +64,7 @@ export default function CyclesPage() {
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get('/api/proxy/cycles/stats');
+      const res = await api.get('/cycles/stats');
       setStats(res.data.stats);
     } catch (error) {
       console.error('Error loading stats:', error);
@@ -82,7 +81,7 @@ export default function CyclesPage() {
     
     setDeleteLoading(true);
     try {
-      await axios.delete(`/api/proxy/cycles/${deletingCycle.id}`);
+      await api.delete(`/cycles/${deletingCycle.id}`);
       setDeletingCycle(null);
       fetchCycles();
       fetchStats();

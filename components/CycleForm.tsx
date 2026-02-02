@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '@/lib/api';
 
 interface Cycle {
   id: string;
@@ -65,9 +65,9 @@ export default function CycleForm({ onClose, onSuccess, editCycle }: CycleFormPr
       };
 
       if (editCycle) {
-        await axios.put(`/api/proxy/cycles/${editCycle.id}`, payload);
+        await api.put(`/cycles/${editCycle.id}`, payload);
       } else {
-        await axios.post('/api/proxy/cycles', payload);
+        await api.post('/cycles', payload);
       }
       onSuccess();
       onClose();
