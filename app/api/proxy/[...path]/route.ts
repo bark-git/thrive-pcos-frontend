@@ -62,15 +62,35 @@ async function proxyRequest(request: NextRequest, method: string) {
 
     console.log('Backend response:', { status: response.status, statusText: response.statusText });
 
-    // Get response data
+    // Check content type to handle binary vs text responses
+    const contentType = response.headers.get('Content-Type') || 'application/json';
+    
+    // Handle binary responses (PDF, images, etc.)
+    if (contentType.includes('application/pdf') || 
+        contentType.includes('application/octet-stream') ||
+        contentType.includes('image/')) {
+      const arrayBuffer = await response.arrayBuffer();
+      console.log('Binary response size:', arrayBuffer.byteLength);
+      
+      return new NextResponse(arrayBuffer, {
+        status: response.status,
+        headers: {
+          'Content-Type': contentType,
+          'Content-Disposition': response.headers.get('Content-Disposition') || '',
+          'Content-Length': arrayBuffer.byteLength.toString(),
+        },
+      });
+    }
+    
+    // Handle text/JSON responses
     const data = await response.text();
-    console.log('Backend response data:', data);
+    console.log('Backend response data:', data.substring(0, 200));
     
     // Return response
     return new NextResponse(data, {
       status: response.status,
       headers: {
-        'Content-Type': response.headers.get('Content-Type') || 'application/json',
+        'Content-Type': contentType,
       },
     });
   } catch (error: any) {
