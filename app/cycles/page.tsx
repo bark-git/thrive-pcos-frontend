@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import api, { auth } from '@/lib/api';
+import Header from '@/components/Header';
 import CycleForm from '@/components/CycleForm';
 import CycleCalendar from '@/components/CycleCalendar';
 
@@ -102,11 +103,6 @@ export default function CyclesPage() {
     fetchStats();
   };
 
-  const handleLogout = () => {
-    auth.logout();
-    router.push('/');
-  };
-
   if (!user) return null;
 
   if (loading) {
@@ -119,48 +115,7 @@ export default function CyclesPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-pink-50 to-purple-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-6">
-              <div>
-                <h1 className="text-2xl font-bold text-pink-700">Thrive PCOS</h1>
-                <p className="text-sm text-gray-600">Welcome back, {user.firstName}!</p>
-              </div>
-              <nav className="flex space-x-4">
-                <button
-                  onClick={() => router.push('/dashboard')}
-                  className="text-gray-600 hover:text-pink-600 transition"
-                >
-                  Dashboard
-                </button>
-                <button
-                  onClick={() => router.push('/symptoms')}
-                  className="text-gray-600 hover:text-pink-600 transition"
-                >
-                  Symptoms
-                </button>
-                <button className="text-pink-600 font-semibold">
-                  Cycles
-                </button>
-                <button
-                  onClick={() => router.push('/profile')}
-                  className="text-gray-600 hover:text-pink-600 transition"
-                >
-                  Profile
-                </button>
-              </nav>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
+      <Header currentPage="cycles" />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
