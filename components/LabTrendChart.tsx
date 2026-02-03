@@ -169,7 +169,7 @@ export default function LabTrendChart({ testCode, testName, onClose }: LabTrendC
             )}
 
             {/* Reference Range Legend */}
-            {stats?.refRangeLow !== null && stats?.refRangeHigh !== null && (
+            {stats && stats.refRangeLow !== null && stats.refRangeHigh !== null && (
               <div className="mb-4 text-sm text-gray-600">
                 <span className="inline-block w-4 h-4 bg-green-100 border border-green-300 mr-2 align-middle"></span>
                 Reference Range: {stats.refRangeLow} - {stats.refRangeHigh} {stats.unit}
