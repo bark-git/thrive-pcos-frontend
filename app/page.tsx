@@ -51,12 +51,18 @@ export default function Home() {
       if (isLogin) {
         const response = await auth.login(formData.email, formData.password);
         
-        // Check if needs onboarding
-        if (response.user?.profile?.diagnosisStatus === 'UNSURE' || 
-            !response.user?.profile?.primaryConcerns?.length) {
-          router.push('/onboarding');
-        } else {
+        // Check if needs onboarding - only if they haven't set anything
+        const profile = response.user?.profile;
+        const hasCompletedOnboarding = profile && (
+          profile.diagnosisStatus !== 'UNSURE' || 
+          (profile.primaryConcerns && profile.primaryConcerns.length > 0) ||
+          (profile.goals && profile.goals.length > 0)
+        );
+        
+        if (hasCompletedOnboarding) {
           router.push('/dashboard');
+        } else {
+          router.push('/onboarding');
         }
       } else {
         // Register new user

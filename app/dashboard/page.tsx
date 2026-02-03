@@ -7,7 +7,6 @@ import Header from '@/components/Header';
 import MoodForm from '@/components/MoodForm';
 import MoodChart from '@/components/MoodChart';
 import StatsCards from '@/components/StatsCards';
-import DataExport from '@/components/DataExport';
 import CycleStatusCard from '@/components/CycleStatusCard';
 import MedicationStatusCard from '@/components/MedicationStatusCard';
 
@@ -140,11 +139,6 @@ export default function Dashboard() {
               ))}
             </div>
           )}
-        </div>
-
-        {/* Data Export Section */}
-        <div className="mt-6">
-          <DataExport />
         </div>
       </main>
 

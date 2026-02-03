@@ -139,43 +139,67 @@ export default function CyclesPage() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {/* Stats Cards */}
         {stats && stats.totalCycles >= 2 ? (
           <>
-            <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl">📊</span>
-                <span className="text-sm text-gray-500">Average</span>
+                <span className="text-xl sm:text-2xl">📊</span>
+                <span className="text-xs sm:text-sm text-gray-500">Average</span>
               </div>
-              <p className="text-3xl font-bold text-gray-900">{stats.averageCycleLength}</p>
-              <p className="text-sm text-gray-600">Days per cycle</p>
+              <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.averageCycleLength}</p>
+              <p className="text-xs sm:text-sm text-gray-600">Days per cycle</p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl">📅</span>
-                <span className="text-sm text-gray-500">Regularity</span>
+                <span className="text-xl sm:text-2xl">📅</span>
+                <span className="text-xs sm:text-sm text-gray-500">Regularity</span>
               </div>
-              <p className="text-3xl font-bold text-gray-900">{stats.regularityPercentage}%</p>
-              <p className="text-sm text-gray-600">
-                {stats.regularityPercentage! >= 70 ? 'Regular cycles' : 'Irregular cycles'}
+              <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.regularityPercentage}%</p>
+              <p className="text-xs sm:text-sm text-gray-600">
+                {stats.regularityPercentage! >= 70 ? 'Regular' : 'Irregular'}
               </p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl">🔮</span>
-                <span className="text-sm text-gray-500">Prediction</span>
+                <span className="text-xl sm:text-2xl">🔮</span>
+                <span className="text-xs sm:text-sm text-gray-500">Next Period</span>
               </div>
-              <p className="text-lg font-bold text-gray-900">
-                {stats.predictedNextPeriod ? new Date(stats.predictedNextPeriod).toLocaleDateString() : 'N/A'}
+              <p className="text-base sm:text-lg font-bold text-gray-900">
+                {stats.predictedNextPeriod ? new Date(stats.predictedNextPeriod).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A'}
               </p>
-              <p className="text-sm text-gray-600">Next period expected</p>
+              <p className="text-xs sm:text-sm text-gray-600">Expected</p>
+            </div>
+
+            <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl shadow-sm p-4 sm:p-6 border border-pink-200">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xl sm:text-2xl">🌸</span>
+                <span className="text-xs sm:text-sm text-purple-600">Fertile Window</span>
+              </div>
+              {stats.predictedOvulation ? (
+                <>
+                  <p className="text-base sm:text-lg font-bold text-gray-900">
+                    {new Date(stats.predictedOvulation).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </p>
+                  <p className="text-xs sm:text-sm text-purple-700">
+                    Ovulation ~{stats.fertileWindowStart && stats.fertileWindowEnd 
+                      ? `${new Date(stats.fertileWindowStart).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(stats.fertileWindowEnd).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+                      : 'calculating...'}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-lg font-bold text-gray-500">-</p>
+                  <p className="text-xs sm:text-sm text-gray-500">Need more data</p>
+                </>
+              )}
             </div>
           </>
         ) : (
-          <div className="col-span-3 bg-white rounded-xl shadow-sm p-6 text-center">
+          <div className="col-span-2 lg:col-span-4 bg-white rounded-xl shadow-sm p-6 text-center">
             <p className="text-gray-600">{stats?.message || 'Track at least 2 cycles to see statistics'}</p>
           </div>
         )}

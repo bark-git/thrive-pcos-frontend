@@ -117,18 +117,18 @@ export default function AccountStats() {
         </p>
       </div>
 
-      {/* Data Export (Coming Soon) */}
-      <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+      {/* Data Export Link */}
+      <div className="mt-6 p-4 bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 rounded-lg">
         <h4 className="font-medium text-gray-900 mb-2">📥 Data Export</h4>
         <p className="text-sm text-gray-600 mb-3">
-          Download all your health data in CSV or PDF format
+          Download all your health data in CSV or PDF format for your records or doctor visits.
         </p>
-        <button
-          disabled
-          className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed"
+        <a
+          href="/export"
+          className="inline-block px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:from-pink-600 hover:to-purple-700 transition font-medium"
         >
-          Coming Soon
-        </button>
+          Go to Export →
+        </a>
       </div>
     </div>
   );
