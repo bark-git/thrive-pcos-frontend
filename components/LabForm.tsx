@@ -144,7 +144,6 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
       refRangeHigh: test.refRangeHigh.toString(),
       category: test.category
     });
-    setIsCustomTest(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
