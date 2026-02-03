@@ -8,6 +8,7 @@ import ProfileForm from '@/components/ProfileForm';
 import NotificationSettings from '@/components/NotificationSettings';
 import PasswordChange from '@/components/PasswordChange';
 import AccountStats from '@/components/AccountStats';
+import DataExport from '@/components/DataExport';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -40,24 +41,24 @@ export default function ProfilePage() {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">Profile Settings</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-6">Settings</h2>
 
         {/* Tab Navigation */}
         <div className="bg-white rounded-t-xl shadow-sm">
-          <div className="flex border-b border-gray-200">
+          <div className="flex border-b border-gray-200 overflow-x-auto">
             <button
               onClick={() => setActiveTab('profile')}
-              className={`px-6 py-3 font-medium transition ${
+              className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
                 activeTab === 'profile'
                   ? 'border-b-2 border-pink-500 text-pink-600'
                   : 'text-gray-600 hover:text-pink-600'
               }`}
             >
-              Profile Info
+              Profile
             </button>
             <button
               onClick={() => setActiveTab('notifications')}
-              className={`px-6 py-3 font-medium transition ${
+              className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
                 activeTab === 'notifications'
                   ? 'border-b-2 border-pink-500 text-pink-600'
                   : 'text-gray-600 hover:text-pink-600'
@@ -67,7 +68,7 @@ export default function ProfilePage() {
             </button>
             <button
               onClick={() => setActiveTab('security')}
-              className={`px-6 py-3 font-medium transition ${
+              className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
                 activeTab === 'security'
                   ? 'border-b-2 border-pink-500 text-pink-600'
                   : 'text-gray-600 hover:text-pink-600'
@@ -76,14 +77,24 @@ export default function ProfilePage() {
               Security
             </button>
             <button
+              onClick={() => setActiveTab('export')}
+              className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
+                activeTab === 'export'
+                  ? 'border-b-2 border-pink-500 text-pink-600'
+                  : 'text-gray-600 hover:text-pink-600'
+              }`}
+            >
+              📥 Export
+            </button>
+            <button
               onClick={() => setActiveTab('stats')}
-              className={`px-6 py-3 font-medium transition ${
+              className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
                 activeTab === 'stats'
                   ? 'border-b-2 border-pink-500 text-pink-600'
                   : 'text-gray-600 hover:text-pink-600'
               }`}
             >
-              Account Stats
+              Stats
             </button>
           </div>
         </div>
@@ -93,6 +104,7 @@ export default function ProfilePage() {
           {activeTab === 'profile' && <ProfileForm />}
           {activeTab === 'notifications' && <NotificationSettings />}
           {activeTab === 'security' && <PasswordChange />}
+          {activeTab === 'export' && <DataExport />}
           {activeTab === 'stats' && <AccountStats />}
         </div>
       </main>

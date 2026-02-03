@@ -4,19 +4,36 @@ import { useState } from 'react';
 import { symptom } from '@/lib/api';
 
 const SYMPTOM_TYPES = [
-  { value: 'ACNE', label: 'Acne' },
-  { value: 'HAIR_LOSS', label: 'Hair Loss/Thinning' },
-  { value: 'EXCESS_HAIR', label: 'Excess Hair Growth' },
-  { value: 'WEIGHT_GAIN', label: 'Weight Gain' },
-  { value: 'WEIGHT_LOSS', label: 'Weight Loss' },
-  { value: 'FATIGUE', label: 'Fatigue' },
-  { value: 'SLEEP_ISSUES', label: 'Sleep Issues' },
-  { value: 'MOOD_SWINGS', label: 'Mood Swings' },
-  { value: 'BLOATING', label: 'Bloating' },
-  { value: 'IRREGULAR_PERIODS', label: 'Irregular Periods' },
-  { value: 'PAIN', label: 'Pain/Cramps' },
-  { value: 'OTHER', label: 'Other' }
+  { value: 'ACNE', label: 'Acne', hasLocation: true },
+  { value: 'HAIR_LOSS', label: 'Hair Loss/Thinning', hasLocation: true },
+  { value: 'EXCESS_HAIR', label: 'Excess Hair Growth', hasLocation: true },
+  { value: 'WEIGHT_GAIN', label: 'Weight Gain', hasLocation: false },
+  { value: 'WEIGHT_LOSS', label: 'Weight Loss', hasLocation: false },
+  { value: 'FATIGUE', label: 'Fatigue', hasLocation: false },
+  { value: 'SLEEP_ISSUES', label: 'Sleep Issues', hasLocation: false },
+  { value: 'MOOD_SWINGS', label: 'Mood Swings', hasLocation: false },
+  { value: 'BLOATING', label: 'Bloating', hasLocation: true },
+  { value: 'IRREGULAR_PERIODS', label: 'Irregular Periods', hasLocation: false },
+  { value: 'PAIN', label: 'Pain/Cramps', hasLocation: true },
+  { value: 'HEADACHE', label: 'Headache', hasLocation: true },
+  { value: 'BRAIN_FOG', label: 'Brain Fog', hasLocation: false },
+  { value: 'ANXIETY', label: 'Anxiety', hasLocation: false },
+  { value: 'CRAVINGS', label: 'Food Cravings', hasLocation: false },
+  { value: 'OTHER', label: 'Other', hasLocation: true }
 ];
+
+// Context questions for symptoms without location
+const CONTEXT_QUESTIONS: Record<string, { label: string; placeholder: string }> = {
+  'FATIGUE': { label: 'When did it start?', placeholder: 'E.g., Morning, After meals, All day...' },
+  'SLEEP_ISSUES': { label: 'Type of issue', placeholder: 'E.g., Can\'t fall asleep, Waking up early, Poor quality...' },
+  'MOOD_SWINGS': { label: 'Triggers (if known)', placeholder: 'E.g., Before period, Stress, No clear trigger...' },
+  'WEIGHT_GAIN': { label: 'Noticed changes in', placeholder: 'E.g., Appetite, Activity level, Stress eating...' },
+  'WEIGHT_LOSS': { label: 'Possible factors', placeholder: 'E.g., Appetite changes, Increased activity...' },
+  'IRREGULAR_PERIODS': { label: 'Pattern', placeholder: 'E.g., Skipped, Heavy, Spotting, Late by X days...' },
+  'BRAIN_FOG': { label: 'When is it worst?', placeholder: 'E.g., Morning, After eating, All day...' },
+  'ANXIETY': { label: 'Triggers (if known)', placeholder: 'E.g., Work, Social, No clear trigger...' },
+  'CRAVINGS': { label: 'What are you craving?', placeholder: 'E.g., Sugar, Carbs, Salty foods...' },
+};
 
 const SEVERITY_LEVELS = [
   { value: 1, emoji: '😊', label: 'Minimal', description: 'Barely noticeable, doesn\'t affect daily life' },
@@ -40,6 +57,10 @@ export default function SymptomForm({ onSymptomCreated }: SymptomFormProps) {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const selectedSymptom = SYMPTOM_TYPES.find(s => s.value === formData.symptomType);
+  const hasLocation = selectedSymptom?.hasLocation ?? true;
+  const contextQuestion = CONTEXT_QUESTIONS[formData.symptomType];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,8 +116,8 @@ export default function SymptomForm({ onSymptomCreated }: SymptomFormProps) {
           </label>
           <select
             value={formData.symptomType}
-            onChange={(e) => setFormData({ ...formData, symptomType: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            onChange={(e) => setFormData({ ...formData, symptomType: e.target.value, location: '' })}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
             required
           >
             <option value="">Select a symptom...</option>
@@ -119,7 +140,7 @@ export default function SymptomForm({ onSymptomCreated }: SymptomFormProps) {
               value={formData.otherSymptom}
               onChange={(e) => setFormData({ ...formData, otherSymptom: e.target.value })}
               placeholder="E.g., Hot flashes, Headaches..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
               maxLength={100}
               required
             />
@@ -161,23 +182,42 @@ export default function SymptomForm({ onSymptomCreated }: SymptomFormProps) {
           </div>
         </div>
 
-        {/* Location (optional) */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Location (Optional)
-          </label>
-          <input
-            type="text"
-            value={formData.location}
-            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-            placeholder="E.g., Face, Back, Lower abdomen..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-            maxLength={100}
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Where are you experiencing this symptom?
-          </p>
-        </div>
+        {/* Location - Only show for symptoms that have a physical location */}
+        {formData.symptomType && hasLocation && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Location (Optional)
+            </label>
+            <input
+              type="text"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+              placeholder="E.g., Face, Back, Lower abdomen..."
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+              maxLength={100}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Where are you experiencing this symptom?
+            </p>
+          </div>
+        )}
+
+        {/* Context Question - Only show for symptoms without location */}
+        {formData.symptomType && !hasLocation && contextQuestion && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {contextQuestion.label} (Optional)
+            </label>
+            <input
+              type="text"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+              placeholder={contextQuestion.placeholder}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+              maxLength={100}
+            />
+          </div>
+        )}
 
         {/* Notes */}
         <div>
@@ -189,7 +229,7 @@ export default function SymptomForm({ onSymptomCreated }: SymptomFormProps) {
             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
             placeholder="Any additional details..."
             rows={3}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none text-gray-900"
             maxLength={1000}
           />
         </div>

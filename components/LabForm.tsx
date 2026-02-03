@@ -41,14 +41,14 @@ const CATEGORIES = [
   { value: 'THYROID', label: 'Thyroid' },
   { value: 'VITAMINS', label: 'Vitamins & Minerals' },
   { value: 'LIPIDS', label: 'Lipids' },
-  { value: 'OTHER', label: 'Other' }
+  { value: 'CUSTOM', label: 'Custom' }
 ];
 
 export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps) {
   const [commonTests, setCommonTests] = useState<LabTest[]>([]);
   const [testsByCategory, setTestsByCategory] = useState<Record<string, LabTest[]>>({});
+  const [customTests, setCustomTests] = useState<LabTest[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('HORMONES');
-  const [isCustomTest, setIsCustomTest] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -68,10 +68,12 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
 
   useEffect(() => {
     fetchCommonTests();
+    fetchCustomTests();
   }, []);
 
   useEffect(() => {
     if (editResult) {
+      const category = editResult.category || 'CUSTOM';
       setFormData({
         testDate: editResult.testDate.split('T')[0],
         testCode: editResult.testCode || '',
@@ -80,16 +82,15 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
         unit: editResult.unit || '',
         refRangeLow: editResult.refRangeLow?.toString() || '',
         refRangeHigh: editResult.refRangeHigh?.toString() || '',
-        category: editResult.category || 'OTHER',
+        category: category === 'OTHER' ? 'CUSTOM' : category,
         labName: editResult.labName || '',
         notes: editResult.notes || '',
         flagStatus: editResult.flagStatus
       });
-      setSelectedCategory(editResult.category || 'OTHER');
       
       // Check if it's a custom test (not in common tests)
       const isKnownTest = commonTests.some(t => t.code === editResult.testCode);
-      setIsCustomTest(!isKnownTest && commonTests.length > 0);
+      setSelectedCategory(isKnownTest ? (category === 'OTHER' ? 'CUSTOM' : category) : 'CUSTOM');
     }
   }, [editResult, commonTests]);
 
@@ -100,6 +101,36 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
       setTestsByCategory(res.data.byCategory);
     } catch (err) {
       console.error('Error fetching tests:', err);
+    }
+  };
+
+  const fetchCustomTests = async () => {
+    try {
+      // Fetch user's lab results to get unique custom tests
+      const res = await api.get('/labs?limit=100');
+      const results = res.data.results || [];
+      
+      // Find unique custom tests (tests not in common tests)
+      const customTestMap = new Map<string, LabTest>();
+      results.forEach((result: any) => {
+        // Check if this test is not in common tests
+        const isCommon = commonTests.some(t => t.code === result.testCode);
+        if (!isCommon && result.testName && !customTestMap.has(result.testName)) {
+          customTestMap.set(result.testName, {
+            code: result.testCode || `CUSTOM_${result.testName.toUpperCase().replace(/\s+/g, '_')}`,
+            name: result.testName,
+            category: result.category || 'CUSTOM',
+            unit: result.unit || '',
+            refRangeLow: result.refRangeLow || 0,
+            refRangeHigh: result.refRangeHigh || 0,
+            description: 'Previously logged test'
+          });
+        }
+      });
+      
+      setCustomTests(Array.from(customTestMap.values()));
+    } catch (err) {
+      console.error('Error fetching custom tests:', err);
     }
   };
 
@@ -220,29 +251,27 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
               <label className="block text-sm font-medium text-gray-700">
                 Test *
               </label>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsCustomTest(!isCustomTest);
-                  if (!isCustomTest) {
-                    setFormData({ ...formData, testCode: '', testName: '', unit: '', refRangeLow: '', refRangeHigh: '' });
-                  }
-                }}
-                className="text-sm text-pink-600 hover:text-pink-700"
-              >
-                {isCustomTest ? 'Select from common tests' : 'Enter custom test'}
-              </button>
+              {selectedCategory !== 'CUSTOM' && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedCategory('CUSTOM');
+                    setFormData({ ...formData, testCode: '', testName: '', unit: '', refRangeLow: '', refRangeHigh: '', category: 'CUSTOM' });
+                  }}
+                  className="text-sm text-pink-600 hover:text-pink-700"
+                >
+                  + Add custom test
+                </button>
+              )}
             </div>
 
-            {!isCustomTest ? (
-              <>
-                {/* Category Tabs */}
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {CATEGORIES.map((cat) => (
-                    <button
-                      key={cat.value}
-                      type="button"
-                      onClick={() => setSelectedCategory(cat.value)}
+            {/* Category Tabs */}
+            <div className="flex flex-wrap gap-2 mb-3">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.value}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat.value)}
                       className={`px-3 py-1 rounded-full text-sm transition ${
                         selectedCategory === cat.value
                           ? 'bg-pink-500 text-white'
@@ -255,25 +284,92 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                 </div>
 
                 {/* Test Buttons */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto p-1">
-                  {(testsByCategory[selectedCategory] || []).map((test) => (
-                    <button
-                      key={test.code}
-                      type="button"
-                      onClick={() => handleSelectTest(test)}
-                      className={`px-3 py-2 rounded-lg border text-sm text-left transition ${
-                        formData.testCode === test.code
-                          ? 'border-pink-500 bg-pink-50 text-gray-900'
-                          : 'border-gray-200 hover:border-pink-300 text-gray-700'
-                      }`}
-                    >
-                      <div className="font-medium">{test.name}</div>
-                      <div className="text-xs text-gray-500">{test.refRangeLow}-{test.refRangeHigh} {test.unit}</div>
-                    </button>
-                  ))}
-                </div>
+                {selectedCategory === 'CUSTOM' ? (
+                  <div>
+                    {customTests.length > 0 ? (
+                      <>
+                        <p className="text-sm text-gray-600 mb-2">Your previously logged tests:</p>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-32 overflow-y-auto p-1 mb-3">
+                          {customTests.map((test) => (
+                            <button
+                              key={test.code}
+                              type="button"
+                              onClick={() => handleSelectTest(test)}
+                              className={`px-3 py-2 rounded-lg border text-sm text-left transition ${
+                                formData.testCode === test.code
+                                  ? 'border-pink-500 bg-pink-50 text-gray-900'
+                                  : 'border-gray-200 hover:border-pink-300 text-gray-700'
+                              }`}
+                            >
+                              <div className="font-medium">{test.name}</div>
+                              {test.unit && (
+                                <div className="text-xs text-gray-500">{test.unit}</div>
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    ) : (
+                      <p className="text-sm text-gray-500 mb-2">No custom tests yet. Enter a new test below.</p>
+                    )}
+                    
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                      <p className="text-sm font-medium text-gray-700 mb-2">Or add a new custom test:</p>
+                      <input
+                        type="text"
+                        value={formData.testName}
+                        onChange={(e) => setFormData({ ...formData, testName: e.target.value, testCode: '' })}
+                        placeholder="Enter test name"
+                        className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900 mb-2"
+                      />
+                      <div className="grid grid-cols-3 gap-2">
+                        <input
+                          type="text"
+                          value={formData.unit}
+                          onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                          placeholder="Unit"
+                          className="px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900 text-sm"
+                        />
+                        <input
+                          type="number"
+                          step="any"
+                          value={formData.refRangeLow}
+                          onChange={(e) => setFormData({ ...formData, refRangeLow: e.target.value })}
+                          placeholder="Ref. Low"
+                          className="px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900 text-sm"
+                        />
+                        <input
+                          type="number"
+                          step="any"
+                          value={formData.refRangeHigh}
+                          onChange={(e) => setFormData({ ...formData, refRangeHigh: e.target.value })}
+                          placeholder="Ref. High"
+                          className="px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900 text-sm"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto p-1">
+                    {(testsByCategory[selectedCategory] || []).map((test) => (
+                      <button
+                        key={test.code}
+                        type="button"
+                        onClick={() => handleSelectTest(test)}
+                        className={`px-3 py-2 rounded-lg border text-sm text-left transition ${
+                          formData.testCode === test.code
+                            ? 'border-pink-500 bg-pink-50 text-gray-900'
+                            : 'border-gray-200 hover:border-pink-300 text-gray-700'
+                        }`}
+                      >
+                        <div className="font-medium">{test.name}</div>
+                        <div className="text-xs text-gray-500">{test.refRangeLow}-{test.refRangeHigh} {test.unit}</div>
+                      </button>
+                    ))}
+                  </div>
+                )}
 
-                {formData.testName && (
+                {formData.testName && selectedCategory !== 'CUSTOM' && (
                   <div className="mt-3 p-3 bg-pink-50 rounded-lg">
                     <div className="font-medium text-gray-900">Selected: {formData.testName}</div>
                     <div className="text-sm text-gray-600">
@@ -281,52 +377,6 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                     </div>
                   </div>
                 )}
-              </>
-            ) : (
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  value={formData.testName}
-                  onChange={(e) => setFormData({ ...formData, testName: e.target.value })}
-                  placeholder="Enter test name"
-                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
-                />
-                <div className="grid grid-cols-3 gap-3">
-                  <input
-                    type="text"
-                    value={formData.unit}
-                    onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
-                    placeholder="Unit (e.g., ng/dL)"
-                    className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
-                  />
-                  <input
-                    type="number"
-                    step="any"
-                    value={formData.refRangeLow}
-                    onChange={(e) => setFormData({ ...formData, refRangeLow: e.target.value })}
-                    placeholder="Ref. Low"
-                    className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
-                  />
-                  <input
-                    type="number"
-                    step="any"
-                    value={formData.refRangeHigh}
-                    onChange={(e) => setFormData({ ...formData, refRangeHigh: e.target.value })}
-                    placeholder="Ref. High"
-                    className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
-                  />
-                </div>
-                <select
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
-                >
-                  {CATEGORIES.map((cat) => (
-                    <option key={cat.value} value={cat.value}>{cat.label}</option>
-                  ))}
-                </select>
-              </div>
-            )}
           </div>
 
           {/* Value */}

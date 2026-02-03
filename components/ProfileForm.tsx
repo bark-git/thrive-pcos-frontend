@@ -36,8 +36,19 @@ const PHENOTYPE_INFO: Record<string, { name: string; description: string }> = {
   'D': { name: 'Type D (Non-Hyperandrogenic)', description: 'Irregular periods + polycystic ovaries' },
 };
 
+const DIAGNOSIS_STATUS: Record<string, string> = {
+  'CONFIRMED': 'Confirmed diagnosis',
+  'SUSPECTED': 'Suspected / Self-diagnosed',
+  'UNSURE': 'Not sure yet'
+};
+
 export default function ProfileForm() {
   const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
+  const [editingSection, setEditingSection] = useState<string | null>(null);
+  
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -49,10 +60,6 @@ export default function ProfileForm() {
     primaryConcerns: [] as string[],
     goals: [] as string[]
   });
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
-  const [expandedSection, setExpandedSection] = useState<string | null>('personal');
 
   useEffect(() => {
     loadProfile();
@@ -85,40 +92,55 @@ export default function ProfileForm() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSaveSection = async (section: string) => {
     setMessage({ type: '', text: '' });
     setSaving(true);
 
     try {
-      // Update basic profile
-      await user.updateProfile({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        dateOfBirth: formData.dateOfBirth || undefined,
-        timezone: formData.timezone || undefined
-      });
-      
-      // Update PCOS-specific data via onboarding endpoint
-      await api.post('/auth/complete-onboarding', {
-        diagnosisStatus: formData.diagnosisStatus,
-        diagnosisDate: formData.diagnosisDate || undefined,
-        phenotype: formData.phenotype || undefined,
-        primaryConcerns: formData.primaryConcerns,
-        goals: formData.goals
-      });
+      if (section === 'personal') {
+        await user.updateProfile({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          dateOfBirth: formData.dateOfBirth || undefined,
+          timezone: formData.timezone || undefined
+        });
+      } else {
+        // Save PCOS data
+        await api.post('/auth/complete-onboarding', {
+          diagnosisStatus: formData.diagnosisStatus,
+          diagnosisDate: formData.diagnosisDate || undefined,
+          phenotype: formData.phenotype || undefined,
+          primaryConcerns: formData.primaryConcerns,
+          goals: formData.goals
+        });
+      }
 
-      setMessage({ type: 'success', text: 'Profile updated successfully!' });
-      loadProfile();
+      setMessage({ type: 'success', text: 'Saved successfully!' });
+      await loadProfile();
+      setEditingSection(null);
     } catch (error: any) {
-      console.error('Error updating profile:', error);
-      setMessage({ 
-        type: 'error', 
-        text: error.response?.data?.message || 'Failed to update profile' 
-      });
+      console.error('Error saving:', error);
+      setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to save' });
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleCancel = () => {
+    // Reset form data to current profile
+    setFormData({
+      firstName: profile?.firstName || '',
+      lastName: profile?.lastName || '',
+      dateOfBirth: profile?.dateOfBirth ? format(new Date(profile.dateOfBirth), 'yyyy-MM-dd') : '',
+      diagnosisDate: profile?.profile?.diagnosisDate ? format(new Date(profile.profile.diagnosisDate), 'yyyy-MM-dd') : '',
+      timezone: profile?.timezone || '',
+      diagnosisStatus: profile?.profile?.diagnosisStatus || 'UNSURE',
+      phenotype: profile?.profile?.phenotype || '',
+      primaryConcerns: profile?.profile?.primaryConcerns || [],
+      goals: profile?.profile?.goals || []
+    });
+    setEditingSection(null);
+    setMessage({ type: '', text: '' });
   };
 
   const toggleConcern = (id: string) => {
@@ -139,6 +161,14 @@ export default function ProfileForm() {
     }));
   };
 
+  const getConcernLabels = (ids: string[]) => {
+    return ids.map(id => PRIMARY_CONCERNS.find(c => c.id === id)?.label || id).join(', ');
+  };
+
+  const getGoalLabels = (ids: string[]) => {
+    return ids.map(id => GOALS.find(g => g.id === id)?.label || id).join(', ');
+  };
+
   if (loading) {
     return (
       <div className="text-center py-8">
@@ -149,9 +179,9 @@ export default function ProfileForm() {
   }
 
   return (
-    <div>
+    <div className="space-y-6">
       {message.text && (
-        <div className={`mb-4 p-3 rounded-lg ${
+        <div className={`p-3 rounded-lg ${
           message.type === 'success' 
             ? 'bg-green-50 border border-green-200 text-green-700'
             : 'bg-red-50 border border-red-200 text-red-700'
@@ -160,35 +190,23 @@ export default function ProfileForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Personal Information Section */}
-        <div className="border border-gray-200 rounded-lg overflow-hidden">
-          <button
-            type="button"
-            onClick={() => setExpandedSection(expandedSection === 'personal' ? null : 'personal')}
-            className="w-full px-4 py-3 bg-gray-50 flex items-center justify-between hover:bg-gray-100 transition"
-          >
-            <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-500 transition-transform ${expandedSection === 'personal' ? 'rotate-180' : ''}`} 
-              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+      {/* Personal Information Section */}
+      <div className="border border-gray-200 rounded-lg overflow-hidden">
+        <div className="px-4 py-3 bg-gray-50 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
+          {editingSection !== 'personal' && (
+            <button
+              onClick={() => setEditingSection('personal')}
+              className="text-pink-600 hover:text-pink-700 text-sm font-medium"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          
-          {expandedSection === 'personal' && (
-            <div className="p-4 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                <input
-                  type="email"
-                  value={profile?.email || ''}
-                  disabled
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed"
-                />
-              </div>
-
+              Edit
+            </button>
+          )}
+        </div>
+        
+        <div className="p-4">
+          {editingSection === 'personal' ? (
+            <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
@@ -210,7 +228,6 @@ export default function ProfileForm() {
                   />
                 </div>
               </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
@@ -238,47 +255,74 @@ export default function ProfileForm() {
                   </select>
                 </div>
               </div>
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => handleSaveSection('personal')}
+                  disabled={saving}
+                  className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 disabled:opacity-50"
+                >
+                  {saving ? 'Saving...' : 'Save'}
+                </button>
+                <button onClick={handleCancel} className="px-4 py-2 text-gray-600 hover:text-gray-800">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Email</span>
+                <span className="text-gray-900">{profile?.email}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Name</span>
+                <span className="text-gray-900">{formData.firstName} {formData.lastName}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Date of Birth</span>
+                <span className="text-gray-900">{formData.dateOfBirth || 'Not set'}</span>
+              </div>
+              <div className="flex justify-between py-2">
+                <span className="text-gray-500">Timezone</span>
+                <span className="text-gray-900">{formData.timezone || 'Not set'}</span>
+              </div>
             </div>
           )}
         </div>
+      </div>
 
-        {/* PCOS Diagnosis Section */}
-        <div className="border border-gray-200 rounded-lg overflow-hidden">
-          <button
-            type="button"
-            onClick={() => setExpandedSection(expandedSection === 'diagnosis' ? null : 'diagnosis')}
-            className="w-full px-4 py-3 bg-pink-50 flex items-center justify-between hover:bg-pink-100 transition"
-          >
-            <h3 className="text-lg font-semibold text-pink-800">PCOS Diagnosis</h3>
-            <svg 
-              className={`w-5 h-5 text-pink-500 transition-transform ${expandedSection === 'diagnosis' ? 'rotate-180' : ''}`} 
-              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+      {/* PCOS Diagnosis Section */}
+      <div className="border border-gray-200 rounded-lg overflow-hidden">
+        <div className="px-4 py-3 bg-pink-50 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-pink-800">PCOS Diagnosis</h3>
+          {editingSection !== 'diagnosis' && (
+            <button
+              onClick={() => setEditingSection('diagnosis')}
+              className="text-pink-600 hover:text-pink-700 text-sm font-medium"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          
-          {expandedSection === 'diagnosis' && (
-            <div className="p-4 space-y-4">
+              Edit
+            </button>
+          )}
+        </div>
+        
+        <div className="p-4">
+          {editingSection === 'diagnosis' ? (
+            <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Diagnosis Status</label>
                 <div className="flex flex-wrap gap-2">
-                  {[
-                    { value: 'CONFIRMED', label: 'Confirmed' },
-                    { value: 'SUSPECTED', label: 'Suspected' },
-                    { value: 'UNSURE', label: 'Not sure' },
-                  ].map(option => (
+                  {Object.entries(DIAGNOSIS_STATUS).map(([value, label]) => (
                     <button
-                      key={option.value}
+                      key={value}
                       type="button"
-                      onClick={() => setFormData({ ...formData, diagnosisStatus: option.value })}
+                      onClick={() => setFormData({ ...formData, diagnosisStatus: value })}
                       className={`px-4 py-2 rounded-lg border-2 transition ${
-                        formData.diagnosisStatus === option.value
+                        formData.diagnosisStatus === value
                           ? 'border-pink-500 bg-pink-50 text-pink-700'
                           : 'border-gray-200 text-gray-600 hover:border-pink-300'
                       }`}
                     >
-                      {option.label}
+                      {label}
                     </button>
                   ))}
                 </div>
@@ -292,7 +336,7 @@ export default function ProfileForm() {
                     value={formData.diagnosisDate}
                     onChange={(e) => setFormData({ ...formData, diagnosisDate: e.target.value })}
                     max={new Date().toISOString().split('T')[0]}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 text-gray-900"
                   />
                 </div>
               )}
@@ -319,37 +363,67 @@ export default function ProfileForm() {
                     type="button"
                     onClick={() => setFormData({ ...formData, phenotype: '' })}
                     className={`w-full p-3 rounded-lg border-2 text-left transition ${
-                      !formData.phenotype
-                        ? 'border-gray-400 bg-gray-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                      !formData.phenotype ? 'border-gray-400 bg-gray-50' : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <div className="font-medium text-gray-600">Not sure / Not set</div>
                   </button>
                 </div>
               </div>
+              
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => handleSaveSection('diagnosis')}
+                  disabled={saving}
+                  className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 disabled:opacity-50"
+                >
+                  {saving ? 'Saving...' : 'Save'}
+                </button>
+                <button onClick={handleCancel} className="px-4 py-2 text-gray-600 hover:text-gray-800">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Status</span>
+                <span className="text-gray-900">{DIAGNOSIS_STATUS[formData.diagnosisStatus] || 'Not set'}</span>
+              </div>
+              {formData.diagnosisStatus === 'CONFIRMED' && (
+                <div className="flex justify-between py-2 border-b border-gray-100">
+                  <span className="text-gray-500">Diagnosis Date</span>
+                  <span className="text-gray-900">{formData.diagnosisDate || 'Not set'}</span>
+                </div>
+              )}
+              <div className="flex justify-between py-2">
+                <span className="text-gray-500">Phenotype</span>
+                <span className="text-gray-900">
+                  {formData.phenotype ? PHENOTYPE_INFO[formData.phenotype]?.name : 'Not set'}
+                </span>
+              </div>
             </div>
           )}
         </div>
+      </div>
 
-        {/* Concerns & Goals Section */}
-        <div className="border border-gray-200 rounded-lg overflow-hidden">
-          <button
-            type="button"
-            onClick={() => setExpandedSection(expandedSection === 'concerns' ? null : 'concerns')}
-            className="w-full px-4 py-3 bg-purple-50 flex items-center justify-between hover:bg-purple-100 transition"
-          >
-            <h3 className="text-lg font-semibold text-purple-800">Concerns & Goals</h3>
-            <svg 
-              className={`w-5 h-5 text-purple-500 transition-transform ${expandedSection === 'concerns' ? 'rotate-180' : ''}`} 
-              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+      {/* Concerns & Goals Section */}
+      <div className="border border-gray-200 rounded-lg overflow-hidden">
+        <div className="px-4 py-3 bg-purple-50 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-purple-800">Concerns & Goals</h3>
+          {editingSection !== 'concerns' && (
+            <button
+              onClick={() => setEditingSection('concerns')}
+              className="text-purple-600 hover:text-purple-700 text-sm font-medium"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          
-          {expandedSection === 'concerns' && (
-            <div className="p-4 space-y-6">
+              Edit
+            </button>
+          )}
+        </div>
+        
+        <div className="p-4">
+          {editingSection === 'concerns' ? (
+            <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Primary Concerns ({formData.primaryConcerns.length} selected)
@@ -393,19 +467,42 @@ export default function ProfileForm() {
                   ))}
                 </div>
               </div>
+              
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => handleSaveSection('concerns')}
+                  disabled={saving}
+                  className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 disabled:opacity-50"
+                >
+                  {saving ? 'Saving...' : 'Save'}
+                </button>
+                <button onClick={handleCancel} className="px-4 py-2 text-gray-600 hover:text-gray-800">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div className="py-2 border-b border-gray-100">
+                <span className="text-gray-500 block mb-1">Primary Concerns</span>
+                <span className="text-gray-900">
+                  {formData.primaryConcerns.length > 0 
+                    ? getConcernLabels(formData.primaryConcerns) 
+                    : 'None selected'}
+                </span>
+              </div>
+              <div className="py-2">
+                <span className="text-gray-500 block mb-1">Goals</span>
+                <span className="text-gray-900">
+                  {formData.goals.length > 0 
+                    ? getGoalLabels(formData.goals) 
+                    : 'None selected'}
+                </span>
+              </div>
             </div>
           )}
         </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={saving}
-          className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {saving ? 'Saving...' : 'Save Changes'}
-        </button>
-      </form>
+      </div>
     </div>
   );
 }

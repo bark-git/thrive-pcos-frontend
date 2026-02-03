@@ -116,20 +116,6 @@ export default function AccountStats() {
             : "Keep logging your mood and symptoms regularly to build up valuable health data and identify patterns."}
         </p>
       </div>
-
-      {/* Data Export Link */}
-      <div className="mt-6 p-4 bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 rounded-lg">
-        <h4 className="font-medium text-gray-900 mb-2">📥 Data Export</h4>
-        <p className="text-sm text-gray-600 mb-3">
-          Download all your health data in CSV or PDF format for your records or doctor visits.
-        </p>
-        <a
-          href="/export"
-          className="inline-block px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:from-pink-600 hover:to-purple-700 transition font-medium"
-        >
-          Go to Export →
-        </a>
-      </div>
     </div>
   );
 }

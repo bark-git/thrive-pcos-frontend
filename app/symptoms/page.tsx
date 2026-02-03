@@ -83,12 +83,16 @@ export default function SymptomsPage() {
 
             {stats.mostCommonSymptoms && stats.mostCommonSymptoms.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm p-6">
-                <p className="text-sm text-gray-600 mb-1">Most Common</p>
+                <p className="text-sm text-gray-600 mb-1">
+                  {stats.mostCommonSymptoms[0].count > 1 ? 'Most Common' : 'Recent Symptom'}
+                </p>
                 <p className="text-lg font-bold text-gray-900">
                   {stats.mostCommonSymptoms[0].symptomType.replace(/_/g, ' ')}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  {stats.mostCommonSymptoms[0].count} occurrences
+                  {stats.mostCommonSymptoms[0].count > 1 
+                    ? `${stats.mostCommonSymptoms[0].count} occurrences`
+                    : 'logged once'}
                 </p>
               </div>
             )}
