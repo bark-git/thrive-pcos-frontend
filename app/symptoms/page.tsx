@@ -6,6 +6,7 @@ import { auth, symptom } from '@/lib/api';
 import Header from '@/components/Header';
 import SymptomForm from '@/components/SymptomForm';
 import SymptomList from '@/components/SymptomList';
+import { SymptomEmptyState } from '@/components/EmptyState';
 
 export default function SymptomsPage() {
   const router = useRouter();
@@ -47,49 +48,49 @@ export default function SymptomsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
       <Header currentPage="symptoms" />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-3xl font-bold text-gray-900">Symptom Tracking</h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Symptom Tracking</h2>
           <button
-            onClick={() => setShowForm(!showForm)}
+            onClick={() => setShowForm(true)}
             className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition"
           >
-            {showForm ? 'Cancel' : '+ Log Symptom'}
+            + Log Symptom
           </button>
         </div>
 
         {/* Stats Cards */}
         {stats && stats.totalEntries > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <p className="text-sm text-gray-600 mb-1">Total Symptoms</p>
-              <p className="text-3xl font-bold text-gray-900">{stats.totalEntries}</p>
-              <p className="text-xs text-gray-500 mt-1">Last 30 days</p>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Symptoms</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalEntries}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">Last 30 days</p>
             </div>
 
             {stats.mostCommonSymptoms && stats.mostCommonSymptoms.length > 0 && (
-              <div className="bg-white rounded-xl shadow-sm p-6">
-                <p className="text-sm text-gray-600 mb-1">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
                   {stats.mostCommonSymptoms[0].count > 1 ? 'Most Common' : 'Recent Symptom'}
                 </p>
-                <p className="text-lg font-bold text-gray-900">
+                <p className="text-lg font-bold text-gray-900 dark:text-white">
                   {stats.mostCommonSymptoms[0].symptomType.replace(/_/g, ' ')}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                   {stats.mostCommonSymptoms[0].count > 1 
                     ? `${stats.mostCommonSymptoms[0].count} occurrences`
                     : 'logged once'}
@@ -98,27 +99,32 @@ export default function SymptomsPage() {
             )}
 
             {stats.mostCommonSymptoms && stats.mostCommonSymptoms.length > 0 && (
-              <div className="bg-white rounded-xl shadow-sm p-6">
-                <p className="text-sm text-gray-600 mb-1">Avg Severity</p>
-                <p className="text-3xl font-bold text-gray-900">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Avg Severity</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">
                   {stats.mostCommonSymptoms[0].averageSeverity}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">out of 5.0</p>
+                <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">out of 5.0</p>
               </div>
             )}
           </div>
         )}
 
-        {/* Symptom Form */}
-        {showForm && (
-          <div className="mb-6">
-            <SymptomForm onSymptomCreated={handleSymptomCreated} />
-          </div>
+        {/* Empty State or Symptom List */}
+        {symptoms.length === 0 ? (
+          <SymptomEmptyState onAction={() => setShowForm(true)} />
+        ) : (
+          <SymptomList symptoms={symptoms} onUpdate={loadData} />
         )}
-
-        {/* Symptom List */}
-        <SymptomList symptoms={symptoms} onUpdate={loadData} />
       </main>
+
+      {/* Symptom Form Modal */}
+      {showForm && (
+        <SymptomForm
+          onClose={() => setShowForm(false)}
+          onSubmit={handleSymptomCreated}
+        />
+      )}
     </div>
   );
 }

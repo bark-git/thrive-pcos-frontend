@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/api';
+import { useTheme } from '@/lib/ThemeContext';
 
 interface HeaderProps {
   currentPage: 'dashboard' | 'symptoms' | 'cycles' | 'medications' | 'labs' | 'profile';
@@ -11,6 +12,7 @@ interface HeaderProps {
 export default function Header({ currentPage }: HeaderProps) {
   const router = useRouter();
   const user = auth.getUser();
+  const { theme, toggleTheme } = useTheme();
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -41,14 +43,14 @@ export default function Header({ currentPage }: HeaderProps) {
   ];
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-white dark:bg-gray-800 shadow-sm dark:shadow-gray-700/30 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           {/* Logo and Nav */}
           <div className="flex items-center space-x-6">
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-pink-700">Thrive PCOS</h1>
-              {user && <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Welcome back, {user.firstName}!</p>}
+              <h1 className="text-xl sm:text-2xl font-bold text-pink-700 dark:text-pink-400">Thrive PCOS</h1>
+              {user && <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hidden sm:block">Welcome back, {user.firstName}!</p>}
             </div>
             
             {/* Desktop Nav */}
@@ -59,8 +61,8 @@ export default function Header({ currentPage }: HeaderProps) {
                   onClick={() => router.push(item.path)}
                   className={
                     currentPage === item.key
-                      ? 'text-pink-600 font-semibold'
-                      : 'text-gray-600 hover:text-pink-600 transition'
+                      ? 'text-pink-600 dark:text-pink-400 font-semibold'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition'
                   }
                 >
                   {item.label}
@@ -75,7 +77,7 @@ export default function Header({ currentPage }: HeaderProps) {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
-                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
                 aria-label="Settings"
               >
                 <svg 
@@ -100,23 +102,53 @@ export default function Header({ currentPage }: HeaderProps) {
               </button>
 
               {showDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                  {/* Dark Mode Toggle */}
+                  <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                        {theme === 'dark' ? (
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                          </svg>
+                        ) : (
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                          </svg>
+                        )}
+                        <span className="text-sm">Dark Mode</span>
+                      </div>
+                      <button
+                        onClick={toggleTheme}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${
+                          theme === 'dark' ? 'bg-pink-500' : 'bg-gray-300'
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
+                            theme === 'dark' ? 'translate-x-6' : 'translate-x-1'
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  
                   <button
                     onClick={() => {
                       setShowDropdown(false);
                       router.push('/profile');
                     }}
-                    className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                    className="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                     Profile Settings
                   </button>
-                  <hr className="my-1 border-gray-200" />
+                  <hr className="my-1 border-gray-200 dark:border-gray-700" />
                   <button
                     onClick={handleLogout}
-                    className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 flex items-center gap-2"
+                    className="w-full px-4 py-2 text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -130,7 +162,7 @@ export default function Header({ currentPage }: HeaderProps) {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="md:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"
+              className="md:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
               aria-label="Menu"
             >
               {showMobileMenu ? (
@@ -148,7 +180,7 @@ export default function Header({ currentPage }: HeaderProps) {
 
         {/* Mobile Nav */}
         {showMobileMenu && (
-          <nav className="md:hidden mt-4 pt-4 border-t border-gray-200">
+          <nav className="md:hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
             <div className="flex flex-col space-y-2">
               {navItems.map((item) => (
                 <button
@@ -159,8 +191,8 @@ export default function Header({ currentPage }: HeaderProps) {
                   }}
                   className={`text-left px-4 py-3 rounded-lg transition ${
                     currentPage === item.key
-                      ? 'bg-pink-50 text-pink-600 font-semibold'
-                      : 'text-gray-600 hover:bg-gray-50'
+                      ? 'bg-pink-50 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 font-semibold'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   {item.label}

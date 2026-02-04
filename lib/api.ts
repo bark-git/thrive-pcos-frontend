@@ -21,6 +21,32 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Handle 401 responses (session expired)
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (typeof window !== 'undefined' && error.response?.status === 401) {
+      // Check if user was logged in (has token)
+      const wasLoggedIn = localStorage.getItem('token');
+      
+      // Clear auth data
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      
+      // Set session expired flag if user was logged in
+      if (wasLoggedIn) {
+        sessionStorage.setItem('sessionExpired', 'true');
+      }
+      
+      // Redirect to login page (only if not already there)
+      if (window.location.pathname !== '/') {
+        window.location.href = '/';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export interface User {
   id: string;
   email: string;

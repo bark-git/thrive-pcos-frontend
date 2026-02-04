@@ -59,17 +59,17 @@ export default function Dashboard() {
   if (!user) return null;
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your dashboard...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading your dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
       <Header currentPage="dashboard" />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -88,8 +88,8 @@ export default function Dashboard() {
         </div>
 
         {/* Mood Chart or Empty State */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Mood Trend</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Mood Trend</h2>
           {entries.length > 0 ? (
             <MoodChart entries={entries} />
           ) : (
@@ -98,33 +98,33 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Entries */}
-        <div className="bg-white rounded-xl shadow-sm p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Recent Mood Entries</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Recent Mood Entries</h2>
             {entries.length > 0 && (
-              <a href="/mood" className="text-pink-600 hover:text-pink-700 text-sm font-medium">
+              <a href="/mood" className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 text-sm font-medium">
                 View all →
               </a>
             )}
           </div>
           
           {entries.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
               <p className="mb-2">No mood entries yet</p>
               <p className="text-sm">Your entries will appear here after you start logging.</p>
             </div>
           ) : (
             <div className="space-y-3">
               {entries.slice(0, 5).map((entry) => (
-                <div key={entry.id} className="border border-gray-100 rounded-lg p-4 hover:border-pink-200 hover:bg-pink-50/30 transition">
+                <div key={entry.id} className="border border-gray-100 dark:border-gray-700 rounded-lg p-4 hover:border-pink-200 dark:hover:border-pink-700 hover:bg-pink-50/30 dark:hover:bg-pink-900/20 transition">
                   <div className="flex justify-between items-start">
                     <div className="flex items-center gap-3">
                       <span className="text-3xl">
                         {entry.moodScore >= 4 ? '😊' : entry.moodScore >= 3 ? '😐' : '😔'}
                       </span>
                       <div>
-                        <p className="font-medium text-gray-900">Mood: {entry.moodScore}/5</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="font-medium text-gray-900 dark:text-white">Mood: {entry.moodScore}/5</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
                           {new Date(entry.date).toLocaleDateString('en-US', { 
                             weekday: 'short', 
                             month: 'short', 
@@ -135,19 +135,19 @@ export default function Dashboard() {
                     </div>
                     <div className="flex gap-2">
                       {entry.energyLevel && (
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
                           ⚡ {entry.energyLevel}
                         </span>
                       )}
                       {entry.anxietyLevel && (
-                        <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
+                        <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">
                           😰 {entry.anxietyLevel}
                         </span>
                       )}
                     </div>
                   </div>
                   {entry.notes && (
-                    <p className="text-sm text-gray-600 mt-2 pl-12">{entry.notes}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 pl-12">{entry.notes}</p>
                   )}
                 </div>
               ))}
