@@ -6,9 +6,11 @@ import { auth, mood, type MoodEntry, type MoodStats } from '@/lib/api';
 import Header from '@/components/Header';
 import MoodForm from '@/components/MoodForm';
 import MoodChart from '@/components/MoodChart';
-import StatsCards from '@/components/StatsCards';
 import CycleStatusCard from '@/components/CycleStatusCard';
 import MedicationStatusCard from '@/components/MedicationStatusCard';
+import DashboardHero from '@/components/DashboardHero';
+import QuickSymptomForm from '@/components/QuickSymptomForm';
+import { MoodEmptyState } from '@/components/EmptyState';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -17,6 +19,8 @@ export default function Dashboard() {
   const [stats, setStats] = useState<MoodStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [showMoodForm, setShowMoodForm] = useState(false);
+  const [showSymptomForm, setShowSymptomForm] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     if (!user) {
@@ -44,12 +48,18 @@ export default function Dashboard() {
   const handleMoodSubmit = async () => {
     setShowMoodForm(false);
     await loadData();
+    setRefreshKey(prev => prev + 1); // Trigger DashboardHero refresh
+  };
+
+  const handleSymptomSubmit = async () => {
+    setShowSymptomForm(false);
+    setRefreshKey(prev => prev + 1); // Trigger DashboardHero refresh
   };
 
   if (!user) return null;
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading your dashboard...</p>
@@ -59,82 +69,86 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
       <Header currentPage="dashboard" />
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Cards */}
-        {stats && <StatsCards stats={stats} />}
+        {/* Hero Section with Countdown, Phase, Quick Log, Streak */}
+        <DashboardHero 
+          key={refreshKey}
+          userName={user.firstName || 'there'}
+          onQuickLogMood={() => setShowMoodForm(true)}
+          onQuickLogSymptom={() => setShowSymptomForm(true)}
+        />
 
-        {/* Cycle & Medication Status */}
+        {/* Status Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <CycleStatusCard />
           <MedicationStatusCard />
         </div>
 
-        {/* Action Button */}
-        <div className="mb-6">
-          <button
-            onClick={() => setShowMoodForm(true)}
-            className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-pink-600 hover:to-purple-700 transition shadow-lg"
-          >
-            + Log Today's Mood
-          </button>
-        </div>
-
-        {/* Mood Chart */}
-        {entries.length > 0 && (
-          <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Mood Trend (Last 30 Days)</h2>
+        {/* Mood Chart or Empty State */}
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Mood Trend</h2>
+          {entries.length > 0 ? (
             <MoodChart entries={entries} />
-          </div>
-        )}
+          ) : (
+            <MoodEmptyState onAction={() => setShowMoodForm(true)} />
+          )}
+        </div>
 
         {/* Recent Entries */}
         <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-xl font-semibold mb-4">Recent Entries</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Recent Mood Entries</h2>
+            {entries.length > 0 && (
+              <a href="/mood" className="text-pink-600 hover:text-pink-700 text-sm font-medium">
+                View all →
+              </a>
+            )}
+          </div>
+          
           {entries.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
+            <div className="text-center py-8 text-gray-500">
               <p className="mb-2">No mood entries yet</p>
-              <p className="text-sm">Start tracking your mood to see insights!</p>
+              <p className="text-sm">Your entries will appear here after you start logging.</p>
             </div>
           ) : (
             <div className="space-y-3">
-              {entries.slice(0, 10).map((entry) => (
-                <div key={entry.id} className="border border-gray-200 rounded-lg p-4 hover:border-pink-300 transition">
+              {entries.slice(0, 5).map((entry) => (
+                <div key={entry.id} className="border border-gray-100 rounded-lg p-4 hover:border-pink-200 hover:bg-pink-50/30 transition">
                   <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="text-2xl">
-                          {entry.moodScore >= 4 ? '😊' : entry.moodScore >= 3 ? '😐' : '😔'}
-                        </span>
-                        <div>
-                          <p className="font-medium">Mood Score: {entry.moodScore}/5</p>
-                          <p className="text-sm text-gray-500">
-                            {new Date(entry.date).toLocaleDateString()}
-                          </p>
-                        </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-3xl">
+                        {entry.moodScore >= 4 ? '😊' : entry.moodScore >= 3 ? '😐' : '😔'}
+                      </span>
+                      <div>
+                        <p className="font-medium text-gray-900">Mood: {entry.moodScore}/5</p>
+                        <p className="text-sm text-gray-500">
+                          {new Date(entry.date).toLocaleDateString('en-US', { 
+                            weekday: 'short', 
+                            month: 'short', 
+                            day: 'numeric' 
+                          })}
+                        </p>
                       </div>
-                      {entry.notes && (
-                        <p className="text-sm text-gray-600 mt-2">{entry.notes}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      {entry.energyLevel && (
+                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                          ⚡ {entry.energyLevel}
+                        </span>
+                      )}
+                      {entry.anxietyLevel && (
+                        <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
+                          😰 {entry.anxietyLevel}
+                        </span>
                       )}
                     </div>
-                    {(entry.energyLevel || entry.anxietyLevel) && (
-                      <div className="flex gap-2 text-xs">
-                        {entry.energyLevel && (
-                          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded">
-                            Energy: {entry.energyLevel}
-                          </span>
-                        )}
-                        {entry.anxietyLevel && (
-                          <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded">
-                            Anxiety: {entry.anxietyLevel}
-                          </span>
-                        )}
-                      </div>
-                    )}
                   </div>
+                  {entry.notes && (
+                    <p className="text-sm text-gray-600 mt-2 pl-12">{entry.notes}</p>
+                  )}
                 </div>
               ))}
             </div>
@@ -147,6 +161,14 @@ export default function Dashboard() {
         <MoodForm
           onClose={() => setShowMoodForm(false)}
           onSubmit={handleMoodSubmit}
+        />
+      )}
+
+      {/* Quick Symptom Form Modal */}
+      {showSymptomForm && (
+        <QuickSymptomForm
+          onClose={() => setShowSymptomForm(false)}
+          onSubmit={handleSymptomSubmit}
         />
       )}
     </div>

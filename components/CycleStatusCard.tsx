@@ -63,18 +63,35 @@ export default function CycleStatusCard() {
 
   if (!stats || stats.totalCycles < 2) {
     return (
-      <div className="bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl p-6 text-white">
-        <h3 className="text-lg font-semibold mb-2">Cycle Tracking</h3>
-        <p className="text-white/80 text-sm mb-4">
-          {stats?.totalCycles === 0 
-            ? "Start tracking your cycles to see predictions"
-            : "Log at least 2 cycles to see predictions"}
-        </p>
+      <div className="bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl p-6 text-white shadow-lg">
+        <h3 className="text-lg font-semibold mb-3">Cycle Tracking</h3>
+        
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+              <span className="text-2xl">📅</span>
+            </div>
+            <div className="flex-1">
+              <p className="font-medium">
+                {stats?.totalCycles === 0 
+                  ? "Log your first period"
+                  : "Log one more period"}
+              </p>
+              <p className="text-white/70 text-sm">
+                {stats?.totalCycles === 0 
+                  ? "Start tracking to get personalized predictions"
+                  : "We need 2 cycles to predict your next period"}
+              </p>
+            </div>
+          </div>
+        </div>
+        
         <a 
           href="/cycles" 
-          className="inline-block px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition text-sm font-medium"
+          className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-white text-pink-600 rounded-xl font-medium hover:bg-pink-50 transition shadow-lg"
         >
-          Go to Cycles →
+          <span>📅</span>
+          <span>{stats?.totalCycles === 0 ? 'Log Period' : 'Add Another Period'}</span>
         </a>
       </div>
     );
