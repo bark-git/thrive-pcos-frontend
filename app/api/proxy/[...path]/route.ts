@@ -31,9 +31,7 @@ async function proxyRequest(request: NextRequest, method: string) {
     // Add /api prefix for backend
     const backendUrl = `${BACKEND_URL}/api${path}${searchParams ? `?${searchParams}` : ''}`;
 
-    console.log('Proxy request:', { method, backendUrl });
-
-    // Get headers
+    // Get headers (filter out sensitive ones)
     const headers: Record<string, string> = {};
     request.headers.forEach((value, key) => {
       if (key !== 'host' && key !== 'connection') {
@@ -41,16 +39,10 @@ async function proxyRequest(request: NextRequest, method: string) {
       }
     });
 
-    console.log('Proxy headers:', { 
-      hasAuth: !!headers['authorization'],
-      authPreview: headers['authorization']?.substring(0, 20) + '...'
-    });
-
     // Get body if present
     let body: string | undefined;
     if (method !== 'GET' && method !== 'DELETE') {
       body = await request.text();
-      console.log('Request body:', body);
     }
 
     // Make request to backend
@@ -60,8 +52,6 @@ async function proxyRequest(request: NextRequest, method: string) {
       body,
     });
 
-    console.log('Backend response:', { status: response.status, statusText: response.statusText });
-
     // Check content type to handle binary vs text responses
     const contentType = response.headers.get('Content-Type') || 'application/json';
     
@@ -70,7 +60,6 @@ async function proxyRequest(request: NextRequest, method: string) {
         contentType.includes('application/octet-stream') ||
         contentType.includes('image/')) {
       const arrayBuffer = await response.arrayBuffer();
-      console.log('Binary response size:', arrayBuffer.byteLength);
       
       return new NextResponse(arrayBuffer, {
         status: response.status,
@@ -84,7 +73,6 @@ async function proxyRequest(request: NextRequest, method: string) {
     
     // Handle text/JSON responses
     const data = await response.text();
-    console.log('Backend response data:', data.substring(0, 200));
     
     // Return response
     return new NextResponse(data, {
@@ -94,10 +82,12 @@ async function proxyRequest(request: NextRequest, method: string) {
       },
     });
   } catch (error: any) {
-    console.error('Proxy error:', error);
-    console.error('Error stack:', error.stack);
+    // Log error server-side only
+    console.error('Proxy error:', error.message);
+    
+    // Return generic error to client (no stack traces or details)
     return NextResponse.json(
-      { error: 'Proxy request failed', details: error.message, stack: error.stack },
+      { error: 'Request failed' },
       { status: 500 }
     );
   }

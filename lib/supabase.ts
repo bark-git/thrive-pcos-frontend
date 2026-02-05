@@ -1,16 +1,25 @@
 import { createClient } from '@supabase/supabase-js';
 
 // These are public keys, safe to expose in frontend
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://omfexjytievmkqurfxgr.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9tZmV4anl0aWV2bWtxdXJmeGdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU0MjkxNDcsImV4cCI6MjA1MTAwNTE0N30.jFKgmRFVpWmMJ2i-4oGVAnnRUCeHDBf8UtsujGnZ9Z4';
+// But should come from environment variables for easier key rotation
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY');
+}
+
+export const supabase = createClient(
+  supabaseUrl || '', 
+  supabaseAnonKey || '', 
+  {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true
+    }
   }
-});
+);
 
 // Social auth providers
 export type SocialProvider = 'google' | 'apple';
