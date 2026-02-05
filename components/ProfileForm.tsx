@@ -48,6 +48,7 @@ const PHENOTYPE_INFO: Record<string, { name: string; description: string }> = {
   'B': { name: 'Type B (Non-PCO)', description: 'Irregular periods + high androgens' },
   'C': { name: 'Type C (Ovulatory)', description: 'Regular periods + high androgens + polycystic ovaries' },
   'D': { name: 'Type D (Non-Hyperandrogenic)', description: 'Irregular periods + polycystic ovaries' },
+  'UNCERTAIN': { name: 'Phenotype Unclear', description: 'Discuss with your doctor for clarification' },
 };
 
 const DIAGNOSIS_STATUS: Record<string, string> = {
@@ -118,6 +119,7 @@ export default function ProfileForm() {
           dateOfBirth: formData.dateOfBirth || undefined,
           timezone: formData.timezone
         });
+        setMessage({ type: 'success', text: 'Saved! Name changes will appear in the dashboard on your next login.' });
       } else {
         // Save PCOS data
         await api.post('/auth/complete-onboarding', {
@@ -127,9 +129,8 @@ export default function ProfileForm() {
           primaryConcerns: formData.primaryConcerns,
           goals: formData.goals
         });
+        setMessage({ type: 'success', text: 'Saved successfully!' });
       }
-
-      setMessage({ type: 'success', text: 'Saved successfully!' });
       await loadProfile();
       setEditingSection(null);
     } catch (error: any) {

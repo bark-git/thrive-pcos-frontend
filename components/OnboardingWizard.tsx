@@ -124,7 +124,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
     try {
       // Log the period
       await api.post('/cycles', {
-        startDate: lastPeriodInput,
+        periodStartDate: lastPeriodInput,
         flowIntensity: 'MODERATE'
       });
 
@@ -186,6 +186,11 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
         name: 'Type D (Non-Hyperandrogenic)', 
         desc: 'Irregular cycles and polycystic ovaries without high androgens.',
         tips: ['Milder presentation', 'Cycle tracking very helpful']
+      },
+      'UNCERTAIN': {
+        name: 'Phenotype Unclear',
+        desc: 'Based on your answers, we couldn\'t determine a clear phenotype. This is common—many people don\'t fit neatly into one category.',
+        tips: ['Discuss phenotyping with your doctor', 'An ultrasound and hormone panel can help clarify', 'Tracking your symptoms will provide useful data']
       },
     };
     return info[type] || null;
@@ -424,22 +429,43 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
   };
 
   const calculatePhenotype = () => {
-    // Simple phenotype calculation based on Rotterdam criteria
+    // Phenotype calculation based on Rotterdam criteria
     // Type A: Irregular periods + High androgens + Polycystic ovaries
     // Type B: Irregular periods + High androgens (no PCO)
     // Type C: High androgens + Polycystic ovaries (regular periods)
     // Type D: Irregular periods + Polycystic ovaries (no high androgens)
     
-    const irregular = quizAnswers.q1 === 0; // "Yes, often"
-    const highAndrogens = quizAnswers.q2 === 0 || quizAnswers.q3 === 0;
-    const pco = quizAnswers.q4 === 0;
+    // More nuanced scoring:
+    // q1: 0="Yes, often", 1="Sometimes", 2="No, fairly regular"
+    // q2: 0="Yes", 1="Not sure", 2="No"
+    // q3: 0="Yes, multiple", 1="One or two mild", 2="No"
+    // q4: 0="Yes", 1="Not sure / Not tested", 2="No"
+    
+    const irregular = quizAnswers.q1 <= 1; // "Yes, often" OR "Sometimes"
+    const irregularStrong = quizAnswers.q1 === 0; // Only "Yes, often"
+    const highAndrogens = quizAnswers.q2 === 0 || quizAnswers.q3 <= 1; // Lab-confirmed OR symptoms (including mild)
+    const highAndrogensStrong = quizAnswers.q2 === 0 || quizAnswers.q3 === 0; // Lab-confirmed OR multiple symptoms
+    const pco = quizAnswers.q4 === 0; // Only "Yes"
+    const pcoUncertain = quizAnswers.q4 === 1; // "Not sure / Not tested"
 
     let phenotype = '';
-    if (irregular && highAndrogens && pco) phenotype = 'A';
+    
+    // Try to match with strong criteria first
+    if (irregularStrong && highAndrogensStrong && pco) phenotype = 'A';
+    else if (irregularStrong && highAndrogensStrong && !pco && !pcoUncertain) phenotype = 'B';
+    else if (!irregular && highAndrogensStrong && pco) phenotype = 'C';
+    else if (irregularStrong && !highAndrogens && pco) phenotype = 'D';
+    // Fallback to looser criteria
+    else if (irregular && highAndrogens && pco) phenotype = 'A';
     else if (irregular && highAndrogens && !pco) phenotype = 'B';
     else if (!irregular && highAndrogens && pco) phenotype = 'C';
     else if (irregular && !highAndrogens && pco) phenotype = 'D';
-    else phenotype = 'UNKNOWN';
+    // If still no match, make best guess based on most prominent features
+    else if (irregular && highAndrogens && pcoUncertain) phenotype = 'A'; // Likely A or B, lean toward A
+    else if (irregular && highAndrogens) phenotype = 'B'; // Irregular + androgens but no PCO info
+    else if (highAndrogens && pcoUncertain) phenotype = 'C'; // Androgens present, might have PCO
+    else if (irregular && pcoUncertain) phenotype = 'D'; // Irregular, might have PCO
+    else phenotype = 'UNCERTAIN';
 
     setData(prev => ({ ...prev, phenotype }));
     setShowPhenotypeQuiz(false);
