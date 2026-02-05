@@ -234,6 +234,54 @@ export const user = {
   }
 };
 
+// Analytics
+export interface MoodTrendData {
+  date: string;
+  moodScore: number;
+  energyLevel?: string;
+  cyclePhase?: string;
+  cycleDay?: number;
+}
+
+export interface CorrelationInsight {
+  type: 'mood' | 'symptom';
+  finding: string;
+  phase: string;
+  value: number;
+  comparison?: number;
+  confidence: 'low' | 'medium' | 'high';
+}
+
+export interface UnlockProgress {
+  unlocked: boolean;
+  current: number;
+  threshold: number;
+  remaining: number;
+  label: string;
+}
+
+export const analytics = {
+  getMoodTrends: async (days: number = 14) => {
+    const res = await api.get('/analytics/mood-trends', { params: { days } });
+    return res.data;
+  },
+
+  getCorrelations: async () => {
+    const res = await api.get('/analytics/correlations');
+    return res.data;
+  },
+
+  getInsights: async () => {
+    const res = await api.get('/analytics/insights');
+    return res.data;
+  },
+
+  getPhaseSummary: async () => {
+    const res = await api.get('/analytics/phase-summary');
+    return res.data;
+  }
+};
+
 // Data Export
 export const exportData = {
   moodCSV: async (range: string = 'all') => {

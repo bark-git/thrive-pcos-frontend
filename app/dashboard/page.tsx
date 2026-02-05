@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import { auth, mood, type MoodEntry, type MoodStats } from '@/lib/api';
 import Header from '@/components/Header';
 import MoodForm from '@/components/MoodForm';
-import MoodChart from '@/components/MoodChart';
+import MoodTrendChart from '@/components/MoodTrendChart';
+import CorrelationCards from '@/components/CorrelationCards';
+import InsightsUnlockBanner from '@/components/InsightsUnlockBanner';
 import MedicationStatusCard from '@/components/MedicationStatusCard';
 import DashboardHero from '@/components/DashboardHero';
 import QuickSymptomForm from '@/components/QuickSymptomForm';
@@ -85,14 +87,16 @@ export default function Dashboard() {
           <MedicationStatusCard />
         </div>
 
-        {/* Mood Chart or Empty State */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Mood Trend</h2>
-          {entries.length > 0 ? (
-            <MoodChart entries={entries} />
-          ) : (
-            <MoodEmptyState onAction={() => setShowMoodForm(true)} />
-          )}
+        {/* Insights Unlock Banner - shows when features are locked */}
+        <InsightsUnlockBanner key={`banner-${refreshKey}`} />
+
+        {/* Analytics Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* Mood Trend Chart with Cycle Phase */}
+          <MoodTrendChart key={`mood-${refreshKey}`} />
+          
+          {/* Correlation Cards */}
+          <CorrelationCards key={`corr-${refreshKey}`} />
         </div>
 
         {/* Recent Entries */}
