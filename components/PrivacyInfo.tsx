@@ -1,6 +1,45 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { user, auth } from '@/lib/api';
+
 export default function PrivacyInfo() {
+  const router = useRouter();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteStep, setDeleteStep] = useState(1);
+  const [confirmText, setConfirmText] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleDeleteAccount = async () => {
+    if (confirmText !== 'DELETE') {
+      setError('Please type DELETE to confirm');
+      return;
+    }
+
+    setDeleting(true);
+    setError('');
+
+    try {
+      await user.deleteAccount();
+      // Clear local storage and redirect
+      auth.logout();
+      router.push('/?deleted=true');
+    } catch (err: any) {
+      console.error('Error deleting account:', err);
+      setError(err.response?.data?.message || 'Failed to delete account. Please try again.');
+      setDeleting(false);
+    }
+  };
+
+  const resetDeleteFlow = () => {
+    setShowDeleteConfirm(false);
+    setDeleteStep(1);
+    setConfirmText('');
+    setError('');
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -132,7 +171,7 @@ export default function PrivacyInfo() {
         <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Your Rights</h4>
         <div className="space-y-3">
           <a 
-            href="#" 
+            href="/profile?tab=export" 
             className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
             <div className="flex items-center gap-3">
@@ -161,10 +200,129 @@ export default function PrivacyInfo() {
         </div>
       </div>
 
+      {/* Danger Zone */}
+      <div className="border-t border-red-200 dark:border-red-800 pt-6 mt-8">
+        <h4 className="font-semibold text-red-600 dark:text-red-400 mb-4 flex items-center gap-2">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          Danger Zone
+        </h4>
+        <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-5 border border-red-200 dark:border-red-800">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="font-medium text-gray-900 dark:text-white">Delete Account</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Permanently delete your account and all associated data. This action cannot be undone.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition whitespace-nowrap flex-shrink-0"
+            >
+              Delete Account
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Last Updated */}
       <p className="text-xs text-gray-500 dark:text-gray-500 text-center pt-4">
         Privacy policy last updated: February 2025
       </p>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full">
+            {deleteStep === 1 ? (
+              <>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">Delete Account?</h3>
+                </div>
+                
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  This will permanently delete:
+                </p>
+                <ul className="text-sm text-gray-600 dark:text-gray-400 mb-6 space-y-2">
+                  <li className="flex items-center gap-2">
+                    <span className="text-red-500">•</span> Your profile and account
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-red-500">•</span> All mood and symptom entries
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-red-500">•</span> Cycle tracking history
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-red-500">•</span> Medications and lab results
+                  </li>
+                </ul>
+
+                <p className="text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 p-3 rounded-lg mb-6">
+                  💡 Consider exporting your data first if you want to keep a copy.
+                </p>
+                
+                <div className="flex gap-3">
+                  <button
+                    onClick={resetDeleteFlow}
+                    className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => setDeleteStep(2)}
+                    className="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
+                  >
+                    Continue
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Final Confirmation</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  Type <strong className="text-red-600">DELETE</strong> to confirm account deletion:
+                </p>
+                
+                <input
+                  type="text"
+                  value={confirmText}
+                  onChange={(e) => setConfirmText(e.target.value.toUpperCase())}
+                  placeholder="Type DELETE"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white mb-4"
+                />
+
+                {error && (
+                  <p className="text-red-600 dark:text-red-400 text-sm mb-4">{error}</p>
+                )}
+                
+                <div className="flex gap-3">
+                  <button
+                    onClick={resetDeleteFlow}
+                    disabled={deleting}
+                    className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDeleteAccount}
+                    disabled={deleting || confirmText !== 'DELETE'}
+                    className="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {deleting ? 'Deleting...' : 'Delete Forever'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -10,6 +10,7 @@ import PasswordChange from '@/components/PasswordChange';
 import AccountStats from '@/components/AccountStats';
 import DataExport from '@/components/DataExport';
 import PrivacyInfo from '@/components/PrivacyInfo';
+import AccountDeletion from '@/components/AccountDeletion';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -107,6 +108,16 @@ export default function ProfilePage() {
             >
               Stats
             </button>
+            <button
+              onClick={() => setActiveTab('account')}
+              className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
+                activeTab === 'account'
+                  ? 'border-b-2 border-red-500 text-red-600 dark:text-red-400'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400'
+              }`}
+            >
+              ⚠️ Account
+            </button>
           </div>
         </div>
 
@@ -118,6 +129,7 @@ export default function ProfilePage() {
           {activeTab === 'export' && <DataExport />}
           {activeTab === 'privacy' && <PrivacyInfo />}
           {activeTab === 'stats' && <AccountStats />}
+          {activeTab === 'account' && <AccountDeletion />}
         </div>
       </main>
     </div>

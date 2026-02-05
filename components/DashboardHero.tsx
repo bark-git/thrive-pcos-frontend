@@ -14,6 +14,14 @@ interface CycleData {
   daysUntilPeriod: number;
   phase: 'menstrual' | 'follicular' | 'ovulation' | 'luteal';
   predictedPeriodDate: string | null;
+  predictedOvulation: string | null;
+  daysUntilOvulation: number | null;
+  fertileWindowStart: string | null;
+  fertileWindowEnd: string | null;
+  inFertileWindow: boolean;
+  averageCycleLength: number | null;
+  regularityPercentage: number | null;
+  totalCycles: number;
 }
 
 interface StreakData {
@@ -59,42 +67,102 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
     loadDashboardData();
   }, []);
 
+  const getDaysUntil = (dateString: string): number => {
+    const targetDate = new Date(dateString);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    targetDate.setHours(0, 0, 0, 0);
+    const diffTime = targetDate.getTime() - today.getTime();
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
   const loadDashboardData = async () => {
     try {
       // Fetch cycle stats
       const cycleRes = await api.get('/cycles/stats');
-      const cycleStats = cycleRes.data;
+      const cycleStats = cycleRes.data.stats || cycleRes.data;
       
-      // Calculate cycle data
-      if (cycleStats.lastPeriodStart) {
-        const lastPeriodDate = new Date(cycleStats.lastPeriodStart);
+      // Calculate cycle data using the stats from API
+      if (cycleStats.lastPeriodStart || cycleStats.predictedNextPeriod) {
+        const lastPeriodDate = cycleStats.lastPeriodStart ? new Date(cycleStats.lastPeriodStart) : null;
         const today = new Date();
-        const daysSinceStart = Math.floor((today.getTime() - lastPeriodDate.getTime()) / (1000 * 60 * 60 * 24));
-        const cycleDay = daysSinceStart + 1;
-        const avgCycleLength = cycleStats.averageCycleLength || 28;
-        const daysUntilPeriod = Math.max(0, avgCycleLength - daysSinceStart);
         
-        // Determine phase
+        let cycleDay = 0;
+        let daysUntilPeriod = 0;
         let phase: CycleData['phase'] = 'luteal';
-        if (cycleDay <= 5) phase = 'menstrual';
-        else if (cycleDay <= 13) phase = 'follicular';
-        else if (cycleDay <= 16) phase = 'ovulation';
+        let predictedPeriodDate: string | null = null;
         
-        // Calculate predicted period date
-        const predictedDate = new Date(lastPeriodDate);
-        predictedDate.setDate(predictedDate.getDate() + avgCycleLength);
+        if (lastPeriodDate) {
+          const daysSinceStart = Math.floor((today.getTime() - lastPeriodDate.getTime()) / (1000 * 60 * 60 * 24));
+          cycleDay = daysSinceStart + 1;
+          const avgCycleLength = cycleStats.averageCycleLength || 28;
+          daysUntilPeriod = Math.max(0, avgCycleLength - daysSinceStart);
+          
+          // Determine phase
+          if (cycleDay <= 5) phase = 'menstrual';
+          else if (cycleDay <= 13) phase = 'follicular';
+          else if (cycleDay <= 16) phase = 'ovulation';
+          
+          // Calculate predicted period date
+          const predictedDate = new Date(lastPeriodDate);
+          predictedDate.setDate(predictedDate.getDate() + avgCycleLength);
+          predictedPeriodDate = predictedDate.toISOString();
+        }
+        
+        // Use API predictions if available (more accurate)
+        if (cycleStats.predictedNextPeriod) {
+          predictedPeriodDate = cycleStats.predictedNextPeriod;
+          daysUntilPeriod = getDaysUntil(cycleStats.predictedNextPeriod);
+        }
+        
+        // Calculate ovulation info
+        let daysUntilOvulation: number | null = null;
+        let inFertileWindow = false;
+        
+        if (cycleStats.predictedOvulation) {
+          daysUntilOvulation = getDaysUntil(cycleStats.predictedOvulation);
+        }
+        
+        if (cycleStats.fertileWindowStart && cycleStats.fertileWindowEnd) {
+          const daysToFertileStart = getDaysUntil(cycleStats.fertileWindowStart);
+          const daysToFertileEnd = getDaysUntil(cycleStats.fertileWindowEnd);
+          inFertileWindow = daysToFertileStart <= 0 && daysToFertileEnd >= 0;
+        }
         
         setCycleData({
           cycleDay,
           daysUntilPeriod,
           phase,
-          predictedPeriodDate: predictedDate.toISOString()
+          predictedPeriodDate,
+          predictedOvulation: cycleStats.predictedOvulation || null,
+          daysUntilOvulation,
+          fertileWindowStart: cycleStats.fertileWindowStart || null,
+          fertileWindowEnd: cycleStats.fertileWindowEnd || null,
+          inFertileWindow,
+          averageCycleLength: cycleStats.averageCycleLength || null,
+          regularityPercentage: cycleStats.regularityPercentage || null,
+          totalCycles: cycleStats.totalCycles || 0
+        });
+      } else {
+        setCycleData({
+          cycleDay: 0,
+          daysUntilPeriod: 0,
+          phase: 'luteal',
+          predictedPeriodDate: null,
+          predictedOvulation: null,
+          daysUntilOvulation: null,
+          fertileWindowStart: null,
+          fertileWindowEnd: null,
+          inFertileWindow: false,
+          averageCycleLength: null,
+          regularityPercentage: null,
+          totalCycles: cycleStats.totalCycles || 0
         });
       }
 
       // Fetch streak data
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const todayDate = new Date();
+      todayDate.setHours(0, 0, 0, 0);
       
       const [moodRes, symptomRes] = await Promise.all([
         api.get('/mood?limit=30'),
@@ -108,18 +176,18 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
       const moodLoggedToday = moodEntries.some((m: any) => {
         const entryDate = new Date(m.date);
         entryDate.setHours(0, 0, 0, 0);
-        return entryDate.getTime() === today.getTime();
+        return entryDate.getTime() === todayDate.getTime();
       });
       
       const symptomLoggedToday = symptoms.some((s: any) => {
         const entryDate = new Date(s.date);
         entryDate.setHours(0, 0, 0, 0);
-        return entryDate.getTime() === today.getTime();
+        return entryDate.getTime() === todayDate.getTime();
       });
       
       // Calculate streak from mood entries
       let streak = 0;
-      const checkDate = new Date(today);
+      const checkDate = new Date(todayDate);
       
       // If logged today, start counting from today
       if (moodLoggedToday) {
@@ -183,7 +251,8 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
     );
   }
 
-  const phaseConfig = cycleData ? PHASE_CONFIG[cycleData.phase] : null;
+  const phaseConfig = cycleData && cycleData.totalCycles >= 1 ? PHASE_CONFIG[cycleData.phase] : null;
+  const hasSufficientData = cycleData && cycleData.totalCycles >= 2;
 
   return (
     <div className="bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl p-6 mb-6 text-white shadow-xl shadow-pink-500/20">
@@ -213,31 +282,38 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
       </div>
 
       {/* Status Cards Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
         {/* Period Countdown */}
         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/15 transition-colors">
-          <p className="text-pink-100 text-sm mb-1">Period in</p>
-          {cycleData ? (
+          <p className="text-pink-100 text-xs uppercase tracking-wide mb-1">Next Period</p>
+          {hasSufficientData && cycleData.predictedPeriodDate ? (
             <>
-              <p className="text-3xl font-bold">
-                {cycleData.daysUntilPeriod === 0 ? 'Today!' : `${cycleData.daysUntilPeriod} days`}
+              <p className="text-2xl sm:text-3xl font-bold">
+                {cycleData.daysUntilPeriod <= 0 ? (
+                  <span className="text-yellow-300">Due!</span>
+                ) : (
+                  `${cycleData.daysUntilPeriod}d`
+                )}
               </p>
-              {cycleData.predictedPeriodDate && (
-                <p className="text-xs text-pink-100 mt-1">
-                  ~{formatPredictedDate(cycleData.predictedPeriodDate)}
-                </p>
-              )}
+              <p className="text-xs text-pink-100 mt-1">
+                {cycleData.daysUntilPeriod <= 0 
+                  ? 'Expected now' 
+                  : formatPredictedDate(cycleData.predictedPeriodDate)}
+              </p>
             </>
           ) : (
-            <p className="text-lg">Log periods to see</p>
+            <>
+              <p className="text-lg font-medium">--</p>
+              <p className="text-xs text-pink-100">Need 2+ cycles</p>
+            </>
           )}
         </div>
 
         {/* Cycle Day */}
         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/15 transition-colors">
-          <p className="text-pink-100 text-sm mb-1">Cycle Day</p>
-          {cycleData ? (
-            <p className="text-3xl font-bold">Day {cycleData.cycleDay}</p>
+          <p className="text-pink-100 text-xs uppercase tracking-wide mb-1">Cycle Day</p>
+          {cycleData && cycleData.totalCycles >= 1 ? (
+            <p className="text-2xl sm:text-3xl font-bold">Day {cycleData.cycleDay}</p>
           ) : (
             <p className="text-lg">--</p>
           )}
@@ -245,23 +321,49 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
 
         {/* Cycle Phase */}
         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/15 transition-colors">
-          <p className="text-pink-100 text-sm mb-1">Phase</p>
+          <p className="text-pink-100 text-xs uppercase tracking-wide mb-1">Phase</p>
           {phaseConfig ? (
             <div className="flex items-center gap-2">
               <span className="text-2xl">{phaseConfig.icon}</span>
-              <div>
-                <p className="font-bold">{phaseConfig.name}</p>
-              </div>
+              <p className="font-bold">{phaseConfig.name}</p>
             </div>
           ) : (
             <p className="text-lg">--</p>
           )}
         </div>
 
-        {/* Today's Status */}
+        {/* Ovulation */}
         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/15 transition-colors">
-          <p className="text-pink-100 text-sm mb-1">Today</p>
-          <div className="flex items-center gap-2">
+          <p className="text-pink-100 text-xs uppercase tracking-wide mb-1">Ovulation</p>
+          {hasSufficientData && cycleData.daysUntilOvulation !== null ? (
+            <>
+              <p className="text-2xl sm:text-3xl font-bold">
+                {cycleData.daysUntilOvulation < 0 ? (
+                  <span className="text-white/50">Passed</span>
+                ) : cycleData.daysUntilOvulation === 0 ? (
+                  <span className="text-teal-300">Today</span>
+                ) : (
+                  `${cycleData.daysUntilOvulation}d`
+                )}
+              </p>
+              {cycleData.predictedOvulation && cycleData.daysUntilOvulation >= 0 && (
+                <p className="text-xs text-pink-100">
+                  {formatPredictedDate(cycleData.predictedOvulation)}
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              <p className="text-lg font-medium">--</p>
+              <p className="text-xs text-pink-100">Need 2+ cycles</p>
+            </>
+          )}
+        </div>
+
+        {/* Today's Status */}
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/15 transition-colors col-span-2 sm:col-span-1">
+          <p className="text-pink-100 text-xs uppercase tracking-wide mb-1">Today</p>
+          <div className="flex items-center gap-2 flex-wrap">
             {streakData?.moodLoggedToday && (
               <span className="bg-green-400/30 text-white text-xs px-2 py-1 rounded-full">
                 ✓ Mood
@@ -273,11 +375,24 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
               </span>
             )}
             {!streakData?.loggedToday && (
-              <span className="text-pink-100">Nothing logged yet</span>
+              <span className="text-pink-100 text-sm">Nothing logged yet</span>
             )}
           </div>
         </div>
       </div>
+
+      {/* Fertile Window Indicator */}
+      {cycleData?.inFertileWindow && (
+        <div className="bg-teal-500/30 border border-teal-400/50 rounded-lg px-4 py-3 mb-4 flex items-center gap-2">
+          <span className="w-2 h-2 bg-teal-400 rounded-full animate-pulse"></span>
+          <span className="text-sm font-medium">🌸 Fertile window active</span>
+          {cycleData.fertileWindowStart && cycleData.fertileWindowEnd && (
+            <span className="text-sm text-teal-100 ml-2">
+              ({formatPredictedDate(cycleData.fertileWindowStart)} - {formatPredictedDate(cycleData.fertileWindowEnd)})
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Phase Tip */}
       {phaseConfig && (
@@ -286,6 +401,17 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
             <span className="font-medium">💡 {phaseConfig.name} phase tip:</span>{' '}
             <span className="text-pink-100">{phaseConfig.tip}</span>
           </p>
+        </div>
+      )}
+
+      {/* Cycle Stats Footer */}
+      {hasSufficientData && (
+        <div className="flex items-center justify-between text-sm text-white/70 mb-4 px-1">
+          <span>Avg cycle: {cycleData.averageCycleLength} days</span>
+          <span>{cycleData.regularityPercentage}% regular</span>
+          <a href="/cycles" className="text-white hover:text-pink-200 transition">
+            View Details →
+          </a>
         </div>
       )}
 

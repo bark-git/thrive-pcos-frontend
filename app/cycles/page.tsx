@@ -110,14 +110,14 @@ export default function CyclesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-pink-50 to-purple-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Header currentPage="cycles" />
 
       {/* Main Content */}
@@ -125,8 +125,8 @@ export default function CyclesPage() {
         {/* Page Title */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Cycle Tracking</h2>
-            <p className="text-gray-600 mt-1">Track your menstrual cycles and predict patterns</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Cycle Tracking</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">Track your menstrual cycles and predict patterns</p>
           </div>
           <button
             onClick={() => {
@@ -143,48 +143,48 @@ export default function CyclesPage() {
         {/* Stats Cards */}
         {stats && stats.totalCycles >= 2 ? (
           <>
-            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 sm:p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xl sm:text-2xl">📊</span>
-                <span className="text-xs sm:text-sm text-gray-500">Average</span>
+                <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Average</span>
               </div>
-              <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.averageCycleLength}</p>
-              <p className="text-xs sm:text-sm text-gray-600">Days per cycle</p>
+              <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{stats.averageCycleLength}</p>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Days per cycle</p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 sm:p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xl sm:text-2xl">📅</span>
-                <span className="text-xs sm:text-sm text-gray-500">Regularity</span>
+                <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Regularity</span>
               </div>
-              <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.regularityPercentage}%</p>
-              <p className="text-xs sm:text-sm text-gray-600">
+              <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{stats.regularityPercentage}%</p>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                 {stats.regularityPercentage! >= 70 ? 'Regular' : 'Irregular'}
               </p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 sm:p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xl sm:text-2xl">🔮</span>
-                <span className="text-xs sm:text-sm text-gray-500">Next Period</span>
+                <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Next Period</span>
               </div>
-              <p className="text-base sm:text-lg font-bold text-gray-900">
+              <p className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
                 {stats.predictedNextPeriod ? new Date(stats.predictedNextPeriod).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A'}
               </p>
-              <p className="text-xs sm:text-sm text-gray-600">Expected</p>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Expected</p>
             </div>
 
-            <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl shadow-sm p-4 sm:p-6 border border-pink-200">
+            <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/30 dark:to-purple-900/30 rounded-xl shadow-sm p-4 sm:p-6 border border-pink-200 dark:border-pink-800">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xl sm:text-2xl">🌸</span>
-                <span className="text-xs sm:text-sm text-purple-600">Fertile Window</span>
+                <span className="text-xs sm:text-sm text-purple-600 dark:text-purple-400">Fertile Window</span>
               </div>
               {stats.predictedOvulation ? (
                 <>
-                  <p className="text-base sm:text-lg font-bold text-gray-900">
+                  <p className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
                     {new Date(stats.predictedOvulation).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </p>
-                  <p className="text-xs sm:text-sm text-purple-700">
+                  <p className="text-xs sm:text-sm text-purple-700 dark:text-purple-300">
                     Ovulation ~{stats.fertileWindowStart && stats.fertileWindowEnd 
                       ? `${new Date(stats.fertileWindowStart).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(stats.fertileWindowEnd).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
                       : 'calculating...'}
@@ -192,15 +192,15 @@ export default function CyclesPage() {
                 </>
               ) : (
                 <>
-                  <p className="text-lg font-bold text-gray-500">-</p>
-                  <p className="text-xs sm:text-sm text-gray-500">Need more data</p>
+                  <p className="text-lg font-bold text-gray-500 dark:text-gray-400">-</p>
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Need more data</p>
                 </>
               )}
             </div>
           </>
         ) : (
-          <div className="col-span-2 lg:col-span-4 bg-white rounded-xl shadow-sm p-6 text-center">
-            <p className="text-gray-600">{stats?.message || 'Track at least 2 cycles to see statistics'}</p>
+          <div className="col-span-2 lg:col-span-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 text-center">
+            <p className="text-gray-600 dark:text-gray-400">{stats?.message || 'Track at least 2 cycles to see statistics'}</p>
           </div>
         )}
         </div>
@@ -218,27 +218,27 @@ export default function CyclesPage() {
 
         {/* Cycle List */}
         <div className="mt-6">
-          <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Cycle History</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Cycle History</h2>
           
           {cycles.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
               <p>No cycles logged yet. Click "Log Period" to get started!</p>
             </div>
           ) : (
             <div className="space-y-4">
               {cycles.map((cycle) => (
-                <div key={cycle.id} className="border-2 border-gray-200 rounded-lg p-4 hover:border-pink-300 transition">
+                <div key={cycle.id} className="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-pink-300 dark:hover:border-pink-600 transition">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <span className="text-2xl">🩸</span>
                         <div>
-                          <p className="font-medium text-gray-900">
+                          <p className="font-medium text-gray-900 dark:text-white">
                             {new Date(cycle.periodStartDate).toLocaleDateString()}
                             {cycle.periodEndDate && ` - ${new Date(cycle.periodEndDate).toLocaleDateString()}`}
                           </p>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
                             {cycle.flowIntensity && `Flow: ${cycle.flowIntensity}`}
                           </p>
                         </div>
@@ -248,27 +248,27 @@ export default function CyclesPage() {
                         <div className="flex gap-3 mt-2 flex-wrap">
                           {cycle.cramps !== null && (
                             <div className="text-sm">
-                              <span className="text-gray-600">Cramps:</span>
-                              <span className="ml-1 font-medium text-gray-900">{cycle.cramps}/5</span>
+                              <span className="text-gray-600 dark:text-gray-400">Cramps:</span>
+                              <span className="ml-1 font-medium text-gray-900 dark:text-white">{cycle.cramps}/5</span>
                             </div>
                           )}
                           {cycle.bloating !== null && (
                             <div className="text-sm">
-                              <span className="text-gray-600">Bloating:</span>
-                              <span className="ml-1 font-medium text-gray-900">{cycle.bloating}/5</span>
+                              <span className="text-gray-600 dark:text-gray-400">Bloating:</span>
+                              <span className="ml-1 font-medium text-gray-900 dark:text-white">{cycle.bloating}/5</span>
                             </div>
                           )}
                           {cycle.moodSwings !== null && (
                             <div className="text-sm">
-                              <span className="text-gray-600">Mood Swings:</span>
-                              <span className="ml-1 font-medium text-gray-900">{cycle.moodSwings}/5</span>
+                              <span className="text-gray-600 dark:text-gray-400">Mood Swings:</span>
+                              <span className="ml-1 font-medium text-gray-900 dark:text-white">{cycle.moodSwings}/5</span>
                             </div>
                           )}
                         </div>
                       )}
                       
                       {cycle.notes && (
-                        <p className="text-sm text-gray-600 mt-2 italic">"{cycle.notes}"</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 italic">"{cycle.notes}"</p>
                       )}
                     </div>
                     
@@ -276,7 +276,7 @@ export default function CyclesPage() {
                     <div className="flex gap-2 ml-4">
                       <button
                         onClick={() => handleEdit(cycle)}
-                        className="p-2 text-gray-500 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition"
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400 hover:bg-pink-50 dark:hover:bg-pink-900/30 rounded-lg transition"
                         title="Edit"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -285,7 +285,7 @@ export default function CyclesPage() {
                       </button>
                       <button
                         onClick={() => setDeletingCycle(cycle)}
-                        className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition"
                         title="Delete"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -313,18 +313,18 @@ export default function CyclesPage() {
 
       {/* Delete Confirmation Modal */}
       {deletingCycle && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Delete Cycle Entry?</h3>
-            <p className="text-gray-600 mb-6">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Delete Cycle Entry?</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
               Are you sure you want to delete the cycle entry from{' '}
-              <strong>{new Date(deletingCycle.periodStartDate).toLocaleDateString()}</strong>?
+              <strong className="text-gray-900 dark:text-white">{new Date(deletingCycle.periodStartDate).toLocaleDateString()}</strong>?
               This action cannot be undone.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeletingCycle(null)}
-                className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
+                className="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium"
               >
                 Cancel
               </button>

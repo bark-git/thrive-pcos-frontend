@@ -6,7 +6,6 @@ import { auth, mood, type MoodEntry, type MoodStats } from '@/lib/api';
 import Header from '@/components/Header';
 import MoodForm from '@/components/MoodForm';
 import MoodChart from '@/components/MoodChart';
-import CycleStatusCard from '@/components/CycleStatusCard';
 import MedicationStatusCard from '@/components/MedicationStatusCard';
 import DashboardHero from '@/components/DashboardHero';
 import QuickSymptomForm from '@/components/QuickSymptomForm';
@@ -81,9 +80,8 @@ export default function Dashboard() {
           onQuickLogSymptom={() => setShowSymptomForm(true)}
         />
 
-        {/* Status Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <CycleStatusCard />
+        {/* Status Card - Medications */}
+        <div className="mb-6">
           <MedicationStatusCard />
         </div>
 

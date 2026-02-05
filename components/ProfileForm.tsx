@@ -5,6 +5,20 @@ import { user } from '@/lib/api';
 import api from '@/lib/api';
 import { format } from 'date-fns';
 
+const TIMEZONES = [
+  { value: 'Pacific/Auckland', label: 'Auckland (NZDT)' },
+  { value: 'Australia/Sydney', label: 'Sydney (AEDT)' },
+  { value: 'Asia/Tokyo', label: 'Tokyo (JST)' },
+  { value: 'Asia/Singapore', label: 'Singapore (SGT)' },
+  { value: 'Europe/London', label: 'London (GMT/BST)' },
+  { value: 'Europe/Paris', label: 'Paris (CET)' },
+  { value: 'America/New_York', label: 'New York (EST)' },
+  { value: 'America/Chicago', label: 'Chicago (CST)' },
+  { value: 'America/Denver', label: 'Denver (MST)' },
+  { value: 'America/Los_Angeles', label: 'Los Angeles (PST)' },
+  { value: 'UTC', label: 'UTC' },
+];
+
 const PRIMARY_CONCERNS = [
   { id: 'irregular_periods', label: 'Irregular periods' },
   { id: 'fertility', label: 'Fertility / TTC' },
@@ -53,8 +67,8 @@ export default function ProfileForm() {
     firstName: '',
     lastName: '',
     dateOfBirth: '',
+    timezone: 'UTC',
     diagnosisDate: '',
-    timezone: '',
     diagnosisStatus: '',
     phenotype: '',
     primaryConcerns: [] as string[],
@@ -75,10 +89,10 @@ export default function ProfileForm() {
         dateOfBirth: profileData.dateOfBirth 
           ? format(new Date(profileData.dateOfBirth), 'yyyy-MM-dd') 
           : '',
+        timezone: profileData.timezone || 'UTC',
         diagnosisDate: profileData.profile?.diagnosisDate 
           ? format(new Date(profileData.profile.diagnosisDate), 'yyyy-MM-dd') 
           : '',
-        timezone: profileData.timezone || '',
         diagnosisStatus: profileData.profile?.diagnosisStatus || 'UNSURE',
         phenotype: profileData.profile?.phenotype || '',
         primaryConcerns: profileData.profile?.primaryConcerns || [],
@@ -102,7 +116,7 @@ export default function ProfileForm() {
           firstName: formData.firstName,
           lastName: formData.lastName,
           dateOfBirth: formData.dateOfBirth || undefined,
-          timezone: formData.timezone || undefined
+          timezone: formData.timezone
         });
       } else {
         // Save PCOS data
@@ -127,13 +141,12 @@ export default function ProfileForm() {
   };
 
   const handleCancel = () => {
-    // Reset form data to current profile
     setFormData({
       firstName: profile?.firstName || '',
       lastName: profile?.lastName || '',
       dateOfBirth: profile?.dateOfBirth ? format(new Date(profile.dateOfBirth), 'yyyy-MM-dd') : '',
+      timezone: profile?.timezone || 'UTC',
       diagnosisDate: profile?.profile?.diagnosisDate ? format(new Date(profile.profile.diagnosisDate), 'yyyy-MM-dd') : '',
-      timezone: profile?.timezone || '',
       diagnosisStatus: profile?.profile?.diagnosisStatus || 'UNSURE',
       phenotype: profile?.profile?.phenotype || '',
       primaryConcerns: profile?.profile?.primaryConcerns || [],
@@ -173,7 +186,7 @@ export default function ProfileForm() {
     return (
       <div className="text-center py-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mx-auto"></div>
-        <p className="mt-2 text-gray-600">Loading profile...</p>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">Loading profile...</p>
       </div>
     );
   }
@@ -183,78 +196,77 @@ export default function ProfileForm() {
       {message.text && (
         <div className={`p-3 rounded-lg ${
           message.type === 'success' 
-            ? 'bg-green-50 border border-green-200 text-green-700'
-            : 'bg-red-50 border border-red-200 text-red-700'
+            ? 'bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400'
+            : 'bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'
         }`}>
           {message.text}
         </div>
       )}
 
       {/* Personal Information Section */}
-      <div className="border border-gray-200 rounded-lg overflow-hidden">
-        <div className="px-4 py-3 bg-gray-50 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
+      <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+        <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Personal Information</h3>
           {editingSection !== 'personal' && (
             <button
               onClick={() => setEditingSection('personal')}
-              className="text-pink-600 hover:text-pink-700 text-sm font-medium"
+              className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 text-sm font-medium"
             >
               Edit
             </button>
           )}
         </div>
         
-        <div className="p-4">
+        <div className="p-4 bg-white dark:bg-gray-800">
           {editingSection === 'personal' ? (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">First Name *</label>
                   <input
                     type="text"
                     value={formData.firstName}
                     onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Last Name</label>
                   <input
                     type="text"
                     value={formData.lastName}
                     onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
+              
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date of Birth</label>
                   <input
                     type="date"
                     value={formData.dateOfBirth}
                     onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+                    max={new Date().toISOString().split('T')[0]}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Timezone</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Timezone</label>
                   <select
                     value={formData.timezone}
                     onChange={(e) => setFormData({ ...formData, timezone: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
-                    <option value="">Select...</option>
-                    <option value="America/New_York">Eastern Time</option>
-                    <option value="America/Chicago">Central Time</option>
-                    <option value="America/Denver">Mountain Time</option>
-                    <option value="America/Los_Angeles">Pacific Time</option>
-                    <option value="Europe/London">London (GMT)</option>
-                    <option value="Australia/Sydney">Sydney</option>
+                    {TIMEZONES.map(tz => (
+                      <option key={tz.value} value={tz.value}>{tz.label}</option>
+                    ))}
                   </select>
                 </div>
               </div>
+              
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={() => handleSaveSection('personal')}
@@ -263,28 +275,30 @@ export default function ProfileForm() {
                 >
                   {saving ? 'Saving...' : 'Save'}
                 </button>
-                <button onClick={handleCancel} className="px-4 py-2 text-gray-600 hover:text-gray-800">
+                <button onClick={handleCancel} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
                   Cancel
                 </button>
               </div>
             </div>
           ) : (
             <div className="space-y-3">
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-gray-500">Email</span>
-                <span className="text-gray-900">{profile?.email}</span>
+              <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                <span className="text-gray-500 dark:text-gray-400">Email</span>
+                <span className="text-gray-900 dark:text-white">{profile?.email}</span>
               </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-gray-500">Name</span>
-                <span className="text-gray-900">{formData.firstName} {formData.lastName}</span>
+              <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                <span className="text-gray-500 dark:text-gray-400">Name</span>
+                <span className="text-gray-900 dark:text-white">{formData.firstName} {formData.lastName}</span>
               </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-gray-500">Date of Birth</span>
-                <span className="text-gray-900">{formData.dateOfBirth || 'Not set'}</span>
+              <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                <span className="text-gray-500 dark:text-gray-400">Date of Birth</span>
+                <span className="text-gray-900 dark:text-white">{formData.dateOfBirth || 'Not set'}</span>
               </div>
               <div className="flex justify-between py-2">
-                <span className="text-gray-500">Timezone</span>
-                <span className="text-gray-900">{formData.timezone || 'Not set'}</span>
+                <span className="text-gray-500 dark:text-gray-400">Timezone</span>
+                <span className="text-gray-900 dark:text-white">
+                  {TIMEZONES.find(tz => tz.value === formData.timezone)?.label || formData.timezone}
+                </span>
               </div>
             </div>
           )}
@@ -292,24 +306,24 @@ export default function ProfileForm() {
       </div>
 
       {/* PCOS Diagnosis Section */}
-      <div className="border border-gray-200 rounded-lg overflow-hidden">
-        <div className="px-4 py-3 bg-pink-50 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-pink-800">PCOS Diagnosis</h3>
+      <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+        <div className="px-4 py-3 bg-pink-50 dark:bg-pink-900/30 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-pink-800 dark:text-pink-300">PCOS Diagnosis</h3>
           {editingSection !== 'diagnosis' && (
             <button
               onClick={() => setEditingSection('diagnosis')}
-              className="text-pink-600 hover:text-pink-700 text-sm font-medium"
+              className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 text-sm font-medium"
             >
               Edit
             </button>
           )}
         </div>
         
-        <div className="p-4">
+        <div className="p-4 bg-white dark:bg-gray-800">
           {editingSection === 'diagnosis' ? (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Diagnosis Status</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Diagnosis Status</label>
                 <div className="flex flex-wrap gap-2">
                   {Object.entries(DIAGNOSIS_STATUS).map(([value, label]) => (
                     <button
@@ -318,8 +332,8 @@ export default function ProfileForm() {
                       onClick={() => setFormData({ ...formData, diagnosisStatus: value })}
                       className={`px-4 py-2 rounded-lg border-2 transition ${
                         formData.diagnosisStatus === value
-                          ? 'border-pink-500 bg-pink-50 text-pink-700'
-                          : 'border-gray-200 text-gray-600 hover:border-pink-300'
+                          ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300'
+                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-pink-300'
                       }`}
                     >
                       {label}
@@ -330,19 +344,19 @@ export default function ProfileForm() {
 
               {formData.diagnosisStatus === 'CONFIRMED' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Diagnosis Date</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Diagnosis Date</label>
                   <input
                     type="date"
                     value={formData.diagnosisDate}
                     onChange={(e) => setFormData({ ...formData, diagnosisDate: e.target.value })}
                     max={new Date().toISOString().split('T')[0]}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">PCOS Phenotype</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">PCOS Phenotype</label>
                 <div className="space-y-2">
                   {Object.entries(PHENOTYPE_INFO).map(([key, info]) => (
                     <button
@@ -351,22 +365,22 @@ export default function ProfileForm() {
                       onClick={() => setFormData({ ...formData, phenotype: key })}
                       className={`w-full p-3 rounded-lg border-2 text-left transition ${
                         formData.phenotype === key
-                          ? 'border-purple-500 bg-purple-50'
-                          : 'border-gray-200 hover:border-purple-300'
+                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30'
+                          : 'border-gray-200 dark:border-gray-600 hover:border-purple-300'
                       }`}
                     >
-                      <div className="font-medium text-gray-900">{info.name}</div>
-                      <div className="text-sm text-gray-500">{info.description}</div>
+                      <div className="font-medium text-gray-900 dark:text-white">{info.name}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">{info.description}</div>
                     </button>
                   ))}
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, phenotype: '' })}
                     className={`w-full p-3 rounded-lg border-2 text-left transition ${
-                      !formData.phenotype ? 'border-gray-400 bg-gray-50' : 'border-gray-200 hover:border-gray-300'
+                      !formData.phenotype ? 'border-gray-400 bg-gray-50 dark:bg-gray-700' : 'border-gray-200 dark:border-gray-600 hover:border-gray-300'
                     }`}
                   >
-                    <div className="font-medium text-gray-600">Not sure / Not set</div>
+                    <div className="font-medium text-gray-600 dark:text-gray-400">Not sure / Not set</div>
                   </button>
                 </div>
               </div>
@@ -379,26 +393,26 @@ export default function ProfileForm() {
                 >
                   {saving ? 'Saving...' : 'Save'}
                 </button>
-                <button onClick={handleCancel} className="px-4 py-2 text-gray-600 hover:text-gray-800">
+                <button onClick={handleCancel} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
                   Cancel
                 </button>
               </div>
             </div>
           ) : (
             <div className="space-y-3">
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-gray-500">Status</span>
-                <span className="text-gray-900">{DIAGNOSIS_STATUS[formData.diagnosisStatus] || 'Not set'}</span>
+              <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                <span className="text-gray-500 dark:text-gray-400">Status</span>
+                <span className="text-gray-900 dark:text-white">{DIAGNOSIS_STATUS[formData.diagnosisStatus] || 'Not set'}</span>
               </div>
               {formData.diagnosisStatus === 'CONFIRMED' && (
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-gray-500">Diagnosis Date</span>
-                  <span className="text-gray-900">{formData.diagnosisDate || 'Not set'}</span>
+                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <span className="text-gray-500 dark:text-gray-400">Diagnosis Date</span>
+                  <span className="text-gray-900 dark:text-white">{formData.diagnosisDate || 'Not set'}</span>
                 </div>
               )}
               <div className="flex justify-between py-2">
-                <span className="text-gray-500">Phenotype</span>
-                <span className="text-gray-900">
+                <span className="text-gray-500 dark:text-gray-400">Phenotype</span>
+                <span className="text-gray-900 dark:text-white">
                   {formData.phenotype ? PHENOTYPE_INFO[formData.phenotype]?.name : 'Not set'}
                 </span>
               </div>
@@ -408,24 +422,24 @@ export default function ProfileForm() {
       </div>
 
       {/* Concerns & Goals Section */}
-      <div className="border border-gray-200 rounded-lg overflow-hidden">
-        <div className="px-4 py-3 bg-purple-50 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-purple-800">Concerns & Goals</h3>
+      <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+        <div className="px-4 py-3 bg-purple-50 dark:bg-purple-900/30 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-purple-800 dark:text-purple-300">Concerns & Goals</h3>
           {editingSection !== 'concerns' && (
             <button
               onClick={() => setEditingSection('concerns')}
-              className="text-purple-600 hover:text-purple-700 text-sm font-medium"
+              className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-medium"
             >
               Edit
             </button>
           )}
         </div>
         
-        <div className="p-4">
+        <div className="p-4 bg-white dark:bg-gray-800">
           {editingSection === 'concerns' ? (
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                   Primary Concerns ({formData.primaryConcerns.length} selected)
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -436,8 +450,8 @@ export default function ProfileForm() {
                       onClick={() => toggleConcern(concern.id)}
                       className={`px-3 py-2 rounded-lg border-2 text-sm transition ${
                         formData.primaryConcerns.includes(concern.id)
-                          ? 'border-pink-500 bg-pink-50 text-pink-700'
-                          : 'border-gray-200 text-gray-600 hover:border-pink-300'
+                          ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300'
+                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-pink-300'
                       }`}
                     >
                       {concern.label}
@@ -447,7 +461,7 @@ export default function ProfileForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                   Goals ({formData.goals.length} selected)
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -458,8 +472,8 @@ export default function ProfileForm() {
                       onClick={() => toggleGoal(goal.id)}
                       className={`px-3 py-2 rounded-lg border-2 text-sm transition ${
                         formData.goals.includes(goal.id)
-                          ? 'border-purple-500 bg-purple-50 text-purple-700'
-                          : 'border-gray-200 text-gray-600 hover:border-purple-300'
+                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-purple-300'
                       }`}
                     >
                       {goal.label}
@@ -476,24 +490,24 @@ export default function ProfileForm() {
                 >
                   {saving ? 'Saving...' : 'Save'}
                 </button>
-                <button onClick={handleCancel} className="px-4 py-2 text-gray-600 hover:text-gray-800">
+                <button onClick={handleCancel} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
                   Cancel
                 </button>
               </div>
             </div>
           ) : (
             <div className="space-y-3">
-              <div className="py-2 border-b border-gray-100">
-                <span className="text-gray-500 block mb-1">Primary Concerns</span>
-                <span className="text-gray-900">
+              <div className="py-2 border-b border-gray-100 dark:border-gray-700">
+                <span className="text-gray-500 dark:text-gray-400 block mb-1">Primary Concerns</span>
+                <span className="text-gray-900 dark:text-white">
                   {formData.primaryConcerns.length > 0 
                     ? getConcernLabels(formData.primaryConcerns) 
                     : 'None selected'}
                 </span>
               </div>
               <div className="py-2">
-                <span className="text-gray-500 block mb-1">Goals</span>
-                <span className="text-gray-900">
+                <span className="text-gray-500 dark:text-gray-400 block mb-1">Goals</span>
+                <span className="text-gray-900 dark:text-white">
                   {formData.goals.length > 0 
                     ? getGoalLabels(formData.goals) 
                     : 'None selected'}

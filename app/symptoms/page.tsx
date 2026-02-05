@@ -8,10 +8,21 @@ import SymptomForm from '@/components/SymptomForm';
 import SymptomList from '@/components/SymptomList';
 import { SymptomEmptyState } from '@/components/EmptyState';
 
+interface Symptom {
+  id: string;
+  symptomType: string;
+  severity: number;
+  location?: string;
+  notes?: string;
+  otherSymptom?: string;
+  date: string;
+}
+
 export default function SymptomsPage() {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
-  const [symptoms, setSymptoms] = useState<any[]>([]);
+  const [editingSymptom, setEditingSymptom] = useState<Symptom | null>(null);
+  const [symptoms, setSymptoms] = useState<Symptom[]>([]);
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -43,7 +54,18 @@ export default function SymptomsPage() {
 
   const handleSymptomCreated = () => {
     setShowForm(false);
+    setEditingSymptom(null);
     loadData();
+  };
+
+  const handleEdit = (symptomToEdit: Symptom) => {
+    setEditingSymptom(symptomToEdit);
+    setShowForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+    setEditingSymptom(null);
   };
 
   if (loading) {
@@ -66,7 +88,10 @@ export default function SymptomsPage() {
         <div className="mb-6 flex justify-between items-center">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Symptom Tracking</h2>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => {
+              setEditingSymptom(null);
+              setShowForm(true);
+            }}
             className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition"
           >
             + Log Symptom
@@ -114,15 +139,16 @@ export default function SymptomsPage() {
         {symptoms.length === 0 ? (
           <SymptomEmptyState onAction={() => setShowForm(true)} />
         ) : (
-          <SymptomList symptoms={symptoms} onUpdate={loadData} />
+          <SymptomList symptoms={symptoms} onUpdate={loadData} onEdit={handleEdit} />
         )}
       </main>
 
       {/* Symptom Form Modal */}
       {showForm && (
         <SymptomForm
-          onClose={() => setShowForm(false)}
+          onClose={handleCloseForm}
           onSubmit={handleSymptomCreated}
+          editSymptom={editingSymptom}
         />
       )}
     </div>

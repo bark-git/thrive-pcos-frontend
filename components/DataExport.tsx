@@ -65,21 +65,21 @@ export default function DataExport() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6">
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">Export Your Data</h3>
-      <p className="text-sm text-gray-600 mb-4">
+    <div>
+      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Export Your Data</h3>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
         Download your health data to share with your doctor or keep for your records.
       </p>
 
       {/* Date Range Selector */}
-      <div className="mb-6 p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg border border-pink-200">
-        <label className="block text-sm font-medium text-gray-900 mb-2">
+      <div className="mb-6 p-4 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-lg border border-pink-200 dark:border-pink-800">
+        <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
           📅 Date Range
         </label>
         <select
           value={dateRange}
           onChange={(e) => setDateRange(e.target.value)}
-          className="w-full px-4 py-2 border-2 border-pink-300 rounded-lg focus:outline-none focus:border-pink-500"
+          className="w-full px-4 py-2 border-2 border-pink-300 dark:border-pink-600 rounded-lg focus:outline-none focus:border-pink-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
         >
           <option value="all">All Time</option>
           <option value="1week">Last 7 Days</option>
@@ -93,23 +93,23 @@ export default function DataExport() {
 
       <div className="space-y-3">
         {/* Export Mood Data */}
-        <div className="border-2 border-gray-200 rounded-lg p-4">
+        <div className="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
           <div className="flex items-center space-x-3 mb-3">
             <span className="text-2xl">😊</span>
             <div className="flex-1">
-              <p className="font-medium text-gray-900">Mood & Mental Health Data</p>
-              <p className="text-sm text-gray-600">All mood entries and screening results</p>
+              <p className="font-medium text-gray-900 dark:text-white">Mood & Mental Health Data</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">All mood entries and screening results</p>
             </div>
           </div>
           <div className="flex gap-2">
             <button
               onClick={() => handleExport('mood-csv')}
               disabled={exporting !== null}
-              className="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
+              className="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
             >
               {exporting === 'mood-csv' ? (
                 <span className="flex items-center justify-center gap-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-700"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-700 dark:border-gray-300"></div>
                   Exporting...
                 </span>
               ) : (
@@ -134,23 +134,23 @@ export default function DataExport() {
         </div>
 
         {/* Export Symptom Data */}
-        <div className="border-2 border-gray-200 rounded-lg p-4">
+        <div className="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
           <div className="flex items-center space-x-3 mb-3">
             <span className="text-2xl">📝</span>
             <div className="flex-1">
-              <p className="font-medium text-gray-900">Symptom Tracking Data</p>
-              <p className="text-sm text-gray-600">All symptom logs with severity ratings</p>
+              <p className="font-medium text-gray-900 dark:text-white">Symptom Tracking Data</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">All symptom logs with severity ratings</p>
             </div>
           </div>
           <div className="flex gap-2">
             <button
               onClick={() => handleExport('symptoms-csv')}
               disabled={exporting !== null}
-              className="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
+              className="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
             >
               {exporting === 'symptoms-csv' ? (
                 <span className="flex items-center justify-center gap-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-700"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-700 dark:border-gray-300"></div>
                   Exporting...
                 </span>
               ) : (
@@ -175,12 +175,12 @@ export default function DataExport() {
         </div>
 
         {/* Export Complete Data */}
-        <div className="border-2 border-pink-500 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-4">
+        <div className="border-2 border-pink-500 dark:border-pink-600 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-lg p-4">
           <div className="flex items-center space-x-3 mb-3">
             <span className="text-2xl">📊</span>
             <div className="flex-1">
-              <p className="font-medium text-gray-900">Complete Health Report</p>
-              <p className="text-sm text-gray-600">All mood & symptom data combined</p>
+              <p className="font-medium text-gray-900 dark:text-white">Complete Health Report</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">All mood & symptom data combined</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -216,11 +216,11 @@ export default function DataExport() {
         </div>
       </div>
 
-      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <p className="text-sm text-blue-900">
+      <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">
+        <p className="text-sm text-blue-900 dark:text-blue-300">
           <strong>💡 About Formats:</strong>
         </p>
-        <ul className="text-sm text-blue-800 mt-2 space-y-1">
+        <ul className="text-sm text-blue-800 dark:text-blue-400 mt-2 space-y-1">
           <li>• <strong>CSV:</strong> Opens in Excel/Sheets, great for detailed analysis</li>
           <li>• <strong>PDF:</strong> Formatted reports perfect for doctor visits</li>
           <li>• <strong>Complete Report:</strong> Multi-page PDF with all tracked data</li>

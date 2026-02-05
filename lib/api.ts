@@ -198,7 +198,6 @@ export const user = {
     firstName?: string;
     lastName?: string;
     dateOfBirth?: string;
-    diagnosisDate?: string;
     timezone?: string;
   }) => {
     const res = await api.put('/user/profile', data);

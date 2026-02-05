@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { symptom } from '@/lib/api';
 
 const SYMPTOM_TYPES = [
@@ -43,12 +43,22 @@ const SEVERITY_LEVELS = [
   { value: 5, emoji: '😭', label: 'Very Severe', description: 'Debilitating' }
 ];
 
+interface EditSymptom {
+  id: string;
+  symptomType: string;
+  severity: number;
+  location?: string;
+  notes?: string;
+  otherSymptom?: string;
+}
+
 interface SymptomFormProps {
   onClose: () => void;
   onSubmit: () => void;
+  editSymptom?: EditSymptom | null;
 }
 
-export default function SymptomForm({ onClose, onSubmit }: SymptomFormProps) {
+export default function SymptomForm({ onClose, onSubmit, editSymptom }: SymptomFormProps) {
   const [formData, setFormData] = useState({
     symptomType: '',
     severity: 3,
@@ -58,6 +68,20 @@ export default function SymptomForm({ onClose, onSubmit }: SymptomFormProps) {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const isEditing = !!editSymptom;
+
+  useEffect(() => {
+    if (editSymptom) {
+      setFormData({
+        symptomType: editSymptom.symptomType,
+        severity: editSymptom.severity,
+        location: editSymptom.location || '',
+        notes: editSymptom.notes || '',
+        otherSymptom: editSymptom.otherSymptom || ''
+      });
+    }
+  }, [editSymptom]);
 
   const selectedSymptom = SYMPTOM_TYPES.find(s => s.value === formData.symptomType);
   const hasLocation = selectedSymptom?.hasLocation ?? true;
@@ -79,11 +103,16 @@ export default function SymptomForm({ onClose, onSubmit }: SymptomFormProps) {
 
     try {
       setLoading(true);
-      await symptom.create(formData);
+      if (isEditing && editSymptom) {
+        await symptom.update(editSymptom.id, formData);
+      } else {
+        await symptom.create(formData);
+      }
       onSubmit();
+      onClose();
     } catch (err: any) {
-      console.error('Error creating symptom:', err);
-      setError(err.response?.data?.message || 'Failed to log symptom');
+      console.error('Error saving symptom:', err);
+      setError(err.response?.data?.message || 'Failed to save symptom');
     } finally {
       setLoading(false);
     }
@@ -94,7 +123,9 @@ export default function SymptomForm({ onClose, onSubmit }: SymptomFormProps) {
       <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-xl">
         {/* Header */}
         <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Log Symptom</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            {isEditing ? 'Edit Symptom' : 'Log Symptom'}
+          </h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl"
@@ -244,7 +275,7 @@ export default function SymptomForm({ onClose, onSubmit }: SymptomFormProps) {
               disabled={loading || !formData.symptomType}
               className="flex-1 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Saving...' : 'Log Symptom'}
+              {loading ? 'Saving...' : isEditing ? 'Update Symptom' : 'Log Symptom'}
             </button>
           </div>
         </form>
