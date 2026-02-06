@@ -19,6 +19,10 @@ const SYMPTOM_TYPES = [
   { value: 'BRAIN_FOG', label: 'Brain Fog', icon: '🧠', hasLocation: false },
   { value: 'ANXIETY', label: 'Anxiety', icon: '😰', hasLocation: false },
   { value: 'CRAVINGS', label: 'Food Cravings', icon: '🍫', hasLocation: false },
+  { value: 'OILY_SKIN', label: 'Oily Skin', icon: '💧', hasLocation: true },
+  { value: 'JOINT_PAIN', label: 'Joint Pain', icon: '🦴', hasLocation: true },
+  { value: 'DIGESTIVE_ISSUES', label: 'Digestive Issues', icon: '🤢', hasLocation: false },
+  { value: 'HUNGER', label: 'Increased Hunger', icon: '🍽️', hasLocation: false },
   { value: 'OTHER', label: 'Other', icon: '📝', hasLocation: true }
 ];
 
@@ -33,6 +37,8 @@ const CONTEXT_QUESTIONS: Record<string, { label: string; placeholder: string }> 
   'BRAIN_FOG': { label: 'When is it worst?', placeholder: 'E.g., Morning, After eating, All day...' },
   'ANXIETY': { label: 'Triggers (if known)', placeholder: 'E.g., Work, Social, No clear trigger...' },
   'CRAVINGS': { label: 'What are you craving?', placeholder: 'E.g., Sugar, Carbs, Salty foods...' },
+  'DIGESTIVE_ISSUES': { label: 'Type of issue', placeholder: 'E.g., Nausea, Constipation, Diarrhea, Gas...' },
+  'HUNGER': { label: 'Pattern', placeholder: 'E.g., All day, After meals, Before period...' },
 };
 
 const SEVERITY_LEVELS = [

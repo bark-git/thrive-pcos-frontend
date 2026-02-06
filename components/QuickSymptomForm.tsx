@@ -10,6 +10,8 @@ const QUICK_SYMPTOMS = [
   { value: 'HEADACHE', label: 'Headache', icon: '🤕' },
   { value: 'MOOD_SWINGS', label: 'Mood Swings', icon: '😤' },
   { value: 'ACNE', label: 'Acne', icon: '😕' },
+  { value: 'BRAIN_FOG', label: 'Brain Fog', icon: '🧠' },
+  { value: 'CRAVINGS', label: 'Cravings', icon: '🍫' },
   { value: 'SLEEP_ISSUES', label: 'Sleep Issues', icon: '😪' },
   { value: 'ANXIETY', label: 'Anxiety', icon: '😰' },
 ];
