@@ -3,15 +3,13 @@
 import { useEffect, useState } from 'react';
 import { analytics } from '@/lib/api';
 
-interface UnlockStatus {
-  unlocked: boolean;
-  current: number;
-  threshold: number;
-  remaining: number;
-  label: string;
+interface InsightsUnlockBannerProps {
+  onLogMood?: () => void;
+  onLogSymptom?: () => void;
+  onLogPeriod?: () => void;
 }
 
-export default function InsightsUnlockBanner() {
+export default function InsightsUnlockBanner({ onLogMood, onLogSymptom, onLogPeriod }: InsightsUnlockBannerProps) {
   const [nextMilestone, setNextMilestone] = useState<{
     feature: string;
     remaining: number;
@@ -40,20 +38,20 @@ export default function InsightsUnlockBanner() {
     return null;
   }
 
-  const getActionLink = (type: string) => {
+  const getAction = (type: string) => {
     switch (type) {
       case 'moodTrends':
-        return { href: '#', action: 'Log Mood', icon: '😊' };
+        return { label: 'Log Mood', icon: '😊', onClick: onLogMood };
       case 'correlations':
-        return { href: '/cycles', action: 'Log Period', icon: '📅' };
+        return { label: 'Log Period', icon: '📅', onClick: onLogPeriod };
       case 'symptomPatterns':
-        return { href: '#', action: 'Log Symptom', icon: '📋' };
+        return { label: 'Log Symptom', icon: '📋', onClick: onLogSymptom };
       default:
-        return { href: '/dashboard', action: 'Keep Tracking', icon: '✨' };
+        return { label: 'Keep Tracking', icon: '✨', onClick: onLogMood };
     }
   };
 
-  const action = getActionLink(nextMilestone.type);
+  const action = getAction(nextMilestone.type);
 
   return (
     <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl p-4 mb-6 shadow-lg shadow-purple-500/20">
@@ -78,13 +76,13 @@ export default function InsightsUnlockBanner() {
           </div>
         </div>
         
-        <a
-          href={action.href}
+        <button
+          onClick={action.onClick}
           className="flex-shrink-0 flex items-center gap-2 bg-white text-purple-600 px-4 py-2 rounded-lg font-medium text-sm hover:bg-purple-50 transition shadow-md"
         >
           <span>{action.icon}</span>
-          {action.action}
-        </a>
+          {action.label}
+        </button>
       </div>
     </div>
   );

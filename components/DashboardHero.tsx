@@ -7,6 +7,7 @@ interface DashboardHeroProps {
   userName: string;
   onQuickLogMood: () => void;
   onQuickLogSymptom: () => void;
+  onQuickLogPeriod: () => void;
 }
 
 interface CycleData {
@@ -58,7 +59,7 @@ const PHASE_CONFIG = {
   }
 };
 
-export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymptom }: DashboardHeroProps) {
+export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymptom, onQuickLogPeriod }: DashboardHeroProps) {
   const [cycleData, setCycleData] = useState<CycleData | null>(null);
   const [streakData, setStreakData] = useState<StreakData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -441,13 +442,13 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
           {streakData?.symptomLoggedToday ? 'Symptom Logged ✓' : 'Log Symptom'}
         </button>
         
-        <a
-          href="/cycles"
-          className="flex-1 flex items-center justify-center gap-2 bg-white/20 text-white px-6 py-3 rounded-xl font-medium hover:bg-white/30 transition-all duration-200"
+        <button
+          onClick={onQuickLogPeriod}
+          className="flex-1 flex items-center justify-center gap-2 bg-white text-red-600 px-6 py-3 rounded-xl font-medium hover:bg-red-50 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
         >
           <span className="text-xl">📅</span>
           Log Period
-        </a>
+        </button>
       </div>
     </div>
   );

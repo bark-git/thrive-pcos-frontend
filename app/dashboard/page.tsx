@@ -11,7 +11,7 @@ import InsightsUnlockBanner from '@/components/InsightsUnlockBanner';
 import MedicationStatusCard from '@/components/MedicationStatusCard';
 import DashboardHero from '@/components/DashboardHero';
 import QuickSymptomForm from '@/components/QuickSymptomForm';
-import { MoodEmptyState } from '@/components/EmptyState';
+import QuickPeriodForm from '@/components/QuickPeriodForm';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -21,6 +21,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [showMoodForm, setShowMoodForm] = useState(false);
   const [showSymptomForm, setShowSymptomForm] = useState(false);
+  const [showPeriodForm, setShowPeriodForm] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
@@ -57,6 +58,11 @@ export default function Dashboard() {
     setRefreshKey(prev => prev + 1); // Trigger DashboardHero refresh
   };
 
+  const handlePeriodSubmit = async () => {
+    setShowPeriodForm(false);
+    setRefreshKey(prev => prev + 1); // Trigger refresh
+  };
+
   if (!user) return null;
   if (loading) {
     return (
@@ -80,6 +86,7 @@ export default function Dashboard() {
           userName={user.firstName || 'there'}
           onQuickLogMood={() => setShowMoodForm(true)}
           onQuickLogSymptom={() => setShowSymptomForm(true)}
+          onQuickLogPeriod={() => setShowPeriodForm(true)}
         />
 
         {/* Status Card - Medications */}
@@ -88,7 +95,12 @@ export default function Dashboard() {
         </div>
 
         {/* Insights Unlock Banner - shows when features are locked */}
-        <InsightsUnlockBanner key={`banner-${refreshKey}`} />
+        <InsightsUnlockBanner 
+          key={`banner-${refreshKey}`}
+          onLogMood={() => setShowMoodForm(true)}
+          onLogSymptom={() => setShowSymptomForm(true)}
+          onLogPeriod={() => setShowPeriodForm(true)}
+        />
 
         {/* Analytics Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -103,11 +115,6 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Recent Mood Entries</h2>
-            {entries.length > 0 && (
-              <a href="/mood" className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 text-sm font-medium">
-                View all →
-              </a>
-            )}
           </div>
           
           {entries.length === 0 ? (
@@ -171,6 +178,14 @@ export default function Dashboard() {
         <QuickSymptomForm
           onClose={() => setShowSymptomForm(false)}
           onSubmit={handleSymptomSubmit}
+        />
+      )}
+
+      {/* Quick Period Form Modal */}
+      {showPeriodForm && (
+        <QuickPeriodForm
+          onClose={() => setShowPeriodForm(false)}
+          onSubmit={handlePeriodSubmit}
         />
       )}
     </div>

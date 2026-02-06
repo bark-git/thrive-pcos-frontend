@@ -126,9 +126,14 @@ export const auth = {
 
 // Mood
 export const mood = {
-  create: async (data: Omit<MoodEntry, 'id'>) => {
+  create: async (data: Omit<MoodEntry, 'id'> & { updateExisting?: boolean }) => {
     const res = await api.post('/mood', data);
-    return res.data.moodEntry as MoodEntry;
+    return res.data;
+  },
+  
+  getTodayEntry: async () => {
+    const res = await api.get('/mood/today');
+    return res.data as { hasEntry: boolean; entry: MoodEntry | null };
   },
   
   getAll: async (params?: { startDate?: string; endDate?: string; limit?: number }) => {
