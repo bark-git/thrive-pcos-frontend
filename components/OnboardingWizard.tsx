@@ -474,9 +474,9 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
   const renderStep = () => {
     // Why we ask helper component
     const WhyWeAsk = ({ text }: { text: string }) => (
-      <div className="bg-blue-50 border border-blue-100 rounded-lg px-3 py-2 mt-3">
-        <p className="text-xs text-blue-700">
-          <span className="font-medium">💡 Why we ask:</span> {text}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-800 rounded-lg px-4 py-3 mt-3">
+        <p className="text-sm text-blue-700 dark:text-blue-300">
+          <span className="font-semibold">💡 Why we ask:</span> {text}
         </p>
       </div>
     );
@@ -706,19 +706,53 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-white flex items-center justify-center p-4">
       <div className="max-w-lg w-full">
-        {/* Progress Bar */}
+        {/* Enhanced Progress Indicator */}
         <div className="mb-8">
-          <div className="flex justify-between text-sm text-gray-500 mb-2">
-            <span>Step {step} of {totalSteps}</span>
-            <button onClick={handleSkip} className="text-pink-600 hover:text-pink-700">
-              Skip for now
-            </button>
+          {/* Step Labels */}
+          <div className="flex justify-between mb-3">
+            {[
+              { num: 1, label: 'Diagnosis', icon: '🩺' },
+              { num: 2, label: 'Type', icon: '🧬' },
+              { num: 3, label: 'Concerns', icon: '💭' },
+              { num: 4, label: 'Goals', icon: '🎯' },
+            ].map((s) => (
+              <div 
+                key={s.num}
+                className={`flex flex-col items-center transition-all ${
+                  step >= s.num ? 'opacity-100' : 'opacity-40'
+                }`}
+              >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-1 transition-all ${
+                  step > s.num 
+                    ? 'bg-green-500 text-white' 
+                    : step === s.num 
+                    ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg scale-110' 
+                    : 'bg-gray-200 text-gray-500'
+                }`}>
+                  {step > s.num ? '✓' : s.icon}
+                </div>
+                <span className={`text-xs font-medium ${
+                  step === s.num ? 'text-pink-600' : 'text-gray-500'
+                }`}>
+                  {s.label}
+                </span>
+              </div>
+            ))}
           </div>
-          <div className="h-2 bg-gray-200 rounded-full">
+
+          {/* Progress Bar */}
+          <div className="h-1.5 bg-gray-200 rounded-full">
             <div 
-              className="h-full bg-gradient-to-r from-pink-500 to-purple-600 rounded-full transition-all duration-300"
+              className="h-full bg-gradient-to-r from-pink-500 to-purple-600 rounded-full transition-all duration-500 ease-out"
               style={{ width: `${(step / totalSteps) * 100}%` }}
             />
+          </div>
+          
+          {/* Skip Link */}
+          <div className="flex justify-end mt-2">
+            <button onClick={handleSkip} className="text-sm text-gray-400 hover:text-pink-600 transition">
+              Skip setup →
+            </button>
           </div>
         </div>
 
@@ -740,7 +774,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
               <button
                 onClick={handleNext}
                 disabled={loading || (step === 1 && !data.diagnosisStatus)}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-medium hover:from-pink-600 hover:to-purple-700 transition disabled:opacity-50"
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-medium hover:from-pink-600 hover:to-purple-700 hover:shadow-lg transition disabled:opacity-50"
               >
                 {loading ? 'Saving...' : step === totalSteps ? 'Get Started! 🎉' : 'Continue'}
               </button>

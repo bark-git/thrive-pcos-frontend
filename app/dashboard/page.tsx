@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { auth, mood, type MoodEntry, type MoodStats } from '@/lib/api';
+import { auth, mood, analytics, type MoodEntry, type MoodStats } from '@/lib/api';
 import Header from '@/components/Header';
 import MoodForm from '@/components/MoodForm';
 import MoodTrendChart from '@/components/MoodTrendChart';
@@ -13,6 +13,8 @@ import MedicationStatusCard from '@/components/MedicationStatusCard';
 import DashboardHero from '@/components/DashboardHero';
 import QuickSymptomForm from '@/components/QuickSymptomForm';
 import QuickPeriodForm from '@/components/QuickPeriodForm';
+import CelebrationModal from '@/components/CelebrationModal';
+import { toast } from '@/components/Toast';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -24,6 +26,14 @@ export default function Dashboard() {
   const [showSymptomForm, setShowSymptomForm] = useState(false);
   const [showPeriodForm, setShowPeriodForm] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  
+  // Celebration state
+  const [celebration, setCelebration] = useState<{
+    show: boolean;
+    type: 'streak' | 'milestone' | 'first' | 'week';
+    value?: number;
+    message?: string;
+  }>({ show: false, type: 'first' });
 
   useEffect(() => {
     if (!user) {
@@ -48,20 +58,60 @@ export default function Dashboard() {
     }
   };
 
+  const checkForCelebrations = async (prevEntryCount: number) => {
+    try {
+      const records = await analytics.getPersonalRecords();
+      if (records.unlocked) {
+        const { currentStreak, totalEntries } = records.stats;
+        
+        // First entry celebration
+        if (prevEntryCount === 0 && totalEntries === 1) {
+          setCelebration({ show: true, type: 'first' });
+          return;
+        }
+        
+        // Week milestone
+        if (totalEntries === 7) {
+          setCelebration({ show: true, type: 'week' });
+          return;
+        }
+        
+        // Streak milestones (7, 14, 21, 30, etc.)
+        if ([7, 14, 21, 30, 50, 100].includes(currentStreak)) {
+          setCelebration({ show: true, type: 'streak', value: currentStreak });
+          return;
+        }
+        
+        // Entry milestones
+        if ([50, 100, 200, 365].includes(totalEntries)) {
+          setCelebration({ show: true, type: 'milestone', value: totalEntries, message: `${totalEntries} Check-ins!` });
+          return;
+        }
+      }
+    } catch (err) {
+      // Silent fail - celebrations are not critical
+    }
+  };
+
   const handleMoodSubmit = async () => {
+    const prevCount = entries.length;
     setShowMoodForm(false);
+    toast.success('Mood logged!', 'Keep up the great work 💪');
     await loadData();
-    setRefreshKey(prev => prev + 1); // Trigger DashboardHero refresh
+    setRefreshKey(prev => prev + 1);
+    checkForCelebrations(prevCount);
   };
 
   const handleSymptomSubmit = async () => {
     setShowSymptomForm(false);
-    setRefreshKey(prev => prev + 1); // Trigger DashboardHero refresh
+    toast.success('Symptom logged!', 'Tracking helps identify patterns');
+    setRefreshKey(prev => prev + 1);
   };
 
   const handlePeriodSubmit = async () => {
     setShowPeriodForm(false);
-    setRefreshKey(prev => prev + 1); // Trigger refresh
+    toast.success('Period logged!', 'Your predictions have been updated');
+    setRefreshKey(prev => prev + 1);
   };
 
   if (!user) return null;
@@ -199,6 +249,15 @@ export default function Dashboard() {
           onSubmit={handlePeriodSubmit}
         />
       )}
+
+      {/* Celebration Modal */}
+      <CelebrationModal
+        isOpen={celebration.show}
+        onClose={() => setCelebration(prev => ({ ...prev, show: false }))}
+        type={celebration.type}
+        value={celebration.value}
+        message={celebration.message}
+      />
     </div>
   );
 }
