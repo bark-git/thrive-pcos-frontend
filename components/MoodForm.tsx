@@ -170,7 +170,7 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Mood Score */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-lg font-semibold text-gray-900 dark:text-white mb-3">
               How are you feeling right now?
             </label>
             <div className="flex gap-2 justify-between">
@@ -329,9 +329,9 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
           </div>
 
           {/* Energy & Anxiety Levels */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-6 grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Energy Level</label>
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-6 grid md:grid-cols-2 gap-6">
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+              <label className="block text-sm font-semibold text-blue-800 dark:text-blue-300 mb-3">⚡ Energy Level</label>
               <div className="flex gap-2">
                 {([
                   { value: 'LOW', label: '🔋 Low' },
@@ -344,8 +344,8 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
                     onClick={() => setFormData({ ...formData, energyLevel: level.value })}
                     className={`flex-1 py-2 px-3 rounded-lg border-2 transition text-sm font-medium ${
                       formData.energyLevel === level.value
-                        ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300'
-                        : 'border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-pink-300'
+                        ? 'border-blue-500 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                        : 'border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-blue-300'
                     }`}
                   >
                     {level.label}
@@ -354,8 +354,8 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Anxiety Right Now</label>
+            <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+              <label className="block text-sm font-semibold text-purple-800 dark:text-purple-300 mb-3">😰 Anxiety Right Now</label>
               <div className="flex gap-2">
                 {([
                   { value: 'NONE', label: '😌 None' },
@@ -368,7 +368,7 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
                     onClick={() => setFormData({ ...formData, anxietyLevel: level.value })}
                     className={`flex-1 py-2 px-3 rounded-lg border-2 transition text-sm font-medium ${
                       formData.anxietyLevel === level.value
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                        ? 'border-purple-500 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300'
                         : 'border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-purple-300'
                     }`}
                   >

@@ -6,7 +6,7 @@ import { auth } from '@/lib/api';
 import { useTheme } from '@/lib/ThemeContext';
 
 interface HeaderProps {
-  currentPage: 'dashboard' | 'symptoms' | 'cycles' | 'medications' | 'labs' | 'profile';
+  currentPage: 'dashboard' | 'mood' | 'symptoms' | 'cycles' | 'medications' | 'labs' | 'profile';
 }
 
 export default function Header({ currentPage }: HeaderProps) {
@@ -36,9 +36,10 @@ export default function Header({ currentPage }: HeaderProps) {
 
   const navItems = [
     { key: 'dashboard', label: 'Dashboard', path: '/dashboard' },
+    { key: 'mood', label: 'Mood', path: '/mood' },
     { key: 'symptoms', label: 'Symptoms', path: '/symptoms' },
     { key: 'cycles', label: 'Cycles', path: '/cycles' },
-    { key: 'medications', label: 'Medications', path: '/medications' },
+    { key: 'medications', label: 'Meds', path: '/medications' },
     { key: 'labs', label: 'Labs', path: '/labs' },
   ];
 

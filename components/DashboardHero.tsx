@@ -37,25 +37,29 @@ const PHASE_CONFIG = {
     name: 'Menstrual',
     color: 'bg-red-100 text-red-700 border-red-200',
     icon: '🩸',
-    tip: 'Rest and be gentle with yourself'
+    tip: 'Rest and be gentle with yourself',
+    description: 'Days 1-5 of your cycle. Your uterine lining sheds during this time. Energy and mood may be lower. Focus on rest, gentle movement, and comfort foods rich in iron.'
   },
   follicular: {
     name: 'Follicular',
     color: 'bg-green-100 text-green-700 border-green-200',
     icon: '🌱',
-    tip: 'Energy is rising - great for new projects'
+    tip: 'Energy is rising - great for new projects',
+    description: 'Days 6-13. Estrogen rises as your body prepares an egg. You may feel more energetic, creative, and social. Great time for starting new projects or challenging workouts.'
   },
   ovulation: {
     name: 'Ovulation',
     color: 'bg-yellow-100 text-yellow-700 border-yellow-200',
     icon: '🌕',
-    tip: 'Peak energy and social time'
+    tip: 'Peak energy and social time',
+    description: 'Days 14-16. An egg is released. Estrogen peaks, often bringing highest energy, confidence, and communication skills. This is your fertile window if trying to conceive.'
   },
   luteal: {
     name: 'Luteal',
     color: 'bg-purple-100 text-purple-700 border-purple-200',
     icon: '🍂',
-    tip: 'Winding down - prioritize self-care'
+    tip: 'Winding down - prioritize self-care',
+    description: 'Days 17-28. Progesterone rises then falls. You may experience PMS symptoms like bloating, mood changes, or cravings. Focus on self-care, adequate sleep, and stress management.'
   }
 };
 
@@ -170,7 +174,7 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
         api.get('/symptom?limit=30')
       ]);
       
-      const moodEntries = moodRes.data.entries || [];
+      const moodEntries = moodRes.data.moodEntries || [];
       const symptoms = symptomRes.data.symptoms || [];
       
       // Check if logged today
@@ -321,13 +325,23 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
         </div>
 
         {/* Cycle Phase */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/15 transition-colors">
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/15 transition-colors relative group">
           <p className="text-pink-100 text-xs uppercase tracking-wide mb-1">Phase</p>
           {phaseConfig ? (
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">{phaseConfig.icon}</span>
-              <p className="font-bold">{phaseConfig.name}</p>
-            </div>
+            <>
+              <div className="flex items-center gap-2 cursor-help">
+                <span className="text-2xl">{phaseConfig.icon}</span>
+                <p className="font-bold">{phaseConfig.name}</p>
+                <span className="text-pink-200 text-xs">ⓘ</span>
+              </div>
+              {/* Tooltip */}
+              <div className="absolute left-0 right-0 top-full mt-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto">
+                <div className="bg-gray-900 text-white text-sm rounded-lg p-3 shadow-xl mx-2">
+                  <p className="font-medium mb-1">{phaseConfig.name} Phase</p>
+                  <p className="text-gray-300 text-xs leading-relaxed">{phaseConfig.description}</p>
+                </div>
+              </div>
+            </>
           ) : (
             <p className="text-lg">--</p>
           )}

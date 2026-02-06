@@ -115,6 +115,11 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Recent Mood Entries</h2>
+            {entries.length > 0 && (
+              <a href="/mood" className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 text-sm font-medium">
+                View all →
+              </a>
+            )}
           </div>
           
           {entries.length === 0 ? (
