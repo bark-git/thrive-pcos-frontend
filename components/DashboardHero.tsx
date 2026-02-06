@@ -325,7 +325,7 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
         </div>
 
         {/* Cycle Phase */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/15 transition-colors relative group">
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/15 transition-colors relative group z-10">
           <p className="text-pink-100 text-xs uppercase tracking-wide mb-1">Phase</p>
           {phaseConfig ? (
             <>
@@ -335,10 +335,13 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
                 <span className="text-pink-200 text-xs">ⓘ</span>
               </div>
               {/* Tooltip */}
-              <div className="absolute left-0 right-0 top-full mt-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto">
-                <div className="bg-gray-900 text-white text-sm rounded-lg p-3 shadow-xl mx-2">
-                  <p className="font-medium mb-1">{phaseConfig.name} Phase</p>
+              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-50 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto w-72">
+                <div className="bg-gray-900 text-white text-sm rounded-lg p-4 shadow-2xl border border-gray-700">
+                  <p className="font-semibold mb-2 flex items-center gap-2">
+                    <span>{phaseConfig.icon}</span> {phaseConfig.name} Phase
+                  </p>
                   <p className="text-gray-300 text-xs leading-relaxed">{phaseConfig.description}</p>
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-gray-900"></div>
                 </div>
               </div>
             </>

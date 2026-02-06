@@ -1,32 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { analytics, type CorrelationInsight } from '@/lib/api';
+import { analytics, type RankedPhase, type CorrelationInsight } from '@/lib/api';
 
-const PHASE_INFO: Record<string, { icon: string; color: string }> = {
-  MENSTRUAL: { icon: '🩸', color: 'from-red-500 to-red-600' },
-  FOLLICULAR: { icon: '🌱', color: 'from-green-500 to-green-600' },
-  OVULATION: { icon: '🌕', color: 'from-purple-500 to-purple-600' },
-  LUTEAL: { icon: '🍂', color: 'from-amber-500 to-amber-600' },
-};
-
-const CONFIDENCE_BADGES: Record<string, { label: string; class: string }> = {
-  high: { label: 'Strong pattern', class: 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300' },
-  medium: { label: 'Emerging pattern', class: 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300' },
-  low: { label: 'Early signal', class: 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400' },
-};
+const RANK_BADGES = ['🥇', '🥈', '🥉', '4️⃣'];
 
 export default function CorrelationCards() {
+  const [rankedPhases, setRankedPhases] = useState<RankedPhase[]>([]);
   const [correlations, setCorrelations] = useState<CorrelationInsight[]>([]);
-  const [moodByPhase, setMoodByPhase] = useState<Record<string, number | null>>({});
+  const [overallAvg, setOverallAvg] = useState<number | null>(null);
   const [unlocked, setUnlocked] = useState(false);
   const [unlockInfo, setUnlockInfo] = useState<{ cyclesNeeded: number; currentCycles: number } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [metadata, setMetadata] = useState<{
-    moodEntriesAnalyzed: number;
-    symptomsAnalyzed: number;
-    analysisWindow: string;
-  } | null>(null);
 
   useEffect(() => {
     loadData();
@@ -38,9 +23,9 @@ export default function CorrelationCards() {
       
       if (result.unlocked) {
         setUnlocked(true);
+        setRankedPhases(result.rankedPhases || []);
         setCorrelations(result.correlations || []);
-        setMoodByPhase(result.moodByPhase || {});
-        setMetadata(result.metadata);
+        setOverallAvg(result.overallMoodAverage);
       } else {
         setUnlocked(false);
         setUnlockInfo({
@@ -60,9 +45,9 @@ export default function CorrelationCards() {
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
         <div className="animate-pulse">
           <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-48 mb-4"></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="h-32 bg-gray-100 dark:bg-gray-700 rounded-lg"></div>
-            <div className="h-32 bg-gray-100 dark:bg-gray-700 rounded-lg"></div>
+          <div className="space-y-3">
+            <div className="h-20 bg-gray-100 dark:bg-gray-700 rounded-lg"></div>
+            <div className="h-20 bg-gray-100 dark:bg-gray-700 rounded-lg"></div>
           </div>
         </div>
       </div>
@@ -75,7 +60,7 @@ export default function CorrelationCards() {
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-            <span className="text-xl">🔗</span> Cycle Correlations
+            <span className="text-xl">🔗</span> Cycle Insights
             <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full">
               Locked
             </span>
@@ -88,10 +73,10 @@ export default function CorrelationCards() {
           </div>
           
           <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
-            Log your first complete cycle to unlock
+            Log your first period to unlock
           </h4>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Discover how your symptoms and mood change across your cycle phases
+            Discover how your mood changes across your cycle phases
           </p>
           
           <a
@@ -105,13 +90,13 @@ export default function CorrelationCards() {
     );
   }
 
-  // No correlations found yet
-  if (correlations.length === 0) {
+  // Not enough data yet
+  if (rankedPhases.length === 0) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-            <span className="text-xl">🔗</span> Cycle Correlations
+            <span className="text-xl">🔗</span> Cycle Insights
           </h3>
         </div>
         
@@ -121,7 +106,7 @@ export default function CorrelationCards() {
           </div>
           <p className="text-gray-600 dark:text-gray-400 mb-2">Building your patterns...</p>
           <p className="text-sm text-gray-500 dark:text-gray-500">
-            Keep tracking your mood and symptoms. Insights will appear as we detect patterns.
+            Keep tracking mood during your cycle. Insights will appear as we detect patterns.
           </p>
         </div>
       </div>
@@ -132,101 +117,90 @@ export default function CorrelationCards() {
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-          <span className="text-xl">🔗</span> Cycle Correlations
+          <span className="text-xl">🔗</span> Your Mood by Phase
         </h3>
-        {metadata && (
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            Based on {metadata.moodEntriesAnalyzed} entries
+        {overallAvg && (
+          <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
+            Overall avg: {overallAvg}/5
           </span>
         )}
       </div>
 
-      {/* Mood by Phase Summary */}
-      {Object.values(moodByPhase).some(v => v !== null) && (
-        <div className="mb-6">
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Average mood by phase:</p>
-          <div className="grid grid-cols-4 gap-2">
-            {Object.entries(moodByPhase).map(([phase, avg]) => {
-              const info = PHASE_INFO[phase];
-              return (
-                <div
-                  key={phase}
-                  className={`text-center p-3 rounded-lg ${
-                    avg !== null 
-                      ? 'bg-gray-50 dark:bg-gray-700' 
-                      : 'bg-gray-50/50 dark:bg-gray-700/50 opacity-50'
-                  }`}
-                >
-                  <span className="text-lg">{info?.icon || '📊'}</span>
-                  <p className={`text-xl font-bold ${
-                    avg !== null ? 'text-gray-900 dark:text-white' : 'text-gray-400'
+      {/* Ranked Phases */}
+      <div className="space-y-3 mb-5">
+        {rankedPhases.map((phase, index) => (
+          <div 
+            key={phase.phase}
+            className={`p-4 rounded-lg border-2 transition ${
+              index === 0 
+                ? 'border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-900/20' 
+                : index === rankedPhases.length - 1
+                ? 'border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-900/20'
+                : 'border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/30'
+            }`}
+          >
+            <div className="flex items-start gap-3">
+              {/* Rank & Icon */}
+              <div className="flex-shrink-0 text-center">
+                <span className="text-2xl">{RANK_BADGES[index] || '•'}</span>
+                <span className="text-xl block mt-1">{phase.icon}</span>
+              </div>
+              
+              {/* Content */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="font-semibold text-gray-900 dark:text-white">{phase.label}</p>
+                  <span className={`text-sm font-bold ${
+                    phase.vsOverall > 0 
+                      ? 'text-green-600 dark:text-green-400' 
+                      : phase.vsOverall < 0 
+                      ? 'text-amber-600 dark:text-amber-400'
+                      : 'text-gray-500'
                   }`}>
-                    {avg !== null ? avg.toFixed(1) : '--'}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                    {phase.toLowerCase()}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Correlation Cards */}
-      <div className="space-y-3">
-        {correlations.slice(0, 4).map((correlation, index) => {
-          const phaseInfo = PHASE_INFO[correlation.phase];
-          const confidenceBadge = CONFIDENCE_BADGES[correlation.confidence];
-          
-          return (
-            <div
-              key={index}
-              className="p-4 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-purple-200 dark:hover:border-purple-700 hover:bg-purple-50/30 dark:hover:bg-purple-900/20 transition"
-            >
-              <div className="flex items-start gap-3">
-                {/* Phase icon */}
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${phaseInfo?.color || 'from-gray-400 to-gray-500'} flex items-center justify-center text-white shadow-sm`}>
-                  <span className="text-lg">{phaseInfo?.icon || '📊'}</span>
+                    {phase.avgMood.toFixed(1)}/5
+                  </span>
                 </div>
                 
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-900 dark:text-white font-medium">
-                    {correlation.finding}
-                  </p>
-                  
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${confidenceBadge.class}`}>
-                      {confidenceBadge.label}
-                    </span>
-                    <span className="text-xs text-gray-400">
-                      {correlation.type === 'mood' ? '😊 Mood' : '📋 Symptom'}
-                    </span>
-                  </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  {phase.description}
+                </p>
+                
+                {/* Actionable tip */}
+                <div className="flex items-start gap-2 bg-white dark:bg-gray-800 rounded-md p-2 border border-gray-100 dark:border-gray-600">
+                  <span className="text-yellow-500 flex-shrink-0">💡</span>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">{phase.tip}</p>
                 </div>
-
-                {/* Visual indicator */}
-                {correlation.type === 'mood' && correlation.comparison && (
-                  <div className="text-right">
-                    <div className={`text-lg font-bold ${
-                      correlation.value > correlation.comparison 
-                        ? 'text-green-600 dark:text-green-400' 
-                        : 'text-amber-600 dark:text-amber-400'
-                    }`}>
-                      {correlation.value > correlation.comparison ? '↑' : '↓'}
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
+
+      {/* Symptom Correlations */}
+      {correlations.length > 0 && (
+        <>
+          <div className="border-t border-gray-100 dark:border-gray-700 pt-4 mt-4">
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              Symptom patterns detected:
+            </p>
+            <div className="space-y-2">
+              {correlations.slice(0, 3).map((c, i) => (
+                <div 
+                  key={i}
+                  className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
+                >
+                  <span className="text-purple-500">•</span>
+                  <span>{c.finding}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Disclaimer */}
       <p className="text-xs text-gray-400 dark:text-gray-500 mt-4 text-center">
-        💡 Patterns detected from your data. Continue tracking for more accurate insights.
+        Based on your tracked data. Keep logging for better insights.
       </p>
     </div>
   );

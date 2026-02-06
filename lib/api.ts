@@ -265,6 +265,44 @@ export interface UnlockProgress {
   label: string;
 }
 
+export interface RankedPhase {
+  phase: string;
+  label: string;
+  avgMood: number;
+  icon: string;
+  rank: number;
+  description: string;
+  tip: string;
+  vsOverall: number;
+}
+
+export interface DayOfWeekInsight {
+  type: string;
+  finding: string;
+  icon: string;
+  actionable?: string;
+}
+
+export interface MedicationInsight {
+  medication: string;
+  dosage?: string;
+  daysTracked: number;
+  status: string;
+  moodChange?: number;
+  moodTrend?: string;
+  moodFinding?: string;
+  symptomFinding?: string;
+  symptomTrend?: string;
+}
+
+export interface PCOSInsight {
+  category: string;
+  finding: string;
+  icon: string;
+  tip: string;
+  severity?: string;
+}
+
 export const analytics = {
   getMoodTrends: async (days: number = 14) => {
     const res = await api.get('/analytics/mood-trends', { params: { days } });
@@ -283,6 +321,21 @@ export const analytics = {
 
   getPhaseSummary: async () => {
     const res = await api.get('/analytics/phase-summary');
+    return res.data;
+  },
+
+  getDayOfWeek: async () => {
+    const res = await api.get('/analytics/day-of-week');
+    return res.data;
+  },
+
+  getMedicationEffectiveness: async () => {
+    const res = await api.get('/analytics/medication-effectiveness');
+    return res.data;
+  },
+
+  getPCOSInsights: async () => {
+    const res = await api.get('/analytics/pcos-insights');
     return res.data;
   }
 };

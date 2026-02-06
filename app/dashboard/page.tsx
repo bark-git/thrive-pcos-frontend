@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import MoodForm from '@/components/MoodForm';
 import MoodTrendChart from '@/components/MoodTrendChart';
 import CorrelationCards from '@/components/CorrelationCards';
+import InsightsPanel from '@/components/InsightsPanel';
 import InsightsUnlockBanner from '@/components/InsightsUnlockBanner';
 import MedicationStatusCard from '@/components/MedicationStatusCard';
 import DashboardHero from '@/components/DashboardHero';
@@ -109,6 +110,11 @@ export default function Dashboard() {
           
           {/* Correlation Cards */}
           <CorrelationCards key={`corr-${refreshKey}`} />
+        </div>
+
+        {/* Additional Insights */}
+        <div className="mb-6">
+          <InsightsPanel key={`insights-${refreshKey}`} />
         </div>
 
         {/* Recent Entries */}
