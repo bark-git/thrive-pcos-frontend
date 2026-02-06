@@ -338,6 +338,21 @@ export const analytics = {
   getPCOSInsights: async () => {
     const res = await api.get('/analytics/pcos-insights');
     return res.data;
+  },
+
+  getPersonalRecords: async () => {
+    const res = await api.get('/analytics/personal-records');
+    return res.data;
+  },
+
+  getPredictive: async () => {
+    const res = await api.get('/analytics/predictive');
+    return res.data;
+  },
+
+  getEnergyPatterns: async () => {
+    const res = await api.get('/analytics/energy-patterns');
+    return res.data;
   }
 };
 
