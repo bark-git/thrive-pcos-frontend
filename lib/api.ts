@@ -288,6 +288,7 @@ export interface MedicationInsight {
   dosage?: string;
   daysTracked: number;
   status: string;
+  message?: string;
   moodChange?: number;
   moodTrend?: string;
   moodFinding?: string;
