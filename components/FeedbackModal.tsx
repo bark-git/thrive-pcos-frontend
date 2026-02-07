@@ -29,22 +29,17 @@ export default function FeedbackModal({ onClose }: FeedbackModalProps) {
 
     setSubmitting(true);
     try {
-      // In production, this would send to your feedback endpoint
-      // For now, we'll log it and show success
-      console.log('Feedback submitted:', {
+      await api.post('/email/feedback', {
         type: feedbackType,
         message: message.trim(),
-        email: includeEmail ? email : null,
-        timestamp: new Date().toISOString()
+        contactEmail: includeEmail ? email : null
       });
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
       setSubmitted(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting feedback:', error);
-      toast.error('Failed to submit', 'Please try again later');
+      const errorMessage = error.response?.data?.error || 'Failed to submit feedback. Please try again.';
+      toast.error('Submission failed', errorMessage);
     } finally {
       setSubmitting(false);
     }
