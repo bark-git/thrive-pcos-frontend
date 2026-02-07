@@ -181,15 +181,15 @@ export default function CorrelationCards() {
         <>
           <div className="border-t border-gray-100 dark:border-gray-700 pt-4 mt-4">
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Symptom patterns detected:
+              🔍 What we've noticed:
             </p>
             <div className="space-y-2">
               {correlations.slice(0, 3).map((c, i) => (
                 <div 
                   key={i}
-                  className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2"
                 >
-                  <span className="text-purple-500">•</span>
+                  <span className="text-purple-500 flex-shrink-0 mt-0.5">💡</span>
                   <span>{c.finding}</span>
                 </div>
               ))}

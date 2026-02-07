@@ -190,37 +190,37 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
         return entryDate.getTime() === todayDate.getTime();
       });
       
-      // Calculate streak from mood entries
-      let streak = 0;
-      const checkDate = new Date(todayDate);
-      
-      // If logged today, start counting from today
-      if (moodLoggedToday) {
-        streak = 1;
-        checkDate.setDate(checkDate.getDate() - 1);
-      }
-      
-      // Check consecutive previous days
-      const sortedEntries = moodEntries
-        .map((m: any) => {
-          const d = new Date(m.date);
-          d.setHours(0, 0, 0, 0);
-          return d.getTime();
-        })
-        .sort((a: number, b: number) => b - a);
-      
-      for (const entryTime of sortedEntries) {
-        checkDate.setHours(0, 0, 0, 0);
-        if (entryTime === checkDate.getTime()) {
-          streak++;
-          checkDate.setDate(checkDate.getDate() - 1);
-        } else if (entryTime < checkDate.getTime()) {
-          break;
+      // Fetch streak data from personal records API for consistency
+      let currentStreak = 0;
+      try {
+        const recordsRes = await api.get('/analytics/personal-records');
+        if (recordsRes.data.unlocked && recordsRes.data.stats) {
+          currentStreak = recordsRes.data.stats.currentStreak || 0;
+        }
+      } catch (err) {
+        // Fallback to local calculation if records API fails
+        const sortedEntries = moodEntries
+          .map((m: any) => {
+            const d = new Date(m.date);
+            d.setHours(0, 0, 0, 0);
+            return d.getTime();
+          })
+          .sort((a: number, b: number) => b - a);
+        
+        const checkDate = new Date(todayDate);
+        while (true) {
+          checkDate.setHours(0, 0, 0, 0);
+          if (sortedEntries.includes(checkDate.getTime())) {
+            currentStreak++;
+            checkDate.setDate(checkDate.getDate() - 1);
+          } else {
+            break;
+          }
         }
       }
       
       setStreakData({
-        currentStreak: streak,
+        currentStreak,
         loggedToday: moodLoggedToday || symptomLoggedToday,
         moodLoggedToday,
         symptomLoggedToday
@@ -357,7 +357,9 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
             <>
               <p className="text-2xl sm:text-3xl font-bold">
                 {cycleData.daysUntilOvulation < 0 ? (
-                  <span className="text-white/50">Passed</span>
+                  <>
+                    <span className="text-teal-300">~{(cycleData.averageCycleLength || 28) + cycleData.daysUntilOvulation}d</span>
+                  </>
                 ) : cycleData.daysUntilOvulation === 0 ? (
                   <span className="text-teal-300">Today</span>
                 ) : (
@@ -367,6 +369,11 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
               {cycleData.predictedOvulation && cycleData.daysUntilOvulation >= 0 && (
                 <p className="text-xs text-pink-100">
                   {formatPredictedDate(cycleData.predictedOvulation)}
+                </p>
+              )}
+              {cycleData.daysUntilOvulation < 0 && (
+                <p className="text-xs text-pink-100">
+                  Next cycle est.
                 </p>
               )}
             </>
