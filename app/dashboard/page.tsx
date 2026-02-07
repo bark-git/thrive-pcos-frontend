@@ -28,7 +28,7 @@ export default function Dashboard() {
   const [refreshKey, setRefreshKey] = useState(0);
   
   // Monthly check-in hook
-  const { isDue: monthlyCheckInDue, markComplete: markCheckInComplete } = useMonthlyCheckIn();
+  const { isDue: monthlyCheckInDue, markComplete: markCheckInComplete, dismiss: dismissCheckIn } = useMonthlyCheckIn();
   
   // Celebration state
   const [celebration, setCelebration] = useState<{
@@ -131,18 +131,23 @@ export default function Dashboard() {
       <Header currentPage="dashboard" />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Section with Countdown, Phase, Quick Log, Streak */}
-        <DashboardHero 
-          key={refreshKey}
-          userName={user.firstName || 'there'}
-          onQuickLogMood={() => setShowMoodForm(true)}
-          onQuickLogSymptom={() => setShowSymptomForm(true)}
-          onQuickLogPeriod={() => setShowPeriodForm(true)}
-        />
-
-        {/* Status Card - Medications */}
-        <div className="mb-6">
-          <MedicationStatusCard />
+        {/* Hero + Medications Row */}
+        <div className="flex flex-col lg:flex-row gap-6 mb-6">
+          {/* Hero Section - 2/3 on desktop */}
+          <div className="lg:w-2/3">
+            <DashboardHero 
+              key={refreshKey}
+              userName={user.firstName || 'there'}
+              onQuickLogMood={() => setShowMoodForm(true)}
+              onQuickLogSymptom={() => setShowSymptomForm(true)}
+              onQuickLogPeriod={() => setShowPeriodForm(true)}
+            />
+          </div>
+          
+          {/* Medications Card - 1/3 on desktop */}
+          <div className="lg:w-1/3">
+            <MedicationStatusCard />
+          </div>
         </div>
 
         {/* Insights Unlock Banner - shows when features are locked */}
@@ -200,12 +205,12 @@ export default function Dashboard() {
             </div>
           </a>
           <a 
-            href="/export" 
+            href="/profile#export" 
             className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm hover:shadow-md transition flex items-center gap-3"
           >
             <span className="text-2xl">📄</span>
             <div>
-              <p className="font-medium text-gray-900 dark:text-white">Export</p>
+              <p className="font-medium text-gray-900 dark:text-white">Export Data</p>
               <p className="text-xs text-gray-500 dark:text-gray-400">For doctor visits</p>
             </div>
           </a>
@@ -248,7 +253,10 @@ export default function Dashboard() {
       {/* Monthly Check-in Modal */}
       {showMonthlyCheckIn && (
         <MonthlyCheckIn
-          onClose={() => setShowMonthlyCheckIn(false)}
+          onClose={() => {
+            setShowMonthlyCheckIn(false);
+            dismissCheckIn();
+          }}
           onComplete={() => {
             setShowMonthlyCheckIn(false);
             markCheckInComplete();

@@ -268,18 +268,27 @@ export function useMonthlyCheckIn() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check sessionStorage first - only show once per session
+    if (typeof window !== 'undefined') {
+      const dismissed = sessionStorage.getItem('monthlyCheckInDismissed');
+      if (dismissed) {
+        setLoading(false);
+        return;
+      }
+    }
     checkIfDue();
   }, []);
 
   const checkIfDue = async () => {
     try {
-      const res = await api.get('/user/profile');
-      const profile = res.data.profile || res.data;
+      const res = await api.get('/users/profile');
+      const user = res.data.user || res.data;
+      const profile = user?.profile || res.data.profile;
       const lastCheckIn = profile?.lastCheckInDate;
-      const createdAt = res.data.user?.createdAt || profile?.createdAt;
+      const createdAt = user?.createdAt || profile?.createdAt;
       
       if (!lastCheckIn) {
-        // Never done a monthly check-in, but only show after they've been using app for 30 days
+        // Never done a monthly check-in, but only show after 30 days of using app
         if (createdAt) {
           const daysSinceCreation = Math.floor(
             (Date.now() - new Date(createdAt).getTime()) / (1000 * 60 * 60 * 24)
@@ -301,7 +310,19 @@ export function useMonthlyCheckIn() {
 
   const markComplete = () => {
     setIsDue(false);
+    // Store in sessionStorage so it doesn't show again this session
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('monthlyCheckInDismissed', 'true');
+    }
   };
 
-  return { isDue, loading, markComplete };
+  const dismiss = () => {
+    setIsDue(false);
+    // Store in sessionStorage so it doesn't show again this session
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('monthlyCheckInDismissed', 'true');
+    }
+  };
+
+  return { isDue, loading, markComplete, dismiss };
 }

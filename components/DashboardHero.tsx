@@ -196,27 +196,55 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
         const recordsRes = await api.get('/analytics/personal-records');
         if (recordsRes.data.unlocked && recordsRes.data.stats) {
           currentStreak = recordsRes.data.stats.currentStreak || 0;
+        } else {
+          // Calculate locally if not unlocked
+          currentStreak = calculateLocalStreak(moodEntries);
         }
       } catch (err) {
         // Fallback to local calculation if records API fails
-        const sortedEntries = moodEntries
+        currentStreak = calculateLocalStreak(moodEntries);
+      }
+      
+      function calculateLocalStreak(entries: any[]) {
+        if (entries.length === 0) return 0;
+        
+        const sortedDates = entries
           .map((m: any) => {
             const d = new Date(m.date);
             d.setHours(0, 0, 0, 0);
             return d.getTime();
           })
-          .sort((a: number, b: number) => b - a);
+          .sort((a: number, b: number) => b - a); // newest first
         
-        const checkDate = new Date(todayDate);
-        while (true) {
-          checkDate.setHours(0, 0, 0, 0);
-          if (sortedEntries.includes(checkDate.getTime())) {
-            currentStreak++;
-            checkDate.setDate(checkDate.getDate() - 1);
-          } else {
-            break;
-          }
+        // Remove duplicates (multiple entries same day)
+        const uniqueDates = [...new Set(sortedDates)];
+        
+        let streak = 0;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let checkDate = today.getTime();
+        
+        // Check if logged today or yesterday (allow 1 day gap for "current" streak)
+        const hasToday = uniqueDates.includes(checkDate);
+        const yesterday = checkDate - (24 * 60 * 60 * 1000);
+        const hasYesterday = uniqueDates.includes(yesterday);
+        
+        if (!hasToday && !hasYesterday) {
+          return 0; // Streak broken
         }
+        
+        // Start from today if logged, otherwise from yesterday
+        if (!hasToday) {
+          checkDate = yesterday;
+        }
+        
+        // Count consecutive days
+        while (uniqueDates.includes(checkDate)) {
+          streak++;
+          checkDate -= 24 * 60 * 60 * 1000; // Go back one day
+        }
+        
+        return streak;
       }
       
       setStreakData({
