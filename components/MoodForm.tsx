@@ -99,7 +99,7 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mx-auto mb-3"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500 mx-auto mb-3"></div>
           <p className="text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
@@ -111,7 +111,7 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
         <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-6">
           <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-sage-100 dark:bg-sage-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl">📝</span>
             </div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -125,7 +125,7 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
           <div className="space-y-3">
             <button
               onClick={handleUpdateExisting}
-              className="w-full px-4 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-medium hover:from-pink-600 hover:to-purple-700 transition"
+              className="w-full px-4 py-3 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-xl font-medium hover:from-sage-600 hover:to-sage-500 transition"
             >
               Update today's entry
             </button>
@@ -156,7 +156,7 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
               {updateMode ? 'Update Today\'s Mood' : 'Log Your Mood'}
             </h2>
             {updateMode && (
-              <p className="text-sm text-pink-600 dark:text-pink-400 mt-1">Updating your earlier entry</p>
+              <p className="text-sm text-sage-600 dark:text-sage-400 mt-1">Updating your earlier entry</p>
             )}
           </div>
           <button
@@ -181,8 +181,8 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
                   onClick={() => setFormData({ ...formData, moodScore: score })}
                   className={`flex-1 py-3 rounded-lg border-2 transition ${
                     formData.moodScore === score
-                      ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30'
-                      : 'border-gray-200 dark:border-gray-600 hover:border-pink-300 dark:hover:border-pink-700'
+                      ? 'border-sage-500 bg-sage-50 dark:bg-sage-900/30'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-sage-300 dark:hover:border-sage-700'
                   }`}
                 >
                   <div className="text-2xl mb-1">
@@ -354,8 +354,8 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
               </div>
             </div>
 
-            <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
-              <label className="block text-sm font-semibold text-purple-800 dark:text-purple-300 mb-3">😰 Anxiety Right Now</label>
+            <div className="bg-peach-50 dark:bg-peach-900/20 rounded-lg p-4">
+              <label className="block text-sm font-semibold text-peach-800 dark:text-peach-300 mb-3">😰 Anxiety Right Now</label>
               <div className="flex gap-2">
                 {([
                   { value: 'NONE', label: '😌 None' },
@@ -368,8 +368,8 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
                     onClick={() => setFormData({ ...formData, anxietyLevel: level.value })}
                     className={`flex-1 py-2 px-3 rounded-lg border-2 transition text-sm font-medium ${
                       formData.anxietyLevel === level.value
-                        ? 'border-purple-500 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300'
-                        : 'border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-purple-300'
+                        ? 'border-peach-500 bg-peach-100 dark:bg-peach-900/40 text-peach-700 dark:text-peach-300'
+                        : 'border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-peach-300'
                     }`}
                   >
                     {level.label}
@@ -387,7 +387,7 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400"
               rows={3}
               placeholder={!updateMode && existingEntry 
                 ? "Describe what changed since your earlier entry..."
@@ -414,7 +414,7 @@ export default function MoodForm({ onClose, onSubmit }: MoodFormProps) {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-medium hover:from-pink-600 hover:to-purple-700 transition disabled:opacity-50"
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-xl font-medium hover:from-sage-600 hover:to-sage-500 transition disabled:opacity-50"
             >
               {loading ? 'Saving...' : updateMode ? 'Update Entry' : 'Save Entry'}
             </button>

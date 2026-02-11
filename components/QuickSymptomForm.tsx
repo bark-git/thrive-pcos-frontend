@@ -123,8 +123,8 @@ export default function QuickSymptomForm({ onClose, onSubmit }: QuickSymptomForm
                 }}
                 className={`p-3 rounded-xl border-2 text-left transition ${
                   selectedSymptom === s.value
-                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-500'
+                    ? 'border-peach-500 bg-peach-50 dark:bg-peach-900/30'
+                    : 'border-gray-200 dark:border-gray-600 hover:border-peach-300 dark:hover:border-peach-500'
                 }`}
               >
                 <span className="text-2xl mb-1 block">{s.icon}</span>
@@ -148,7 +148,7 @@ export default function QuickSymptomForm({ onClose, onSubmit }: QuickSymptomForm
                   onClick={() => setSeverity(level.value)}
                   className={`flex-1 py-2 px-1 rounded-lg text-center transition ${
                     severity === level.value
-                      ? 'bg-purple-500 text-white'
+                      ? 'bg-peach-500 text-white'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
@@ -178,7 +178,7 @@ export default function QuickSymptomForm({ onClose, onSubmit }: QuickSymptomForm
                     onClick={() => setLocation(loc)}
                     className={`px-3 py-1 rounded-full text-sm transition ${
                       location === loc
-                        ? 'bg-purple-500 text-white'
+                        ? 'bg-peach-500 text-white'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -192,7 +192,7 @@ export default function QuickSymptomForm({ onClose, onSubmit }: QuickSymptomForm
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Or type a specific location..."
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-peach-500 focus:border-transparent"
             />
           </div>
         )}
@@ -208,7 +208,7 @@ export default function QuickSymptomForm({ onClose, onSubmit }: QuickSymptomForm
               value={contextAnswer}
               onChange={(e) => setContextAnswer(e.target.value)}
               placeholder={contextQuestion.placeholder}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-peach-500 focus:border-transparent"
             />
           </div>
         )}
@@ -224,14 +224,14 @@ export default function QuickSymptomForm({ onClose, onSubmit }: QuickSymptomForm
           <button
             onClick={handleSubmit}
             disabled={loading || !selectedSymptom}
-            className="flex-1 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50"
+            className="flex-1 px-4 py-3 bg-gradient-to-r from-peach-500 to-sage-500 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50"
           >
             {loading ? 'Saving...' : 'Log Symptom'}
           </button>
         </div>
 
         <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
-          Need more options? <a href="/symptoms" className="text-purple-600 dark:text-purple-400 hover:underline">Go to full form</a>
+          Need more options? <a href="/symptoms" className="text-peach-600 dark:text-peach-400 hover:underline">Go to full form</a>
         </p>
       </div>
     </div>

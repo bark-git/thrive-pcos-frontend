@@ -1,15 +1,25 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Lora, Work_Sans } from 'next/font/google'
 import './globals.css'
 import Providers from '@/components/Providers'
 import ToastContainer from '@/components/Toast'
 import BottomNav from '@/components/BottomNav'
 
-const inter = Inter({ subsets: ['latin'] })
+const lora = Lora({ 
+  subsets: ['latin'],
+  variable: '--font-lora',
+  display: 'swap',
+})
+
+const workSans = Work_Sans({ 
+  subsets: ['latin'],
+  variable: '--font-work-sans',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: 'Thrive PCOS - Empowering Women with PCOS',
-  description: 'Track your PCOS symptoms, mood, and health journey',
+  title: 'Flourish - The Holistic PCOS Companion',
+  description: 'Track your PCOS symptoms, mood, and health journey with whole-person wellness',
 }
 
 export default function RootLayout({
@@ -18,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 min-h-screen transition-colors duration-200`}>
+    <html lang="en" suppressHydrationWarning className={`${lora.variable} ${workSans.variable}`}>
+      <body className="font-work bg-ivory dark:bg-forest-900 min-h-screen transition-colors duration-200">
         <Providers>
           <div className="pb-16 sm:pb-0">
             {children}

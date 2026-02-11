@@ -14,28 +14,28 @@ const VARIANT_CONFIG = {
   default: {
     bgGradient: 'from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700',
     iconBg: 'bg-gray-200 dark:bg-gray-600',
-    buttonGradient: 'from-pink-500 to-purple-600',
+    buttonGradient: 'from-sage-500 to-sage-400',
     defaultIcon: '📊',
-    accentColor: 'pink'
+    accentColor: 'sage'
   },
   mood: {
-    bgGradient: 'from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20',
-    iconBg: 'bg-pink-100 dark:bg-pink-800/40',
-    buttonGradient: 'from-pink-500 to-rose-500',
+    bgGradient: 'from-sage-50 to-peach-50 dark:from-sage-900/20 dark:to-peach-900/20',
+    iconBg: 'bg-sage-100 dark:bg-sage-800/40',
+    buttonGradient: 'from-sage-500 to-rose-500',
     defaultIcon: '😊',
-    accentColor: 'pink'
+    accentColor: 'sage'
   },
   symptom: {
-    bgGradient: 'from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20',
-    iconBg: 'bg-purple-100 dark:bg-purple-800/40',
-    buttonGradient: 'from-purple-500 to-indigo-500',
+    bgGradient: 'from-peach-50 to-indigo-50 dark:from-peach-900/20 dark:to-indigo-900/20',
+    iconBg: 'bg-peach-100 dark:bg-peach-800/40',
+    buttonGradient: 'from-peach-500 to-indigo-500',
     defaultIcon: '📋',
-    accentColor: 'purple'
+    accentColor: 'sage'
   },
   cycle: {
-    bgGradient: 'from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20',
+    bgGradient: 'from-peach-50 to-sage-50 dark:from-peach-900/20 dark:to-sage-900/20',
     iconBg: 'bg-rose-100 dark:bg-rose-800/40',
-    buttonGradient: 'from-rose-500 to-pink-500',
+    buttonGradient: 'from-rose-500 to-sage-500',
     defaultIcon: '📅',
     accentColor: 'rose'
   },

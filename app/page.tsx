@@ -99,7 +99,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-ivory via-sage-50 to-white flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Session Expired Banner */}
         {sessionExpired && (
@@ -124,10 +124,15 @@ export default function Home() {
         
         {/* Logo/Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent mb-2">
-            Thrive PCOS
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-sage-400 to-sage-500 rounded-full flex items-center justify-center shadow-lg">
+              <span className="font-lora text-white text-2xl font-semibold">F</span>
+            </div>
+          </div>
+          <h1 className="text-4xl font-lora font-semibold bg-gradient-to-r from-sage-500 to-sage-400 bg-clip-text text-transparent mb-2">
+            Flourish
           </h1>
-          <p className="text-gray-600">Your personal PCOS health companion</p>
+          <p className="text-gray-600">Your holistic PCOS companion</p>
         </div>
 
         {/* Auth Card */}
@@ -215,7 +220,7 @@ export default function Home() {
                     required={!isLogin}
                     value={formData.firstName}
                     onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-gray-900"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-sage-500 text-gray-900"
                     placeholder="Jane"
                   />
                 </div>
@@ -227,7 +232,7 @@ export default function Home() {
                     type="text"
                     value={formData.lastName}
                     onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-gray-900"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-sage-500 text-gray-900"
                     placeholder="Doe"
                   />
                 </div>
@@ -243,7 +248,7 @@ export default function Home() {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-gray-900"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-sage-500 text-gray-900"
                 placeholder="jane@example.com"
               />
             </div>
@@ -257,7 +262,7 @@ export default function Home() {
                 required
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-gray-900"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-sage-500 text-gray-900"
                 placeholder="••••••••"
                 minLength={8}
               />
@@ -275,7 +280,7 @@ export default function Home() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-pink-600 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-sage-500 to-sage-400 text-white py-3 rounded-xl font-semibold hover:from-sage-600 hover:to-sage-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
@@ -292,7 +297,7 @@ export default function Home() {
 
           {isLogin && (
             <div className="mt-4 text-center">
-              <button className="text-sm text-pink-600 hover:text-pink-700">
+              <button className="text-sm text-sage-600 hover:text-sage-700">
                 Forgot your password?
               </button>
             </div>

@@ -160,8 +160,8 @@ export default function SymptomForm({ onClose, onSubmit, editSymptom }: SymptomF
                   onClick={() => setFormData({ ...formData, symptomType: type.value, location: '' })}
                   className={`p-3 rounded-xl border-2 text-center transition ${
                     formData.symptomType === type.value
-                      ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30'
-                      : 'border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-500'
+                      ? 'border-peach-500 bg-peach-50 dark:bg-peach-900/30'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-peach-300 dark:hover:border-peach-500'
                   }`}
                 >
                   <span className="text-2xl block mb-1">{type.icon}</span>
@@ -184,7 +184,7 @@ export default function SymptomForm({ onClose, onSubmit, editSymptom }: SymptomF
                 value={formData.otherSymptom}
                 onChange={(e) => setFormData({ ...formData, otherSymptom: e.target.value })}
                 placeholder="E.g., Hot flashes, Dizziness..."
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 maxLength={100}
                 required
               />
@@ -204,8 +204,8 @@ export default function SymptomForm({ onClose, onSubmit, editSymptom }: SymptomF
                   onClick={() => setFormData({ ...formData, severity: level.value })}
                   className={`flex-1 p-3 rounded-xl border-2 text-center transition ${
                     formData.severity === level.value
-                      ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30'
-                      : 'border-gray-200 dark:border-gray-600 hover:border-purple-300'
+                      ? 'border-peach-500 bg-peach-50 dark:bg-peach-900/30'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-peach-300'
                   }`}
                 >
                   <span className="text-2xl block">{level.emoji}</span>
@@ -229,7 +229,7 @@ export default function SymptomForm({ onClose, onSubmit, editSymptom }: SymptomF
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 placeholder="E.g., Face, Back, Lower abdomen..."
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 maxLength={100}
               />
             </div>
@@ -246,7 +246,7 @@ export default function SymptomForm({ onClose, onSubmit, editSymptom }: SymptomF
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 placeholder={contextQuestion.placeholder}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 maxLength={100}
               />
             </div>
@@ -262,7 +262,7 @@ export default function SymptomForm({ onClose, onSubmit, editSymptom }: SymptomF
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               placeholder="Any additional details..."
               rows={2}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               maxLength={1000}
             />
           </div>
@@ -279,7 +279,7 @@ export default function SymptomForm({ onClose, onSubmit, editSymptom }: SymptomF
             <button
               type="submit"
               disabled={loading || !formData.symptomType}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-3 bg-gradient-to-r from-peach-500 to-sage-500 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Saving...' : isEditing ? 'Update Symptom' : 'Log Symptom'}
             </button>

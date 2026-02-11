@@ -132,23 +132,23 @@ export default function CycleCalendar({
         // Different shades of pink based on flow intensity
         switch (flowIntensity) {
           case 'HEAVY':
-            bgColor = 'bg-pink-500';
+            bgColor = 'bg-sage-500';
             textColor = 'text-white';
             break;
           case 'MODERATE':
-            bgColor = 'bg-pink-400';
+            bgColor = 'bg-sage-400';
             textColor = 'text-white';
             break;
           case 'LIGHT':
-            bgColor = 'bg-pink-300';
+            bgColor = 'bg-sage-300';
             textColor = 'text-gray-900';
             break;
           case 'SPOTTING':
-            bgColor = 'bg-pink-200';
+            bgColor = 'bg-sage-200';
             textColor = 'text-gray-900';
             break;
           default:
-            bgColor = 'bg-pink-400';
+            bgColor = 'bg-sage-400';
             textColor = 'text-white';
         }
       } else if (isOvulation) {
@@ -161,13 +161,13 @@ export default function CycleCalendar({
         bgColor = 'bg-teal-100';
         textColor = 'text-teal-800';
       } else if (isPredictedPeriod) {
-        bgColor = 'bg-purple-100';
-        borderClass = 'border-2 border-dashed border-purple-400';
-        textColor = 'text-purple-700';
+        bgColor = 'bg-peach-100';
+        borderClass = 'border-2 border-dashed border-peach-400';
+        textColor = 'text-peach-700';
       }
 
       if (todayClass && !isPeriod && !isOvulation) {
-        borderClass = borderClass || 'ring-2 ring-pink-500 ring-offset-2';
+        borderClass = borderClass || 'ring-2 ring-sage-500 ring-offset-2';
       }
 
       days.push(
@@ -204,7 +204,7 @@ export default function CycleCalendar({
           </button>
           <button
             onClick={goToToday}
-            className="px-3 py-1 text-sm font-medium text-pink-600 hover:bg-pink-50 rounded-lg transition"
+            className="px-3 py-1 text-sm font-medium text-sage-600 hover:bg-sage-50 rounded-lg transition"
           >
             Today
           </button>
@@ -243,7 +243,7 @@ export default function CycleCalendar({
       <div className="mt-6 pt-4 border-t border-gray-200">
         <div className="flex flex-wrap gap-4 text-xs">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-pink-400"></div>
+            <div className="w-4 h-4 rounded bg-sage-400"></div>
             <span className="text-gray-600">Period</span>
           </div>
           <div className="flex items-center gap-2">
@@ -255,11 +255,11 @@ export default function CycleCalendar({
             <span className="text-gray-600">Fertile window</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-purple-100 border-2 border-dashed border-purple-400"></div>
+            <div className="w-4 h-4 rounded bg-peach-100 border-2 border-dashed border-peach-400"></div>
             <span className="text-gray-600">Predicted period</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-white ring-2 ring-pink-500"></div>
+            <div className="w-4 h-4 rounded bg-white ring-2 ring-sage-500"></div>
             <span className="text-gray-600">Today</span>
           </div>
         </div>

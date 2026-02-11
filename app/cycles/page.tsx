@@ -110,14 +110,14 @@ export default function CyclesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-ivory via-sage-50 to-peach-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-ivory via-sage-50 to-peach-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Header currentPage="cycles" />
 
       {/* Main Content */}
@@ -133,7 +133,7 @@ export default function CyclesPage() {
               setEditingCycle(null);
               setShowForm(true);
             }}
-            className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:from-pink-600 hover:to-purple-700 transition font-medium"
+            className="px-6 py-3 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-lg hover:from-sage-600 hover:to-sage-500 transition font-medium"
           >
             + Log Period
           </button>
@@ -174,17 +174,17 @@ export default function CyclesPage() {
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Expected</p>
             </div>
 
-            <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/30 dark:to-purple-900/30 rounded-xl shadow-sm p-4 sm:p-6 border border-pink-200 dark:border-pink-800">
+            <div className="bg-gradient-to-br from-ivory to-sage-50 dark:from-sage-900/30 dark:to-peach-900/30 rounded-xl shadow-sm p-4 sm:p-6 border border-sage-200 dark:border-sage-800">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xl sm:text-2xl">🌸</span>
-                <span className="text-xs sm:text-sm text-purple-600 dark:text-purple-400">Fertile Window</span>
+                <span className="text-xs sm:text-sm text-peach-600 dark:text-peach-400">Fertile Window</span>
               </div>
               {stats.predictedOvulation ? (
                 <>
                   <p className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
                     {new Date(stats.predictedOvulation).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </p>
-                  <p className="text-xs sm:text-sm text-purple-700 dark:text-purple-300">
+                  <p className="text-xs sm:text-sm text-peach-700 dark:text-peach-300">
                     Ovulation ~{stats.fertileWindowStart && stats.fertileWindowEnd 
                       ? `${new Date(stats.fertileWindowStart).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(stats.fertileWindowEnd).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
                       : 'calculating...'}
@@ -228,7 +228,7 @@ export default function CyclesPage() {
           ) : (
             <div className="space-y-4">
               {cycles.map((cycle) => (
-                <div key={cycle.id} className="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-pink-300 dark:hover:border-pink-600 transition">
+                <div key={cycle.id} className="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-sage-300 dark:hover:border-sage-600 transition">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
@@ -276,7 +276,7 @@ export default function CyclesPage() {
                     <div className="flex gap-2 ml-4">
                       <button
                         onClick={() => handleEdit(cycle)}
-                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400 hover:bg-pink-50 dark:hover:bg-pink-900/30 rounded-lg transition"
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-sage-600 dark:hover:text-sage-400 hover:bg-sage-50 dark:hover:bg-sage-900/30 rounded-lg transition"
                         title="Edit"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

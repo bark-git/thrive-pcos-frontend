@@ -96,7 +96,7 @@ export default function NotificationSettings() {
         onClick={() => handleToggle(settingKey)}
         disabled={savingKey !== null}
         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          settings[settingKey] ? 'bg-pink-500' : 'bg-gray-300 dark:bg-gray-600'
+          settings[settingKey] ? 'bg-sage-500' : 'bg-gray-300 dark:bg-gray-600'
         } disabled:opacity-50`}
         aria-label={`Toggle ${label}`}
       >
@@ -117,7 +117,7 @@ export default function NotificationSettings() {
   if (loading) {
     return (
       <div className="text-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mx-auto"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500 mx-auto"></div>
         <p className="mt-2 text-gray-600 dark:text-gray-400">Loading settings...</p>
       </div>
     );

@@ -41,9 +41,9 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-  HORMONES: 'bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-300',
+  HORMONES: 'bg-sage-100 dark:bg-sage-900/40 text-sage-700 dark:text-sage-300',
   METABOLIC: 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300',
-  THYROID: 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300',
+  THYROID: 'bg-peach-100 dark:bg-peach-900/40 text-peach-700 dark:text-peach-300',
   VITAMINS: 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300',
   LIPIDS: 'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300',
   OTHER: 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
@@ -144,14 +144,14 @@ export default function LabsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-ivory via-sage-50 to-peach-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-ivory via-sage-50 to-peach-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Header currentPage="labs" />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -166,7 +166,7 @@ export default function LabsPage() {
               setEditingResult(null);
               setShowForm(true);
             }}
-            className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition inline-flex items-center gap-2"
+            className="bg-gradient-to-r from-sage-500 to-sage-400 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition inline-flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -179,11 +179,11 @@ export default function LabsPage() {
         {stats && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-              <div className="text-3xl font-bold text-purple-600">{stats.uniqueTests}</div>
+              <div className="text-3xl font-bold text-peach-600">{stats.uniqueTests}</div>
               <div className="text-gray-600 dark:text-gray-400 text-sm">Tests Tracked</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-              <div className="text-3xl font-bold text-pink-600">{stats.totalResults}</div>
+              <div className="text-3xl font-bold text-sage-600">{stats.totalResults}</div>
               <div className="text-gray-600 dark:text-gray-400 text-sm">Total Results</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
@@ -229,7 +229,7 @@ export default function LabsPage() {
                 onClick={() => setViewMode('latest')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                   viewMode === 'latest'
-                    ? 'bg-pink-500 text-white'
+                    ? 'bg-sage-500 text-white'
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
@@ -239,7 +239,7 @@ export default function LabsPage() {
                 onClick={() => setViewMode('all')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                   viewMode === 'all'
-                    ? 'bg-pink-500 text-white'
+                    ? 'bg-sage-500 text-white'
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
@@ -290,7 +290,7 @@ export default function LabsPage() {
               <p>No lab results found</p>
               <button
                 onClick={() => setShowForm(true)}
-                className="mt-3 text-pink-600 hover:text-pink-700 font-medium"
+                className="mt-3 text-sage-600 hover:text-sage-700 font-medium"
               >
                 Add your first lab result
               </button>
@@ -298,7 +298,7 @@ export default function LabsPage() {
           ) : (
             <div className="space-y-3">
               {displayResults.map((result) => (
-                <div key={result.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-pink-300 dark:hover:border-pink-600 transition">
+                <div key={result.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-sage-300 dark:hover:border-sage-600 transition">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 flex-wrap">
@@ -328,7 +328,7 @@ export default function LabsPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setShowTrend({ testCode: result.testCode || result.testName, testName: result.testName })}
-                        className="p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition"
+                        className="p-2 text-gray-400 hover:text-peach-500 hover:bg-peach-50 dark:hover:bg-peach-900/30 rounded-lg transition"
                         title="View trend"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

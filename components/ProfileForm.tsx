@@ -186,7 +186,7 @@ export default function ProfileForm() {
   if (loading) {
     return (
       <div className="text-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mx-auto"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500 mx-auto"></div>
         <p className="mt-2 text-gray-600 dark:text-gray-400">Loading profile...</p>
       </div>
     );
@@ -211,7 +211,7 @@ export default function ProfileForm() {
           {editingSection !== 'personal' && (
             <button
               onClick={() => setEditingSection('personal')}
-              className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 text-sm font-medium"
+              className="text-sage-600 dark:text-sage-400 hover:text-sage-700 dark:hover:text-sage-300 text-sm font-medium"
             >
               Edit
             </button>
@@ -228,7 +228,7 @@ export default function ProfileForm() {
                     type="text"
                     value={formData.firstName}
                     onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     required
                   />
                 </div>
@@ -238,7 +238,7 @@ export default function ProfileForm() {
                     type="text"
                     value={formData.lastName}
                     onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
@@ -251,7 +251,7 @@ export default function ProfileForm() {
                     value={formData.dateOfBirth}
                     onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
                     max={new Date().toISOString().split('T')[0]}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div>
@@ -259,7 +259,7 @@ export default function ProfileForm() {
                   <select
                     value={formData.timezone}
                     onChange={(e) => setFormData({ ...formData, timezone: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     {TIMEZONES.map(tz => (
                       <option key={tz.value} value={tz.value}>{tz.label}</option>
@@ -272,7 +272,7 @@ export default function ProfileForm() {
                 <button
                   onClick={() => handleSaveSection('personal')}
                   disabled={saving}
-                  className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 disabled:opacity-50"
+                  className="px-4 py-2 bg-sage-500 text-white rounded-lg hover:bg-sage-600 disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : 'Save'}
                 </button>
@@ -308,12 +308,12 @@ export default function ProfileForm() {
 
       {/* PCOS Diagnosis Section */}
       <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-        <div className="px-4 py-3 bg-pink-50 dark:bg-pink-900/30 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-pink-800 dark:text-pink-300">PCOS Diagnosis</h3>
+        <div className="px-4 py-3 bg-sage-50 dark:bg-sage-900/30 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-sage-800 dark:text-sage-300">PCOS Diagnosis</h3>
           {editingSection !== 'diagnosis' && (
             <button
               onClick={() => setEditingSection('diagnosis')}
-              className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 text-sm font-medium"
+              className="text-sage-600 dark:text-sage-400 hover:text-sage-700 dark:hover:text-sage-300 text-sm font-medium"
             >
               Edit
             </button>
@@ -333,8 +333,8 @@ export default function ProfileForm() {
                       onClick={() => setFormData({ ...formData, diagnosisStatus: value })}
                       className={`px-4 py-2 rounded-lg border-2 transition ${
                         formData.diagnosisStatus === value
-                          ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300'
-                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-pink-300'
+                          ? 'border-sage-500 bg-sage-50 dark:bg-sage-900/30 text-sage-700 dark:text-sage-300'
+                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-sage-300'
                       }`}
                     >
                       {label}
@@ -351,7 +351,7 @@ export default function ProfileForm() {
                     value={formData.diagnosisDate}
                     onChange={(e) => setFormData({ ...formData, diagnosisDate: e.target.value })}
                     max={new Date().toISOString().split('T')[0]}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
               )}
@@ -366,8 +366,8 @@ export default function ProfileForm() {
                       onClick={() => setFormData({ ...formData, phenotype: key })}
                       className={`w-full p-3 rounded-lg border-2 text-left transition ${
                         formData.phenotype === key
-                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30'
-                          : 'border-gray-200 dark:border-gray-600 hover:border-purple-300'
+                          ? 'border-peach-500 bg-peach-50 dark:bg-peach-900/30'
+                          : 'border-gray-200 dark:border-gray-600 hover:border-peach-300'
                       }`}
                     >
                       <div className="font-medium text-gray-900 dark:text-white">{info.name}</div>
@@ -390,7 +390,7 @@ export default function ProfileForm() {
                 <button
                   onClick={() => handleSaveSection('diagnosis')}
                   disabled={saving}
-                  className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 disabled:opacity-50"
+                  className="px-4 py-2 bg-sage-500 text-white rounded-lg hover:bg-sage-600 disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : 'Save'}
                 </button>
@@ -424,12 +424,12 @@ export default function ProfileForm() {
 
       {/* Concerns & Goals Section */}
       <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-        <div className="px-4 py-3 bg-purple-50 dark:bg-purple-900/30 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-purple-800 dark:text-purple-300">Concerns & Goals</h3>
+        <div className="px-4 py-3 bg-peach-50 dark:bg-peach-900/30 flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-peach-800 dark:text-peach-300">Concerns & Goals</h3>
           {editingSection !== 'concerns' && (
             <button
               onClick={() => setEditingSection('concerns')}
-              className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-medium"
+              className="text-peach-600 dark:text-peach-400 hover:text-peach-700 dark:hover:text-peach-300 text-sm font-medium"
             >
               Edit
             </button>
@@ -451,8 +451,8 @@ export default function ProfileForm() {
                       onClick={() => toggleConcern(concern.id)}
                       className={`px-3 py-2 rounded-lg border-2 text-sm transition ${
                         formData.primaryConcerns.includes(concern.id)
-                          ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300'
-                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-pink-300'
+                          ? 'border-sage-500 bg-sage-50 dark:bg-sage-900/30 text-sage-700 dark:text-sage-300'
+                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-sage-300'
                       }`}
                     >
                       {concern.label}
@@ -473,8 +473,8 @@ export default function ProfileForm() {
                       onClick={() => toggleGoal(goal.id)}
                       className={`px-3 py-2 rounded-lg border-2 text-sm transition ${
                         formData.goals.includes(goal.id)
-                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
-                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-purple-300'
+                          ? 'border-peach-500 bg-peach-50 dark:bg-peach-900/30 text-peach-700 dark:text-peach-300'
+                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-peach-300'
                       }`}
                     >
                       {goal.label}
@@ -487,7 +487,7 @@ export default function ProfileForm() {
                 <button
                   onClick={() => handleSaveSection('concerns')}
                   disabled={saving}
-                  className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 disabled:opacity-50"
+                  className="px-4 py-2 bg-peach-500 text-white rounded-lg hover:bg-peach-600 disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : 'Save'}
                 </button>

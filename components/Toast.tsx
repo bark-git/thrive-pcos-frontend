@@ -91,7 +91,7 @@ function ToastItem({ toast: t, onClose }: { toast: Toast; onClose: () => void })
     success: 'bg-green-500 text-white',
     error: 'bg-red-500 text-white',
     info: 'bg-blue-500 text-white',
-    celebration: 'bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white'
+    celebration: 'bg-gradient-to-r from-peach-500 via-sage-500 to-orange-400 text-white'
   };
 
   return (

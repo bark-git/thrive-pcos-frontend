@@ -54,7 +54,7 @@ export default function InsightsUnlockBanner({ onLogMood, onLogSymptom, onLogPer
   const action = getAction(nextMilestone.type);
 
   return (
-    <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl p-4 mb-6 shadow-lg shadow-purple-500/20">
+    <div className="bg-gradient-to-r from-sage-600 via-sage-500 to-sage-400 rounded-xl p-4 mb-6 shadow-lg shadow-sage-500/20">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
@@ -78,7 +78,7 @@ export default function InsightsUnlockBanner({ onLogMood, onLogSymptom, onLogPer
         
         <button
           onClick={action.onClick}
-          className="flex-shrink-0 flex items-center gap-2 bg-white text-purple-600 px-4 py-2 rounded-lg font-medium text-sm hover:bg-purple-50 transition shadow-md"
+          className="flex-shrink-0 flex items-center gap-2 bg-white text-sage-600 px-4 py-2 rounded-lg font-medium text-sm hover:bg-sage-50 transition shadow-md"
         >
           <span>{action.icon}</span>
           {action.label}

@@ -81,7 +81,7 @@ export default function MoodHistoryPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-ivory to-sage-50 dark:from-forest-900 dark:to-forest-800">
       <Header currentPage="mood" />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -95,7 +95,7 @@ export default function MoodHistoryPage() {
           </div>
           <button
             onClick={() => setShowMoodForm(true)}
-            className="px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-medium hover:from-pink-600 hover:to-purple-700 transition shadow-md"
+            className="px-4 py-2 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-lg font-medium hover:from-sage-600 hover:to-sage-500 transition shadow-md"
           >
             + Log Mood
           </button>
@@ -154,8 +154,8 @@ export default function MoodHistoryPage() {
               onClick={() => setFilter(opt.value as any)}
               className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition ${
                 filter === opt.value
-                  ? 'bg-pink-500 text-white'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-pink-50 dark:hover:bg-gray-700'
+                  ? 'bg-sage-500 text-white'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-sage-50 dark:hover:bg-gray-700'
               }`}
             >
               {opt.label}
@@ -166,13 +166,13 @@ export default function MoodHistoryPage() {
         {/* Loading State */}
         {loading ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-pink-500 mx-auto mb-3"></div>
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-sage-500 mx-auto mb-3"></div>
             <p className="text-gray-500 dark:text-gray-400">Loading entries...</p>
           </div>
         ) : entries.length === 0 ? (
           /* Empty State */
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-12 text-center">
-            <div className="w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-sage-100 dark:bg-sage-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl">😊</span>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -183,7 +183,7 @@ export default function MoodHistoryPage() {
             </p>
             <button
               onClick={() => setShowMoodForm(true)}
-              className="px-6 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-medium hover:from-pink-600 hover:to-purple-700 transition"
+              className="px-6 py-2 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-lg font-medium hover:from-sage-600 hover:to-sage-500 transition"
             >
               Log Your First Mood
             </button>
@@ -222,7 +222,7 @@ export default function MoodHistoryPage() {
                         </span>
                       )}
                       {entry.anxietyLevel && (
-                        <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">
+                        <span className="px-2 py-1 bg-peach-100 dark:bg-peach-900/40 text-peach-700 dark:text-peach-300 rounded-full text-xs font-medium">
                           😰 {entry.anxietyLevel}
                         </span>
                       )}

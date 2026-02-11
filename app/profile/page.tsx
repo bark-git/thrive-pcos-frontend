@@ -28,9 +28,9 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-ivory to-sage-50 dark:from-forest-900 dark:to-forest-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500 mx-auto"></div>
           <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
@@ -38,7 +38,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-ivory to-sage-50 dark:from-forest-900 dark:to-forest-800">
       <Header currentPage="profile" />
 
       {/* Main Content */}
@@ -52,8 +52,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('profile')}
               className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
                 activeTab === 'profile'
-                  ? 'border-b-2 border-pink-500 text-pink-600 dark:text-pink-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400'
+                  ? 'border-b-2 border-sage-500 text-sage-600 dark:text-sage-400'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-sage-600 dark:hover:text-sage-400'
               }`}
             >
               Profile
@@ -62,8 +62,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('notifications')}
               className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
                 activeTab === 'notifications'
-                  ? 'border-b-2 border-pink-500 text-pink-600 dark:text-pink-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400'
+                  ? 'border-b-2 border-sage-500 text-sage-600 dark:text-sage-400'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-sage-600 dark:hover:text-sage-400'
               }`}
             >
               Notifications
@@ -72,8 +72,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('security')}
               className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
                 activeTab === 'security'
-                  ? 'border-b-2 border-pink-500 text-pink-600 dark:text-pink-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400'
+                  ? 'border-b-2 border-sage-500 text-sage-600 dark:text-sage-400'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-sage-600 dark:hover:text-sage-400'
               }`}
             >
               Security
@@ -82,8 +82,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('export')}
               className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
                 activeTab === 'export'
-                  ? 'border-b-2 border-pink-500 text-pink-600 dark:text-pink-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400'
+                  ? 'border-b-2 border-sage-500 text-sage-600 dark:text-sage-400'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-sage-600 dark:hover:text-sage-400'
               }`}
             >
               📥 Export
@@ -92,8 +92,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('privacy')}
               className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
                 activeTab === 'privacy'
-                  ? 'border-b-2 border-pink-500 text-pink-600 dark:text-pink-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400'
+                  ? 'border-b-2 border-sage-500 text-sage-600 dark:text-sage-400'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-sage-600 dark:hover:text-sage-400'
               }`}
             >
               🔒 Privacy
@@ -102,8 +102,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('stats')}
               className={`px-4 sm:px-6 py-3 font-medium transition whitespace-nowrap ${
                 activeTab === 'stats'
-                  ? 'border-b-2 border-pink-500 text-pink-600 dark:text-pink-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400'
+                  ? 'border-b-2 border-sage-500 text-sage-600 dark:text-sage-400'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-sage-600 dark:hover:text-sage-400'
               }`}
             >
               Stats

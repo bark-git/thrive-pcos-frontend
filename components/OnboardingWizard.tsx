@@ -226,7 +226,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
     };
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-white flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-ivory via-sage-50 to-white flex items-center justify-center p-4">
         <div className="max-w-lg w-full">
           {/* Celebration Header */}
           <div className="text-center mb-8">
@@ -235,13 +235,13 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
               {periodLogData ? 'Your First Predictions!' : "You're all set!"}
             </h1>
             <p className="text-gray-600">
-              {periodLogData ? 'Based on your cycle data' : 'Your Thrive PCOS profile is ready'}
+              {periodLogData ? 'Based on your cycle data' : 'Your Flourish profile is ready'}
             </p>
           </div>
 
           {/* Prediction Card - Show after logging period */}
           {periodLogData && (
-            <div className="bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl p-6 mb-6 text-white shadow-xl">
+            <div className="bg-gradient-to-r from-sage-500 to-sage-400 rounded-2xl p-6 mb-6 text-white shadow-xl">
               <div className="grid grid-cols-2 gap-4 mb-4">
                 {/* Next Period */}
                 <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 text-center">
@@ -283,7 +283,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
           <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
             {/* Phenotype Badge */}
             {phenotypeInfo && (
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 mb-4">
+              <div className="bg-gradient-to-r from-peach-50 to-sage-50 rounded-xl p-4 mb-4">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">🧬</span>
                   <div>
@@ -292,7 +292,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                   </div>
                 </div>
                 <div className="mt-3 pl-11">
-                  <p className="text-xs font-medium text-purple-700 mb-1">Personalized tips:</p>
+                  <p className="text-xs font-medium text-peach-700 mb-1">Personalized tips:</p>
                   <ul className="text-xs text-gray-600 space-y-1">
                     {phenotypeInfo.tips.map((tip, i) => (
                       <li key={i}>• {tip}</li>
@@ -308,7 +308,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                 <p className="text-sm font-medium text-gray-700 mb-2">Your goals:</p>
                 <div className="flex flex-wrap gap-2">
                   {selectedGoals.slice(0, 4).map(goal => (
-                    <span key={goal.id} className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
+                    <span key={goal.id} className="text-xs bg-peach-100 text-peach-700 px-3 py-1 rounded-full">
                       {goal.icon} {goal.label}
                     </span>
                   ))}
@@ -318,7 +318,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
 
             {/* Inline Period Logging - Only show if not yet logged */}
             {!periodLogData && (
-              <div className="border-2 border-dashed border-pink-200 rounded-xl p-4 bg-pink-50/50">
+              <div className="border-2 border-dashed border-sage-200 rounded-xl p-4 bg-sage-50/50">
                 <p className="text-sm font-medium text-gray-900 mb-3">
                   📅 Quick Start: When did your last period begin?
                 </p>
@@ -329,12 +329,12 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                     onChange={(e) => setLastPeriodInput(e.target.value)}
                     max={today}
                     min={minDateStr}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-gray-900"
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-sage-500 text-gray-900"
                   />
                   <button
                     onClick={handleLogPeriod}
                     disabled={loggingPeriod || !lastPeriodInput}
-                    className="px-4 py-2 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-600 transition disabled:opacity-50 whitespace-nowrap"
+                    className="px-4 py-2 bg-sage-500 text-white rounded-lg font-medium hover:bg-sage-600 transition disabled:opacity-50 whitespace-nowrap"
                   >
                     {loggingPeriod ? '...' : 'Log It'}
                   </button>
@@ -366,7 +366,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
           <div className="space-y-3">
             <button
               onClick={onComplete}
-              className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-medium hover:from-pink-600 hover:to-purple-700 transition shadow-lg"
+              className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-xl font-medium hover:from-sage-600 hover:to-sage-500 transition shadow-lg"
             >
               <span className="text-xl">🏠</span>
               <span>Go to Dashboard</span>
@@ -375,7 +375,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
             {!periodLogData && (
               <button
                 onClick={() => router.push('/cycles')}
-                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-medium hover:border-pink-300 hover:bg-pink-50 transition"
+                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-medium hover:border-sage-300 hover:bg-sage-50 transition"
               >
                 <span className="text-xl">📅</span>
                 <span>Log Period with Full Details</span>
@@ -486,7 +486,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to Thrive PCOS! 🌸</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to Flourish! 🌸</h2>
               <p className="text-gray-600">Let's personalize your experience. First, tell us about your diagnosis.</p>
             </div>
 
@@ -504,8 +504,8 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                   onClick={() => setData({ ...data, diagnosisStatus: option.value })}
                   className={`w-full p-4 rounded-xl border-2 text-left transition ${
                     data.diagnosisStatus === option.value
-                      ? 'border-pink-500 bg-pink-50'
-                      : 'border-gray-200 hover:border-pink-300'
+                      ? 'border-sage-500 bg-sage-50'
+                      : 'border-gray-200 hover:border-sage-300'
                   }`}
                 >
                   <div className="font-medium text-gray-900">{option.label}</div>
@@ -525,7 +525,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                   value={data.diagnosisDate}
                   onChange={(e) => setData({ ...data, diagnosisDate: e.target.value })}
                   max={new Date().toISOString().split('T')[0]}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-gray-900"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-sage-500 text-gray-900"
                 />
                 <WhyWeAsk text="Knowing how long you've been managing PCOS helps us understand your journey and provide relevant resources." />
               </div>
@@ -546,7 +546,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                 <button
                   onClick={() => setData({ ...data, phenotype: 'A' })}
                   className={`w-full p-4 rounded-xl border-2 text-left transition ${
-                    data.phenotype === 'A' ? 'border-pink-500 bg-pink-50' : 'border-gray-200 hover:border-pink-300'
+                    data.phenotype === 'A' ? 'border-sage-500 bg-sage-50' : 'border-gray-200 hover:border-sage-300'
                   }`}
                 >
                   <div className="font-medium text-gray-900">Type A (Classic)</div>
@@ -555,7 +555,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                 <button
                   onClick={() => setData({ ...data, phenotype: 'B' })}
                   className={`w-full p-4 rounded-xl border-2 text-left transition ${
-                    data.phenotype === 'B' ? 'border-pink-500 bg-pink-50' : 'border-gray-200 hover:border-pink-300'
+                    data.phenotype === 'B' ? 'border-sage-500 bg-sage-50' : 'border-gray-200 hover:border-sage-300'
                   }`}
                 >
                   <div className="font-medium text-gray-900">Type B (Non-PCO)</div>
@@ -564,7 +564,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                 <button
                   onClick={() => setData({ ...data, phenotype: 'C' })}
                   className={`w-full p-4 rounded-xl border-2 text-left transition ${
-                    data.phenotype === 'C' ? 'border-pink-500 bg-pink-50' : 'border-gray-200 hover:border-pink-300'
+                    data.phenotype === 'C' ? 'border-sage-500 bg-sage-50' : 'border-gray-200 hover:border-sage-300'
                   }`}
                 >
                   <div className="font-medium text-gray-900">Type C (Ovulatory)</div>
@@ -573,7 +573,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                 <button
                   onClick={() => setData({ ...data, phenotype: 'D' })}
                   className={`w-full p-4 rounded-xl border-2 text-left transition ${
-                    data.phenotype === 'D' ? 'border-pink-500 bg-pink-50' : 'border-gray-200 hover:border-pink-300'
+                    data.phenotype === 'D' ? 'border-sage-500 bg-sage-50' : 'border-gray-200 hover:border-sage-300'
                   }`}
                 >
                   <div className="font-medium text-gray-900">Type D (Non-Hyperandrogenic)</div>
@@ -583,10 +583,10 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                 <div className="border-t border-gray-200 pt-4 mt-4">
                   <button
                     onClick={() => setShowPhenotypeQuiz(true)}
-                    className="w-full p-4 rounded-xl border-2 border-purple-200 bg-purple-50 text-left hover:border-purple-400 transition"
+                    className="w-full p-4 rounded-xl border-2 border-peach-200 bg-peach-50 text-left hover:border-peach-400 transition"
                   >
-                    <div className="font-medium text-purple-700">🔮 Not sure? Take a quick quiz</div>
-                    <div className="text-sm text-purple-600">Answer a few questions to help determine your type</div>
+                    <div className="font-medium text-peach-700">🔮 Not sure? Take a quick quiz</div>
+                    <div className="text-sm text-peach-600">Answer a few questions to help determine your type</div>
                   </button>
                   <button
                     onClick={() => {
@@ -611,8 +611,8 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                           onClick={() => setQuizAnswers({ ...quizAnswers, [q.id]: optIdx })}
                           className={`w-full p-3 rounded-lg border-2 text-left transition ${
                             quizAnswers[q.id] === optIdx
-                              ? 'border-purple-500 bg-purple-50'
-                              : 'border-gray-200 hover:border-purple-300'
+                              ? 'border-peach-500 bg-peach-50'
+                              : 'border-gray-200 hover:border-peach-300'
                           }`}
                         >
                           {option}
@@ -632,7 +632,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                   <button
                     onClick={calculatePhenotype}
                     disabled={Object.keys(quizAnswers).length < 4}
-                    className="flex-1 px-4 py-3 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition disabled:opacity-50"
+                    className="flex-1 px-4 py-3 bg-peach-500 text-white rounded-xl hover:bg-peach-600 transition disabled:opacity-50"
                   >
                     See My Type
                   </button>
@@ -657,8 +657,8 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                   onClick={() => toggleConcern(concern.id)}
                   className={`p-4 rounded-xl border-2 text-left transition ${
                     data.primaryConcerns.includes(concern.id)
-                      ? 'border-pink-500 bg-pink-50'
-                      : 'border-gray-200 hover:border-pink-300'
+                      ? 'border-sage-500 bg-sage-50'
+                      : 'border-gray-200 hover:border-sage-300'
                   }`}
                 >
                   <div className="text-2xl mb-1">{concern.icon}</div>
@@ -685,8 +685,8 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                   onClick={() => toggleGoal(goal.id)}
                   className={`p-4 rounded-xl border-2 text-left transition ${
                     data.goals.includes(goal.id)
-                      ? 'border-purple-500 bg-purple-50'
-                      : 'border-gray-200 hover:border-purple-300'
+                      ? 'border-peach-500 bg-peach-50'
+                      : 'border-gray-200 hover:border-peach-300'
                   }`}
                 >
                   <div className="text-2xl mb-1">{goal.icon}</div>
@@ -704,7 +704,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-ivory via-sage-50 to-white flex items-center justify-center p-4">
       <div className="max-w-lg w-full">
         {/* Enhanced Progress Indicator */}
         <div className="mb-8">
@@ -726,13 +726,13 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
                   step > s.num 
                     ? 'bg-green-500 text-white' 
                     : step === s.num 
-                    ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg scale-110' 
+                    ? 'bg-gradient-to-r from-sage-500 to-sage-400 text-white shadow-lg scale-110' 
                     : 'bg-gray-200 text-gray-500'
                 }`}>
                   {step > s.num ? '✓' : s.icon}
                 </div>
                 <span className={`text-xs font-medium ${
-                  step === s.num ? 'text-pink-600' : 'text-gray-500'
+                  step === s.num ? 'text-sage-600' : 'text-gray-500'
                 }`}>
                   {s.label}
                 </span>
@@ -743,14 +743,14 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
           {/* Progress Bar */}
           <div className="h-1.5 bg-gray-200 rounded-full">
             <div 
-              className="h-full bg-gradient-to-r from-pink-500 to-purple-600 rounded-full transition-all duration-500 ease-out"
+              className="h-full bg-gradient-to-r from-sage-500 to-sage-400 rounded-full transition-all duration-500 ease-out"
               style={{ width: `${(step / totalSteps) * 100}%` }}
             />
           </div>
           
           {/* Skip Link */}
           <div className="flex justify-end mt-2">
-            <button onClick={handleSkip} className="text-sm text-gray-400 hover:text-pink-600 transition">
+            <button onClick={handleSkip} className="text-sm text-gray-400 hover:text-sage-600 transition">
               Skip setup →
             </button>
           </div>
@@ -774,7 +774,7 @@ export default function OnboardingWizard({ onComplete }: { onComplete: () => voi
               <button
                 onClick={handleNext}
                 disabled={loading || (step === 1 && !data.diagnosisStatus)}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-medium hover:from-pink-600 hover:to-purple-700 hover:shadow-lg transition disabled:opacity-50"
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-xl font-medium hover:from-sage-600 hover:to-sage-500 hover:shadow-lg transition disabled:opacity-50"
               >
                 {loading ? 'Saving...' : step === totalSteps ? 'Get Started! 🎉' : 'Continue'}
               </button>

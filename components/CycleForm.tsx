@@ -82,7 +82,7 @@ export default function CycleForm({ onClose, onSuccess, editCycle }: CycleFormPr
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-sage-500 to-sage-400 bg-clip-text text-transparent">
             {editCycle ? 'Edit Period' : 'Log Period'}
           </h2>
           <button
@@ -111,7 +111,7 @@ export default function CycleForm({ onClose, onSuccess, editCycle }: CycleFormPr
                 required
                 value={formData.periodStartDate}
                 onChange={(e) => setFormData({ ...formData, periodStartDate: e.target.value })}
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
               />
             </div>
 
@@ -124,7 +124,7 @@ export default function CycleForm({ onClose, onSuccess, editCycle }: CycleFormPr
                 value={formData.periodEndDate}
                 onChange={(e) => setFormData({ ...formData, periodEndDate: e.target.value })}
                 min={formData.periodStartDate}
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
               />
             </div>
           </div>
@@ -147,8 +147,8 @@ export default function CycleForm({ onClose, onSuccess, editCycle }: CycleFormPr
                   onClick={() => setFormData({ ...formData, flowIntensity: flow.value })}
                   className={`px-4 py-3 rounded-lg border-2 transition ${
                     formData.flowIntensity === flow.value
-                      ? 'border-pink-500 bg-pink-50 text-gray-900'
-                      : 'border-gray-200 hover:border-pink-300 text-gray-900'
+                      ? 'border-sage-500 bg-sage-50 text-gray-900'
+                      : 'border-gray-200 hover:border-sage-300 text-gray-900'
                   }`}
                 >
                   <div className="text-2xl mb-1">{flow.emoji}</div>
@@ -176,7 +176,7 @@ export default function CycleForm({ onClose, onSuccess, editCycle }: CycleFormPr
                 max="5"
                 value={formData.cramps || 0}
                 onChange={(e) => setFormData({ ...formData, cramps: e.target.value })}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-pink-500"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-sage-500"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
                 <span>None</span>
@@ -198,7 +198,7 @@ export default function CycleForm({ onClose, onSuccess, editCycle }: CycleFormPr
                 max="5"
                 value={formData.bloating || 0}
                 onChange={(e) => setFormData({ ...formData, bloating: e.target.value })}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-sage-500"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
                 <span>None</span>
@@ -220,7 +220,7 @@ export default function CycleForm({ onClose, onSuccess, editCycle }: CycleFormPr
                 max="5"
                 value={formData.moodSwings || 0}
                 onChange={(e) => setFormData({ ...formData, moodSwings: e.target.value })}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-pink-500"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-sage-500"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
                 <span>None</span>
@@ -240,7 +240,7 @@ export default function CycleForm({ onClose, onSuccess, editCycle }: CycleFormPr
               maxLength={500}
               rows={3}
               placeholder="Any additional details about this period..."
-              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
             />
             <p className="text-xs text-gray-500 mt-1">{formData.notes.length}/500 characters</p>
           </div>
@@ -257,7 +257,7 @@ export default function CycleForm({ onClose, onSuccess, editCycle }: CycleFormPr
             <button
               type="submit"
               disabled={loading || !formData.periodStartDate}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:from-pink-600 hover:to-purple-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-lg hover:from-sage-600 hover:to-sage-500 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Saving...' : editCycle ? 'Update Period' : 'Log Period'}
             </button>

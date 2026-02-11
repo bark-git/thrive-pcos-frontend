@@ -31,7 +31,7 @@ export default function CelebrationModal({ isOpen, onClose, type, value, message
       icon: '🔥',
       title: `${value} Day Streak!`,
       subtitle: 'You\'re on fire! Keep it going!',
-      gradient: 'from-orange-400 via-red-500 to-pink-500'
+      gradient: 'from-orange-400 via-red-500 to-sage-500'
     },
     milestone: {
       icon: '🏆',
@@ -43,13 +43,13 @@ export default function CelebrationModal({ isOpen, onClose, type, value, message
       icon: '🌟',
       title: 'First Entry!',
       subtitle: 'You\'ve taken the first step on your health journey!',
-      gradient: 'from-purple-400 via-pink-500 to-red-500'
+      gradient: 'from-peach-400 via-sage-500 to-red-500'
     },
     week: {
       icon: '📅',
       title: 'One Week Complete!',
       subtitle: 'You\'ve been tracking for a whole week. Insights unlocked!',
-      gradient: 'from-blue-400 via-purple-500 to-pink-500'
+      gradient: 'from-blue-400 via-sage-500 to-sage-500'
     }
   };
 

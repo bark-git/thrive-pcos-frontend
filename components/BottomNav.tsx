@@ -32,7 +32,7 @@ export default function BottomNav() {
               href={item.href}
               className={`flex flex-col items-center justify-center flex-1 py-2 transition-all ${
                 isActive 
-                  ? 'text-pink-600 dark:text-pink-400' 
+                  ? 'text-sage-600 dark:text-sage-400' 
                   : 'text-gray-500 dark:text-gray-400'
               }`}
             >
@@ -43,7 +43,7 @@ export default function BottomNav() {
                 {item.label}
               </span>
               {isActive && (
-                <div className="absolute bottom-1 w-1 h-1 bg-pink-500 rounded-full" />
+                <div className="absolute bottom-1 w-1 h-1 bg-sage-500 rounded-full" />
               )}
             </Link>
           );

@@ -10,7 +10,7 @@ interface MoodTrendChartProps {
 const PHASE_COLORS: Record<string, { bg: string; text: string; label: string }> = {
   MENSTRUAL: { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-600 dark:text-red-400', label: 'Menstrual' },
   FOLLICULAR: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-600 dark:text-green-400', label: 'Follicular' },
-  OVULATION: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-600 dark:text-purple-400', label: 'Ovulation' },
+  OVULATION: { bg: 'bg-peach-100 dark:bg-peach-900/30', text: 'text-peach-600 dark:text-peach-400', label: 'Ovulation' },
   LUTEAL: { bg: 'bg-amber-100 dark:bg-amber-900/30', text: 'text-amber-600 dark:text-amber-400', label: 'Luteal' },
 };
 
@@ -83,7 +83,7 @@ export default function MoodTrendChart({ onUnlockProgress }: MoodTrendChartProps
           </h3>
         </div>
         
-        <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-700 dark:to-gray-700 rounded-lg p-6 text-center">
+        <div className="bg-gradient-to-br from-ivory to-sage-50 dark:from-gray-700 dark:to-gray-700 rounded-lg p-6 text-center">
           <div className="w-16 h-16 bg-white dark:bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
             <span className="text-3xl">🔒</span>
           </div>
@@ -103,7 +103,7 @@ export default function MoodTrendChart({ onUnlockProgress }: MoodTrendChartProps
             </div>
             <div className="h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-gradient-to-r from-pink-500 to-purple-500 rounded-full transition-all duration-500"
+                className="h-full bg-gradient-to-r from-sage-500 to-peach-500 rounded-full transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -170,10 +170,10 @@ export default function MoodTrendChart({ onUnlockProgress }: MoodTrendChartProps
           {/* Average line */}
           {stats && (
             <div
-              className="absolute w-full border-t-2 border-dashed border-pink-300 dark:border-pink-600 z-10"
+              className="absolute w-full border-t-2 border-dashed border-sage-300 dark:border-sage-600 z-10"
               style={{ bottom: ((stats.average - 1) / (maxMood - 1)) * chartHeight + 32 }}
             >
-              <span className="absolute right-0 -top-3 text-xs text-pink-500 dark:text-pink-400 bg-white dark:bg-gray-800 px-1">
+              <span className="absolute right-0 -top-3 text-xs text-sage-500 dark:text-sage-400 bg-white dark:bg-gray-800 px-1">
                 avg
               </span>
             </div>
@@ -219,7 +219,7 @@ export default function MoodTrendChart({ onUnlockProgress }: MoodTrendChartProps
                 >
                   {/* Point */}
                   <div className={`w-3 h-3 rounded-full border-2 border-white dark:border-gray-800 shadow-sm cursor-pointer transition-transform hover:scale-150 ${
-                    phase ? phase.bg : 'bg-pink-500'
+                    phase ? phase.bg : 'bg-sage-500'
                   }`} />
                   
                   {/* Tooltip */}

@@ -54,11 +54,11 @@ export default function FeedbackModal({ onClose }: FeedbackModalProps) {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Thank you!</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Your feedback helps us make Thrive better for everyone with PCOS.
+            Your feedback helps us make Flourish better for everyone with PCOS.
           </p>
           <button
             onClick={onClose}
-            className="w-full px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg transition"
+            className="w-full px-6 py-3 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-xl font-medium hover:shadow-lg transition"
           >
             Close
           </button>
@@ -71,11 +71,11 @@ export default function FeedbackModal({ onClose }: FeedbackModalProps) {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-pink-500 to-purple-600 p-6 rounded-t-2xl text-white">
+        <div className="bg-gradient-to-r from-sage-500 to-sage-400 p-6 rounded-t-2xl text-white">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-bold">Share Feedback 💬</h2>
-              <p className="text-white/80 text-sm mt-1">Help us improve Thrive PCOS</p>
+              <p className="text-white/80 text-sm mt-1">Help us improve Flourish</p>
             </div>
             <button 
               onClick={onClose}
@@ -100,8 +100,8 @@ export default function FeedbackModal({ onClose }: FeedbackModalProps) {
                   onClick={() => setFeedbackType(type.id)}
                   className={`p-4 rounded-xl border-2 text-left transition ${
                     feedbackType === type.id
-                      ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30'
-                      : 'border-gray-200 dark:border-gray-600 hover:border-purple-300'
+                      ? 'border-peach-500 bg-peach-50 dark:bg-peach-900/30'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-peach-300'
                   }`}
                 >
                   <span className="text-2xl block mb-1">{type.icon}</span>
@@ -127,7 +127,7 @@ export default function FeedbackModal({ onClose }: FeedbackModalProps) {
                   ? 'Describe the feature you\'d like to see...'
                   : 'Share your thoughts...'
               }
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-peach-500 focus:border-transparent resize-none"
               rows={4}
               required
             />
@@ -140,7 +140,7 @@ export default function FeedbackModal({ onClose }: FeedbackModalProps) {
                 type="checkbox"
                 checked={includeEmail}
                 onChange={(e) => setIncludeEmail(e.target.checked)}
-                className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                className="rounded border-gray-300 text-peach-600 focus:ring-peach-500"
               />
               <span>I'd like to be contacted about this feedback</span>
             </label>
@@ -151,7 +151,7 @@ export default function FeedbackModal({ onClose }: FeedbackModalProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="mt-3 w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="mt-3 w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-peach-500 focus:border-transparent"
               />
             )}
           </div>
@@ -168,7 +168,7 @@ export default function FeedbackModal({ onClose }: FeedbackModalProps) {
             <button
               type="submit"
               disabled={!feedbackType || !message.trim() || submitting}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-3 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? (
                 <span className="flex items-center justify-center gap-2">

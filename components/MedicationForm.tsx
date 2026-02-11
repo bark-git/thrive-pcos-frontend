@@ -124,7 +124,7 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-sage-500 to-sage-400 bg-clip-text text-transparent">
             {editMedication ? 'Edit Medication' : 'Add Medication'}
           </h2>
           <button
@@ -155,8 +155,8 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
                   onClick={() => setFormData({ ...formData, name: med })}
                   className={`px-3 py-2 rounded-lg border text-sm transition text-gray-900 ${
                     formData.name === med
-                      ? 'border-pink-500 bg-pink-50 font-medium'
-                      : 'border-gray-200 hover:border-pink-300'
+                      ? 'border-sage-500 bg-sage-50 font-medium'
+                      : 'border-gray-200 hover:border-sage-300'
                   }`}
                 >
                   {med}
@@ -169,7 +169,7 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
                 value={formData.customName}
                 onChange={(e) => setFormData({ ...formData, customName: e.target.value })}
                 placeholder="Enter medication name"
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
               />
             )}
           </div>
@@ -185,7 +185,7 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
                 value={formData.dosage}
                 onChange={(e) => setFormData({ ...formData, dosage: e.target.value })}
                 placeholder="e.g., 500mg, 25mg"
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
               />
             </div>
 
@@ -196,7 +196,7 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
               <select
                 value={formData.frequency}
                 onChange={(e) => setFormData({ ...formData, frequency: e.target.value })}
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
               >
                 <option value="">Select frequency</option>
                 {FREQUENCIES.map((freq) => (
@@ -209,7 +209,7 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
                   value={formData.customFrequency}
                   onChange={(e) => setFormData({ ...formData, customFrequency: e.target.value })}
                   placeholder="Enter frequency"
-                  className="w-full mt-2 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+                  className="w-full mt-2 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
                 />
               )}
             </div>
@@ -226,7 +226,7 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
                 required
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
               />
             </div>
 
@@ -239,7 +239,7 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
                 value={formData.endDate}
                 onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
                 min={formData.startDate}
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
               />
             </div>
           </div>
@@ -284,7 +284,7 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
               placeholder="Any side effects you've experienced..."
               rows={2}
               maxLength={500}
-              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
             />
           </div>
 
@@ -299,7 +299,7 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
               placeholder="Any additional notes..."
               rows={2}
               maxLength={1000}
-              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
             />
           </div>
 
@@ -315,7 +315,7 @@ export default function MedicationForm({ onClose, onSuccess, editMedication }: M
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:from-pink-600 hover:to-purple-700 transition font-medium disabled:opacity-50"
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-lg hover:from-sage-600 hover:to-sage-500 transition font-medium disabled:opacity-50"
             >
               {loading ? 'Saving...' : editMedication ? 'Update' : 'Add Medication'}
             </button>

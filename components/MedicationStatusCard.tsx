@@ -49,7 +49,7 @@ export default function MedicationStatusCard() {
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Active Medications</h3>
         <a 
           href="/medications" 
-          className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 text-sm font-medium transition"
+          className="text-sage-600 dark:text-sage-400 hover:text-sage-700 dark:hover:text-sage-300 text-sm font-medium transition"
         >
           Manage →
         </a>
@@ -66,7 +66,7 @@ export default function MedicationStatusCard() {
           </p>
           <a 
             href="/medications" 
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg text-sm font-medium hover:shadow-lg transition"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-lg text-sm font-medium hover:shadow-lg transition"
           >
             <span>+</span>
             <span>Add Medication</span>
@@ -89,7 +89,7 @@ export default function MedicationStatusCard() {
             <div className="text-center pt-2">
               <a 
                 href="/medications" 
-                className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 text-sm font-medium"
+                className="text-sage-600 dark:text-sage-400 hover:text-sage-700 dark:hover:text-sage-300 text-sm font-medium"
               >
                 +{activeMeds.length - 4} more
               </a>

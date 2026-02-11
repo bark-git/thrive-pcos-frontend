@@ -70,9 +70,9 @@ export default function SymptomsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-ivory to-sage-50 dark:from-forest-900 dark:to-forest-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500 mx-auto"></div>
           <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
@@ -80,7 +80,7 @@ export default function SymptomsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-ivory to-sage-50 dark:from-forest-900 dark:to-forest-800">
       <Header currentPage="symptoms" />
 
       {/* Main Content */}
@@ -92,7 +92,7 @@ export default function SymptomsPage() {
               setEditingSymptom(null);
               setShowForm(true);
             }}
-            className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition"
+            className="bg-gradient-to-r from-sage-500 to-sage-400 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition"
           >
             + Log Symptom
           </button>

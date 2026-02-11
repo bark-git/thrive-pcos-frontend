@@ -91,7 +91,7 @@ export default function MonthlyCheckIn({ onClose, onComplete }: MonthlyCheckInPr
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500 mx-auto"></div>
         </div>
       </div>
     );
@@ -101,7 +101,7 @@ export default function MonthlyCheckIn({ onClose, onComplete }: MonthlyCheckInPr
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6 rounded-t-2xl text-white">
+        <div className="bg-gradient-to-r from-peach-500 to-sage-500 p-6 rounded-t-2xl text-white">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-bold">Monthly Check-in 📊</h2>
@@ -137,7 +137,7 @@ export default function MonthlyCheckIn({ onClose, onComplete }: MonthlyCheckInPr
                       return (
                         <span 
                           key={concernId}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 rounded-full text-sm"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-peach-100 dark:bg-peach-900/40 text-peach-700 dark:text-peach-300 rounded-full text-sm"
                         >
                           <span>{concern.icon}</span>
                           <span>{concern.label}</span>
@@ -149,7 +149,7 @@ export default function MonthlyCheckIn({ onClose, onComplete }: MonthlyCheckInPr
               </div>
 
               {/* Question */}
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-700 rounded-xl p-5 mb-6">
+              <div className="bg-gradient-to-br from-peach-50 to-sage-50 dark:from-gray-700 dark:to-gray-700 rounded-xl p-5 mb-6">
                 <p className="text-gray-900 dark:text-white font-medium mb-2">
                   Has anything changed this month?
                 </p>
@@ -168,7 +168,7 @@ export default function MonthlyCheckIn({ onClose, onComplete }: MonthlyCheckInPr
                 </button>
                 <button
                   onClick={() => setStep('update')}
-                  className="flex-1 px-4 py-3 border-2 border-purple-500 text-purple-600 dark:text-purple-400 rounded-xl font-medium hover:bg-purple-50 dark:hover:bg-purple-900/20 transition"
+                  className="flex-1 px-4 py-3 border-2 border-peach-500 text-peach-600 dark:text-peach-400 rounded-xl font-medium hover:bg-peach-50 dark:hover:bg-peach-900/20 transition"
                 >
                   Things changed
                 </button>
@@ -192,8 +192,8 @@ export default function MonthlyCheckIn({ onClose, onComplete }: MonthlyCheckInPr
                       onClick={() => toggleConcern(concern.id)}
                       className={`p-3 rounded-xl border-2 text-left transition ${
                         selectedConcerns.includes(concern.id)
-                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30'
-                          : 'border-gray-200 dark:border-gray-600 hover:border-purple-300'
+                          ? 'border-peach-500 bg-peach-50 dark:bg-peach-900/30'
+                          : 'border-gray-200 dark:border-gray-600 hover:border-peach-300'
                       }`}
                     >
                       <span className="text-xl block mb-1">{concern.icon}</span>
@@ -213,7 +213,7 @@ export default function MonthlyCheckIn({ onClose, onComplete }: MonthlyCheckInPr
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="E.g., Started new medication, lifestyle changes, symptoms improved..."
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-peach-500 focus:border-transparent resize-none"
                     rows={3}
                   />
                 </div>
@@ -249,7 +249,7 @@ export default function MonthlyCheckIn({ onClose, onComplete }: MonthlyCheckInPr
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50"
+                  className="flex-1 px-4 py-3 bg-gradient-to-r from-peach-500 to-sage-500 text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : 'Save Changes'}
                 </button>

@@ -104,8 +104,8 @@ export default function DataExport() {
               onClick={() => setDateRange(option.value)}
               className={`px-3 py-2 rounded-lg border-2 text-sm font-medium transition ${
                 dateRange === option.value
-                  ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300'
-                  : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-pink-300 dark:hover:border-pink-700'
+                  ? 'border-sage-500 bg-sage-50 dark:bg-sage-900/30 text-sage-700 dark:text-sage-300'
+                  : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-sage-300 dark:hover:border-sage-700'
               }`}
             >
               {option.label}
@@ -115,14 +115,14 @@ export default function DataExport() {
       </div>
 
       {/* Complete Health Report - Featured */}
-      <div className="border-2 border-pink-500 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-xl p-5 mb-6">
+      <div className="border-2 border-sage-500 bg-gradient-to-r from-ivory to-sage-50 dark:from-sage-900/20 dark:to-peach-900/20 rounded-xl p-5 mb-6">
         <div className="flex items-start gap-4 mb-4">
           <span className="text-3xl">📋</span>
           <div className="flex-1">
             <h4 className="text-lg font-bold text-gray-900 dark:text-white">Complete Health Report</h4>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Everything in one file: mood tracking, symptoms, cycles, medications, and lab results.
-              <span className="font-medium text-pink-600 dark:text-pink-400"> Perfect for doctor visits!</span>
+              <span className="font-medium text-sage-600 dark:text-sage-400"> Perfect for doctor visits!</span>
             </p>
           </div>
         </div>
@@ -144,7 +144,7 @@ export default function DataExport() {
           <button
             onClick={() => handleExport('all-pdf')}
             disabled={exporting !== null}
-            className="flex-1 px-4 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm"
+            className="flex-1 px-4 py-2.5 bg-gradient-to-r from-sage-500 to-sage-400 hover:from-sage-600 hover:to-sage-500 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm"
           >
             {exporting === 'all-pdf' ? (
               <span className="flex items-center justify-center gap-2">
@@ -182,7 +182,7 @@ export default function DataExport() {
             <button
               onClick={() => handleExport('mood-pdf')}
               disabled={exporting !== null}
-              className="flex-1 px-3 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition disabled:opacity-50 font-medium text-xs"
+              className="flex-1 px-3 py-2 bg-sage-500 hover:bg-sage-600 text-white rounded-lg transition disabled:opacity-50 font-medium text-xs"
             >
               {exporting === 'mood-pdf' ? 'Creating...' : 'PDF'}
             </button>
@@ -209,7 +209,7 @@ export default function DataExport() {
             <button
               onClick={() => handleExport('symptoms-pdf')}
               disabled={exporting !== null}
-              className="flex-1 px-3 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition disabled:opacity-50 font-medium text-xs"
+              className="flex-1 px-3 py-2 bg-peach-500 hover:bg-peach-600 text-white rounded-lg transition disabled:opacity-50 font-medium text-xs"
             >
               {exporting === 'symptoms-pdf' ? 'Creating...' : 'PDF'}
             </button>

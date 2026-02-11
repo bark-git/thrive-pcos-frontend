@@ -69,7 +69,7 @@ export default function QuickPeriodForm({ onClose, onSubmit }: QuickPeriodFormPr
               type="date"
               value={formData.periodStartDate}
               onChange={(e) => setFormData({ ...formData, periodStartDate: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               max={new Date().toISOString().split('T')[0]}
               required
             />
@@ -117,8 +117,8 @@ export default function QuickPeriodForm({ onClose, onSubmit }: QuickPeriodFormPr
                   onClick={() => setFormData({ ...formData, cramps: level })}
                   className={`flex-1 py-2 rounded-lg border-2 transition text-sm ${
                     formData.cramps === level
-                      ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 font-medium'
-                      : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-pink-300'
+                      ? 'border-sage-500 bg-sage-50 dark:bg-sage-900/30 text-sage-700 dark:text-sage-300 font-medium'
+                      : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-sage-300'
                   }`}
                 >
                   {level === 0 ? 'None' : level}
@@ -135,7 +135,7 @@ export default function QuickPeriodForm({ onClose, onSubmit }: QuickPeriodFormPr
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400"
               rows={2}
               placeholder="Any additional notes..."
               maxLength={500}
@@ -159,7 +159,7 @@ export default function QuickPeriodForm({ onClose, onSubmit }: QuickPeriodFormPr
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-xl font-medium hover:from-red-600 hover:to-pink-700 transition disabled:opacity-50"
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-sage-600 text-white rounded-xl font-medium hover:from-red-600 hover:to-sage-700 transition disabled:opacity-50"
             >
               {loading ? 'Saving...' : 'Log Period'}
             </button>
@@ -168,7 +168,7 @@ export default function QuickPeriodForm({ onClose, onSubmit }: QuickPeriodFormPr
           {/* Link to full cycles page */}
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">
             Need to log an end date or more details?{' '}
-            <a href="/cycles" className="text-pink-600 dark:text-pink-400 hover:underline">
+            <a href="/cycles" className="text-sage-600 dark:text-sage-400 hover:underline">
               Go to Cycles page →
             </a>
           </p>

@@ -25,7 +25,7 @@ export default function AccountStats() {
   if (loading) {
     return (
       <div className="text-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mx-auto"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500 mx-auto"></div>
         <p className="mt-2 text-gray-600 dark:text-gray-400">Loading stats...</p>
       </div>
     );
@@ -45,7 +45,7 @@ export default function AccountStats() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {/* Account Age */}
-        <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-xl p-6">
+        <div className="bg-gradient-to-br from-ivory to-sage-50 dark:from-sage-900/20 dark:to-peach-900/20 rounded-xl p-6">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm text-gray-600 dark:text-gray-400">Account Age</p>
             <span className="text-3xl">📅</span>
@@ -55,7 +55,7 @@ export default function AccountStats() {
         </div>
 
         {/* Mood Entries */}
-        <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-xl p-6">
+        <div className="bg-gradient-to-br from-ivory to-sage-50 dark:from-sage-900/20 dark:to-peach-900/20 rounded-xl p-6">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm text-gray-600 dark:text-gray-400">Mood Entries</p>
             <span className="text-3xl">😊</span>
@@ -65,7 +65,7 @@ export default function AccountStats() {
         </div>
 
         {/* Symptom Entries */}
-        <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-xl p-6">
+        <div className="bg-gradient-to-br from-ivory to-sage-50 dark:from-sage-900/20 dark:to-peach-900/20 rounded-xl p-6">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm text-gray-600 dark:text-gray-400">Symptom Entries</p>
             <span className="text-3xl">📝</span>
@@ -75,7 +75,7 @@ export default function AccountStats() {
         </div>
 
         {/* Cycle Entries */}
-        <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-xl p-6">
+        <div className="bg-gradient-to-br from-ivory to-sage-50 dark:from-sage-900/20 dark:to-peach-900/20 rounded-xl p-6">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm text-gray-600 dark:text-gray-400">Cycle Entries</p>
             <span className="text-3xl">📆</span>
@@ -85,7 +85,7 @@ export default function AccountStats() {
         </div>
 
         {/* Medications */}
-        <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-xl p-6">
+        <div className="bg-gradient-to-br from-ivory to-sage-50 dark:from-sage-900/20 dark:to-peach-900/20 rounded-xl p-6">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm text-gray-600 dark:text-gray-400">Medications</p>
             <span className="text-3xl">💊</span>
@@ -95,7 +95,7 @@ export default function AccountStats() {
         </div>
 
         {/* Total Activity */}
-        <div className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-xl p-6">
+        <div className="bg-gradient-to-br from-ivory to-sage-50 dark:from-sage-900/20 dark:to-peach-900/20 rounded-xl p-6">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm text-gray-600 dark:text-gray-400">Total Activity</p>
             <span className="text-3xl">📊</span>

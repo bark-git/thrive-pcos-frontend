@@ -47,7 +47,7 @@ export default function PrivacyInfo() {
           Privacy & Data Protection
         </h3>
         <p className="text-gray-600 dark:text-gray-400 mb-6">
-          At Thrive PCOS, your privacy and the security of your health data is our top priority.
+          At Flourish, your privacy and the security of your health data is our top priority.
         </p>
       </div>
 
@@ -81,9 +81,9 @@ export default function PrivacyInfo() {
           </p>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-5 border border-purple-200 dark:border-purple-800">
+        <div className="bg-gradient-to-br from-peach-50 to-sage-50 dark:from-peach-900/20 dark:to-sage-900/20 rounded-xl p-5 border border-peach-200 dark:border-peach-800">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-peach-500 rounded-full flex items-center justify-center">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
               </svg>

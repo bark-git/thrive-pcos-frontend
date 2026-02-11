@@ -67,7 +67,7 @@ export default function CorrelationCards() {
           </h3>
         </div>
         
-        <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-700 rounded-lg p-6 text-center">
+        <div className="bg-gradient-to-br from-peach-50 to-sage-50 dark:from-gray-700 dark:to-gray-700 rounded-lg p-6 text-center">
           <div className="w-16 h-16 bg-white dark:bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
             <span className="text-3xl">📅</span>
           </div>
@@ -81,7 +81,7 @@ export default function CorrelationCards() {
           
           <a
             href="/cycles"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-peach-600 text-white rounded-lg hover:bg-peach-700 transition text-sm font-medium"
           >
             <span>📅</span> Log Period
           </a>
@@ -101,7 +101,7 @@ export default function CorrelationCards() {
         </div>
         
         <div className="text-center py-8">
-          <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+          <div className="w-12 h-12 bg-peach-100 dark:bg-peach-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
             <span className="text-2xl">🔍</span>
           </div>
           <p className="text-gray-600 dark:text-gray-400 mb-2">Building your patterns...</p>
@@ -189,7 +189,7 @@ export default function CorrelationCards() {
                   key={i}
                   className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2"
                 >
-                  <span className="text-purple-500 flex-shrink-0 mt-0.5">💡</span>
+                  <span className="text-peach-500 flex-shrink-0 mt-0.5">💡</span>
                   <span>{c.finding}</span>
                 </div>
               ))}

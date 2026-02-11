@@ -211,7 +211,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-sage-500 to-sage-400 bg-clip-text text-transparent">
             {editResult ? 'Edit Lab Result' : 'Add Lab Result'}
           </h2>
           <button
@@ -240,7 +240,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
               value={formData.testDate}
               onChange={(e) => setFormData({ ...formData, testDate: e.target.value })}
               max={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
             />
           </div>
 
@@ -257,7 +257,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                     setSelectedCategory('CUSTOM');
                     setFormData({ ...formData, testCode: '', testName: '', unit: '', refRangeLow: '', refRangeHigh: '', category: 'CUSTOM' });
                   }}
-                  className="text-sm text-pink-600 hover:text-pink-700"
+                  className="text-sm text-sage-600 hover:text-sage-700"
                 >
                   + Add custom test
                 </button>
@@ -273,7 +273,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                   onClick={() => setSelectedCategory(cat.value)}
                       className={`px-3 py-1 rounded-full text-sm transition ${
                         selectedCategory === cat.value
-                          ? 'bg-pink-500 text-white'
+                          ? 'bg-sage-500 text-white'
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }`}
                     >
@@ -296,8 +296,8 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                               onClick={() => handleSelectTest(test)}
                               className={`px-3 py-2 rounded-lg border text-sm text-left transition ${
                                 formData.testCode === test.code
-                                  ? 'border-pink-500 bg-pink-50 text-gray-900'
-                                  : 'border-gray-200 hover:border-pink-300 text-gray-700'
+                                  ? 'border-sage-500 bg-sage-50 text-gray-900'
+                                  : 'border-gray-200 hover:border-sage-300 text-gray-700'
                               }`}
                             >
                               <div className="font-medium">{test.name}</div>
@@ -319,7 +319,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                         value={formData.testName}
                         onChange={(e) => setFormData({ ...formData, testName: e.target.value, testCode: '' })}
                         placeholder="Enter test name"
-                        className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900 mb-2"
+                        className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900 mb-2"
                       />
                       <div className="grid grid-cols-3 gap-2">
                         <input
@@ -327,7 +327,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                           value={formData.unit}
                           onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
                           placeholder="Unit"
-                          className="px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900 text-sm"
+                          className="px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900 text-sm"
                         />
                         <input
                           type="number"
@@ -335,7 +335,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                           value={formData.refRangeLow}
                           onChange={(e) => setFormData({ ...formData, refRangeLow: e.target.value })}
                           placeholder="Ref. Low"
-                          className="px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900 text-sm"
+                          className="px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900 text-sm"
                         />
                         <input
                           type="number"
@@ -343,7 +343,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                           value={formData.refRangeHigh}
                           onChange={(e) => setFormData({ ...formData, refRangeHigh: e.target.value })}
                           placeholder="Ref. High"
-                          className="px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900 text-sm"
+                          className="px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900 text-sm"
                         />
                       </div>
                     </div>
@@ -357,8 +357,8 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                         onClick={() => handleSelectTest(test)}
                         className={`px-3 py-2 rounded-lg border text-sm text-left transition ${
                           formData.testCode === test.code
-                            ? 'border-pink-500 bg-pink-50 text-gray-900'
-                            : 'border-gray-200 hover:border-pink-300 text-gray-700'
+                            ? 'border-sage-500 bg-sage-50 text-gray-900'
+                            : 'border-gray-200 hover:border-sage-300 text-gray-700'
                         }`}
                       >
                         <div className="font-medium">{test.name}</div>
@@ -369,7 +369,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                 )}
 
                 {formData.testName && selectedCategory !== 'CUSTOM' && (
-                  <div className="mt-3 p-3 bg-pink-50 rounded-lg">
+                  <div className="mt-3 p-3 bg-sage-50 rounded-lg">
                     <div className="font-medium text-gray-900">Selected: {formData.testName}</div>
                     <div className="text-sm text-gray-600">
                       Reference: {formData.refRangeLow}-{formData.refRangeHigh} {formData.unit}
@@ -391,7 +391,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                 value={formData.value}
                 onChange={(e) => setFormData({ ...formData, value: e.target.value })}
                 placeholder="Enter value"
-                className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+                className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
               />
               {formData.unit && (
                 <span className="text-gray-600">{formData.unit}</span>
@@ -419,7 +419,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
               value={formData.labName}
               onChange={(e) => setFormData({ ...formData, labName: e.target.value })}
               placeholder="e.g., Quest Diagnostics, LabCorp"
-              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
             />
           </div>
 
@@ -433,7 +433,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
                 ...formData,
                 flagStatus: e.target.checked ? 'FLAGGED_FOR_DISCUSSION' : ''
               })}
-              className="w-4 h-4 text-pink-500 border-gray-300 rounded focus:ring-pink-500"
+              className="w-4 h-4 text-sage-500 border-gray-300 rounded focus:ring-sage-500"
             />
             <label htmlFor="flagForDiscussion" className="text-sm text-gray-700">
               Flag for discussion with doctor
@@ -451,7 +451,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
               placeholder="Any notes about this result..."
               rows={2}
               maxLength={500}
-              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-pink-500 text-gray-900"
+              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-sage-500 text-gray-900"
             />
           </div>
 
@@ -467,7 +467,7 @@ export default function LabForm({ onClose, onSuccess, editResult }: LabFormProps
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:from-pink-600 hover:to-purple-700 transition font-medium disabled:opacity-50"
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-sage-500 to-sage-400 text-white rounded-lg hover:from-sage-600 hover:to-sage-500 transition font-medium disabled:opacity-50"
             >
               {loading ? 'Saving...' : editResult ? 'Update' : 'Add Result'}
             </button>

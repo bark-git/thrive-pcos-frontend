@@ -46,14 +46,20 @@ export default function Header({ currentPage }: HeaderProps) {
   ];
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm dark:shadow-gray-700/30 transition-colors">
+    <header className="bg-white dark:bg-forest-800 shadow-sm dark:shadow-forest-900/30 transition-colors border-b border-sage-100 dark:border-forest-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           {/* Logo and Nav */}
           <div className="flex items-center space-x-6">
-            <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-pink-700 dark:text-pink-400">Thrive PCOS</h1>
-              {user && <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hidden sm:block">Welcome back, {user.firstName}!</p>}
+            <div className="flex items-center gap-3">
+              {/* Flourish Logo Mark */}
+              <div className="w-10 h-10 bg-gradient-to-br from-sage-400 to-sage-500 rounded-full flex items-center justify-center shadow-md">
+                <span className="font-lora text-white text-xl font-semibold">F</span>
+              </div>
+              <div>
+                <h1 className="text-xl sm:text-2xl font-lora font-semibold text-forest-900 dark:text-sage-100">Flourish</h1>
+                {user && <p className="text-xs text-sage-600 dark:text-sage-300 hidden sm:block">Welcome back, {user.firstName}!</p>}
+              </div>
             </div>
             
             {/* Desktop Nav */}
@@ -64,8 +70,8 @@ export default function Header({ currentPage }: HeaderProps) {
                   onClick={() => router.push(item.path)}
                   className={
                     currentPage === item.key
-                      ? 'text-pink-600 dark:text-pink-400 font-semibold'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition'
+                      ? 'text-sage-600 dark:text-sage-300 font-semibold'
+                      : 'text-forest-600 dark:text-sage-200 hover:text-sage-600 dark:hover:text-sage-300 transition'
                   }
                 >
                   {item.label}
@@ -80,7 +86,7 @@ export default function Header({ currentPage }: HeaderProps) {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
-                className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
+                className="p-2 text-forest-600 dark:text-sage-300 hover:text-forest-900 dark:hover:text-white hover:bg-sage-50 dark:hover:bg-forest-700 rounded-lg transition"
                 aria-label="Settings"
               >
                 <svg 
@@ -105,11 +111,11 @@ export default function Header({ currentPage }: HeaderProps) {
               </button>
 
               {showDropdown && (
-                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-forest-800 rounded-lg shadow-lg border border-sage-200 dark:border-forest-700 py-1 z-50">
                   {/* Dark Mode Toggle */}
-                  <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                  <div className="px-4 py-3 border-b border-sage-100 dark:border-forest-700">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                      <div className="flex items-center gap-2 text-forest-700 dark:text-sage-200">
                         {theme === 'dark' ? (
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
@@ -124,7 +130,7 @@ export default function Header({ currentPage }: HeaderProps) {
                       <button
                         onClick={toggleTheme}
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${
-                          theme === 'dark' ? 'bg-pink-500' : 'bg-gray-300'
+                          theme === 'dark' ? 'bg-sage-500' : 'bg-gray-300'
                         }`}
                       >
                         <span
@@ -141,7 +147,7 @@ export default function Header({ currentPage }: HeaderProps) {
                       setShowDropdown(false);
                       router.push('/profile');
                     }}
-                    className="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                    className="w-full px-4 py-2 text-left text-forest-700 dark:text-sage-200 hover:bg-sage-50 dark:hover:bg-forest-700 flex items-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -153,14 +159,14 @@ export default function Header({ currentPage }: HeaderProps) {
                       setShowDropdown(false);
                       setShowFeedback(true);
                     }}
-                    className="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                    className="w-full px-4 py-2 text-left text-forest-700 dark:text-sage-200 hover:bg-sage-50 dark:hover:bg-forest-700 flex items-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                     Feedback & Suggestions
                   </button>
-                  <hr className="my-1 border-gray-200 dark:border-gray-700" />
+                  <hr className="my-1 border-sage-100 dark:border-forest-700" />
                   <button
                     onClick={handleLogout}
                     className="w-full px-4 py-2 text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
@@ -177,7 +183,7 @@ export default function Header({ currentPage }: HeaderProps) {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="md:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
+              className="md:hidden p-2 text-forest-600 dark:text-sage-300 hover:text-forest-900 dark:hover:text-white hover:bg-sage-50 dark:hover:bg-forest-700 rounded-lg transition"
               aria-label="Menu"
             >
               {showMobileMenu ? (
@@ -195,7 +201,7 @@ export default function Header({ currentPage }: HeaderProps) {
 
         {/* Mobile Nav */}
         {showMobileMenu && (
-          <nav className="md:hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <nav className="md:hidden mt-4 pt-4 border-t border-sage-200 dark:border-forest-700">
             <div className="flex flex-col space-y-2">
               {navItems.map((item) => (
                 <button
@@ -206,8 +212,8 @@ export default function Header({ currentPage }: HeaderProps) {
                   }}
                   className={`text-left px-4 py-3 rounded-lg transition ${
                     currentPage === item.key
-                      ? 'bg-pink-50 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 font-semibold'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      ? 'bg-sage-50 dark:bg-sage-900/30 text-sage-700 dark:text-sage-300 font-semibold'
+                      : 'text-forest-600 dark:text-sage-200 hover:bg-sage-50 dark:hover:bg-forest-700'
                   }`}
                 >
                   {item.label}

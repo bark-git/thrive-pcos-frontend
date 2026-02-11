@@ -100,7 +100,7 @@ export default function SymptomList({ symptoms, onUpdate, onEdit }: SymptomListP
                   {onEdit && (
                     <button
                       onClick={() => onEdit(symptom)}
-                      className="p-2 text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition"
+                      className="p-2 text-gray-500 dark:text-gray-400 hover:text-peach-600 dark:hover:text-peach-400 hover:bg-peach-50 dark:hover:bg-peach-900/30 rounded-lg transition"
                       title="Edit"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

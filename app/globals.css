@@ -2,13 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --sage: #8BA888;
+  --sage-light: #a8c4a5;
+  --sage-dark: #6b8b68;
+  --peach: #E8B4A0;
+  --ivory: #FFFEF7;
+  --forest-dark: #1E2D24;
+  --text-primary: #3C4A3E;
+  --text-secondary: #5a6b5e;
+}
+
 body {
-  color: #000000;
-  background: #ffffff;
+  color: var(--text-primary);
+  background: var(--ivory);
+  font-family: var(--font-work-sans), system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Subtle gradient background overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(139, 168, 136, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(232, 180, 160, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Dark mode overrides */
+.dark body,
+.dark {
+  --text-primary: #e6ede5;
+  --text-secondary: #a8c4a5;
+  color: var(--text-primary);
+  background: var(--forest-dark);
+}
+
+.dark body::before {
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(139, 168, 136, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(232, 180, 160, 0.03) 0%, transparent 50%);
+}
+
+/* Ensure content is above the gradient overlay */
+#__next,
+main,
+.container {
+  position: relative;
+  z-index: 1;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Flourish-specific heading styles */
+h1, h2, h3, .font-lora {
+  font-family: var(--font-lora), Georgia, serif;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+}
+
+/* Override for elements that shouldn't transition */
+button, a, input, textarea, select {
+  transition-property: background-color, border-color, color, transform, box-shadow;
 }

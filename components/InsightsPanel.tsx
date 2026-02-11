@@ -126,7 +126,7 @@ export default function InsightsPanel({ activeTab: initialTab = 'records' }: Ins
               onClick={() => setActiveTab(tab.id)}
               className={`px-3 py-3 text-sm font-medium transition border-b-2 -mb-px whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'border-pink-500 text-pink-600 dark:text-pink-400'
+                  ? 'border-sage-500 text-sage-600 dark:text-sage-400'
                   : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
@@ -194,9 +194,9 @@ function RecordsContent({ data, loading }: { data: any; loading: boolean }) {
             <p className="text-xl font-bold text-orange-600 dark:text-orange-400">{stats.currentStreak}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">Day Streak</p>
           </div>
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg p-3 text-center">
+          <div className="bg-gradient-to-br from-peach-50 to-sage-50 dark:from-peach-900/20 dark:to-sage-900/20 rounded-lg p-3 text-center">
             <span className="text-2xl">📊</span>
-            <p className="text-xl font-bold text-purple-600 dark:text-purple-400">{stats.totalEntries}</p>
+            <p className="text-xl font-bold text-peach-600 dark:text-peach-400">{stats.totalEntries}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">Total Logs</p>
           </div>
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-3 text-center">
@@ -232,7 +232,7 @@ function RecordsContent({ data, loading }: { data: any; loading: boolean }) {
                 <p className="text-xs text-gray-500 dark:text-gray-400">{record.detail}</p>
               </div>
               <div className="text-right">
-                <p className="text-lg font-bold text-pink-600 dark:text-pink-400">{record.value}</p>
+                <p className="text-lg font-bold text-sage-600 dark:text-sage-400">{record.value}</p>
               </div>
             </div>
           ))}
@@ -272,16 +272,16 @@ function PredictContent({ data, loading }: { data: any; loading: boolean }) {
   return (
     <div className="space-y-4">
       {/* Current Cycle Info */}
-      <div className="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg p-3 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-sage-100 to-peach-100 dark:from-peach-900/30 dark:to-sage-900/30 rounded-lg p-3 flex items-center justify-between">
         <div>
           <p className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">Current Cycle Day</p>
-          <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">{currentCycleDay}</p>
+          <p className="text-2xl font-bold text-peach-700 dark:text-peach-300">{currentCycleDay}</p>
         </div>
         <div className="text-right">
           <p className="text-xs text-gray-600 dark:text-gray-400">of ~{avgCycleLength} days</p>
           <div className="w-24 h-2 bg-gray-200 dark:bg-gray-700 rounded-full mt-1 overflow-hidden">
             <div 
-              className="h-full bg-purple-500 rounded-full"
+              className="h-full bg-peach-500 rounded-full"
               style={{ width: `${Math.min(100, (currentCycleDay / avgCycleLength) * 100)}%` }}
             />
           </div>
@@ -303,7 +303,7 @@ function PredictContent({ data, loading }: { data: any; loading: boolean }) {
                   pred.type === 'period' 
                     ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800' 
                     : pred.confidence === 'high'
-                    ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800'
+                    ? 'bg-peach-50 dark:bg-peach-900/20 border border-peach-200 dark:border-peach-800'
                     : 'bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700'
                 }`}
               >
@@ -568,7 +568,7 @@ function DayOfWeekContent({ data, loading }: { data: any; loading: boolean }) {
                         ? 'bg-green-400 dark:bg-green-500' 
                         : day.avgMood && day.avgMood <= 2.5
                         ? 'bg-amber-400 dark:bg-amber-500'
-                        : 'bg-purple-400 dark:bg-purple-500'
+                        : 'bg-peach-400 dark:bg-peach-500'
                     }`}
                     style={{ height: `${height}%`, minHeight: day.avgMood ? '8px' : '0' }}
                   />
@@ -736,7 +736,7 @@ function PCOSContent({ data, loading }: { data: any; loading: boolean }) {
   const { insights, phenotype, symptomSummary } = data;
 
   const severityColors: Record<string, string> = {
-    important: 'border-l-pink-500 bg-pink-50 dark:bg-pink-900/20',
+    important: 'border-l-sage-500 bg-sage-50 dark:bg-sage-900/20',
     moderate: 'border-l-amber-500 bg-amber-50 dark:bg-amber-900/20',
     mild: 'border-l-blue-500 bg-blue-50 dark:bg-blue-900/20',
     informational: 'border-l-gray-400 bg-gray-50 dark:bg-gray-700/50',
@@ -745,9 +745,9 @@ function PCOSContent({ data, loading }: { data: any; loading: boolean }) {
   return (
     <div className="space-y-4">
       {phenotype && (
-        <div className="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg p-3 text-center">
+        <div className="bg-gradient-to-r from-sage-100 to-peach-100 dark:from-peach-900/30 dark:to-sage-900/30 rounded-lg p-3 text-center">
           <p className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">Your PCOS Type</p>
-          <p className="font-bold text-purple-700 dark:text-purple-300 mt-1">
+          <p className="font-bold text-peach-700 dark:text-peach-300 mt-1">
             {phenotype.replace('TYPE_', 'Type ')}
           </p>
         </div>
@@ -795,7 +795,7 @@ function PCOSContent({ data, loading }: { data: any; loading: boolean }) {
             {symptomSummary.topSymptoms.map((s: { type: string; count: number }, i: number) => (
               <span 
                 key={i}
-                className="px-2 py-1 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 rounded-full text-xs"
+                className="px-2 py-1 bg-peach-100 dark:bg-peach-900/40 text-peach-700 dark:text-peach-300 rounded-full text-xs"
               >
                 {s.type} ({s.count})
               </span>
@@ -813,7 +813,7 @@ function PCOSContent({ data, loading }: { data: any; loading: boolean }) {
 function LoadingState() {
   return (
     <div className="text-center py-8">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mx-auto mb-3"></div>
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500 mx-auto mb-3"></div>
       <p className="text-gray-500 dark:text-gray-400 text-sm">Loading insights...</p>
     </div>
   );
@@ -852,7 +852,7 @@ function LockedState({
           </div>
           <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-pink-500 rounded-full transition-all"
+              className="h-full bg-sage-500 rounded-full transition-all"
               style={{ width: `${Math.min(100, (current / target) * 100)}%` }}
             />
           </div>
@@ -862,7 +862,7 @@ function LockedState({
       {linkHref && linkText && (
         <a
           href={linkHref}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition text-sm font-medium"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-sage-600 text-white rounded-lg hover:bg-sage-700 transition text-sm font-medium"
         >
           {linkText}
         </a>
