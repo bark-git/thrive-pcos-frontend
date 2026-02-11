@@ -190,22 +190,8 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
         return entryDate.getTime() === todayDate.getTime();
       });
       
-      // Fetch streak data from personal records API for consistency
-      let currentStreak = 0;
-      try {
-        const recordsRes = await api.get('/analytics/personal-records');
-        if (recordsRes.data.unlocked && recordsRes.data.stats) {
-          currentStreak = recordsRes.data.stats.currentStreak || 0;
-        } else {
-          // Calculate locally if not unlocked
-          currentStreak = calculateLocalStreak(moodEntries);
-        }
-      } catch (err) {
-        // Fallback to local calculation if records API fails
-        currentStreak = calculateLocalStreak(moodEntries);
-      }
-      
-      function calculateLocalStreak(entries: any[]) {
+      // Local streak calculation helper
+      const calculateLocalStreak = (entries: any[]) => {
         if (entries.length === 0) return 0;
         
         const sortedDates = entries
@@ -245,6 +231,21 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
         }
         
         return streak;
+      };
+
+      // Fetch streak data from personal records API for consistency
+      let currentStreak = 0;
+      try {
+        const recordsRes = await api.get('/analytics/personal-records');
+        if (recordsRes.data.unlocked && recordsRes.data.stats) {
+          currentStreak = recordsRes.data.stats.currentStreak || 0;
+        } else {
+          // Calculate locally if not unlocked
+          currentStreak = calculateLocalStreak(moodEntries);
+        }
+      } catch (err) {
+        // Fallback to local calculation if records API fails
+        currentStreak = calculateLocalStreak(moodEntries);
       }
       
       setStreakData({
