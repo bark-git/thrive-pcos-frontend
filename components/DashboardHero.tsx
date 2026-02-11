@@ -203,7 +203,7 @@ export default function DashboardHero({ userName, onQuickLogMood, onQuickLogSymp
           .sort((a: number, b: number) => b - a); // newest first
         
         // Remove duplicates (multiple entries same day)
-        const uniqueDates = [...new Set(sortedDates)];
+        const uniqueDates = Array.from(new Set(sortedDates));
         
         let streak = 0;
         const today = new Date();
