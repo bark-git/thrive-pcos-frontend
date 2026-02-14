@@ -92,7 +92,18 @@ export default function Home() {
         router.push('/onboarding');
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || err.response?.data?.error || 'An error occurred');
+      const status = err.response?.status;
+      const msg = err.response?.data?.message || err.response?.data?.error || '';
+      // Map known errors to user-friendly messages; hide unexpected backend details
+      if (status === 401) {
+        setError('Invalid email or password');
+      } else if (status === 409) {
+        setError('An account with this email already exists');
+      } else if (status === 400 && msg) {
+        setError(msg);
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
