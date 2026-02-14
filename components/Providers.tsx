@@ -2,11 +2,14 @@
 
 import { ReactNode } from 'react';
 import { ThemeProvider } from '@/lib/ThemeContext';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider>
-      {children}
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        {children}
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
