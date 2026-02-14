@@ -57,8 +57,10 @@ export default function AuthCallback() {
         }
       } catch (err: any) {
         console.error('Backend sync error:', err);
-        // If backend sync fails, still go to dashboard
-        router.push('/dashboard');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setError('Failed to sync your account. Please try signing in again.');
+        setTimeout(() => router.push('/'), 3000);
       }
     };
 
